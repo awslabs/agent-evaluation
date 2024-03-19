@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.coverage.run]
+omit = [
+    "tests/*",
+]
+
+[tool.isort]
+profile = "black"
+skip = [
+    "tests",
+]
+
+[tool.black]
+exclude = '''
+/(
+    tests
+)/
+'''

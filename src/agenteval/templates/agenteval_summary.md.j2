@@ -1,0 +1,56 @@
+# Test Summary
+---
+This document provides a summary of the tests executed by Agent Evaluation.
+
+> :warning: This tool utilizes generative AI to assess virtual agents and its evaluations may contain errors. **Please thoroughly examine the results below prior to deciding whether to implement an agent.**
+---
+## Tasks
+{% for task, result in zip(tasks, results) -%}
+- [{% if result.success %}:green_circle:{% else %}:red_circle:{% endif %} {{ task.name }}](#{{ task.name | replace(' ', '-') }})
+{% endfor %}
+
+---
+
+
+{% for task, result in zip(tasks, results) -%}
+## <a id={{ task.name | replace(' ', '-') }}></a>{% if result.success %}:green_circle:{% else %}:red_circle:{% endif %} {{ task.name }}
+
+{{ result.description }}
+
+**Steps**
+{% for step in task.steps -%}
+{{ loop.index }}. {{ step }}
+{% endfor %}
+
+**Expected Results**
+{% for result in task.expected_results -%}
+{{ loop.index }}. {{ result }}
+{% endfor %}
+
+**Session**
+```
+{% for sender, message in result.session -%}
+[{{ sender }}] {{ message }}
+{% endfor -%}
+```
+
+<details>
+    <summary>
+    <b>Trace</b>
+    </summary>
+
+```
+{% for trace in result.trace -%}
+[EVALUATOR] {{ trace }}
+
+{% endfor -%}
+```
+</details>
+
+---
+{% endfor %}
+
+
+
+
+

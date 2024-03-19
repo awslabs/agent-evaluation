@@ -1,0 +1,1 @@
+MAX_TURNS = 2

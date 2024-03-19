@@ -1,0 +1,49 @@
+site_name: Agent Evaluation
+theme:
+  name: material
+  icon:
+    annotation: material/plus-circle-outline 
+  palette:
+  - media: "(prefers-color-scheme: light)"
+    scheme: default
+    primary: white
+    accent: white
+    toggle:
+      icon: material/weather-night
+      name: "Switch to dark mode"
+  - media: "(prefers-color-scheme: dark)"
+    scheme: slate
+    primary: black
+    accent: black
+    toggle:
+      icon: material/weather-sunny
+      name: "Switch to light mode"
+  features:
+    - content.code.copy
+    - content.code.annotate
+nav:
+  - Home: index.md
+  - User Guide: user_guide.md
+  - Configuration: configuration.md
+  - Targets: targets.md
+  - Evaluators: evaluators.md
+  - Reference:
+    - cli: cli.md
+    - task: task_api.md
+    - target: target_api.md
+    - evaluator: evaluator_api.md
+
+repo_url: https://gitlab.aws.dev/genai-tooling-incubator/agenteval
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.snippets
+  - attr_list
+  - md_in_html
+  - mkdocs-click
+extra_css:
+  - stylesheets/extra.css
+plugins:
+- search
+- mkdocstrings
