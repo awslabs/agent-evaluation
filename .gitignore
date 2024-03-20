@@ -2,7 +2,7 @@
 *.ipynb
 
 # ignore test plan and summary at root
-/agenteval.yaml
+/agenteval.yml
 /agenteval_summary.md
 
 # Byte-compiled / optimized / DLL files
