@@ -19,7 +19,7 @@ from agenteval.targets import (
 )
 from agenteval.task import Task
 
-_PLAN_FILE_NAME = "agenteval.yaml"
+_PLAN_FILE_NAME = "agenteval.yml"
 
 _INIT_PLAN = {
     "evaluator": {"type": "bedrock-claude", "model": "claude-sonnet"},
