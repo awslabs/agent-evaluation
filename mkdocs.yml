@@ -34,8 +34,7 @@ nav:
     - targets/custom_targets.md
   - Evaluators:
     - evaluators/index.md
-    - Amazon Bedrock:
-      - evaluators/bedrock_claude.md
+    - evaluators/claude_bedrock.md
   - Reference:
     - cli: cli.md
     - task: task_api.md
