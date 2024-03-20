@@ -1,6 +1,6 @@
 # Home
 
-Agent Evaluation is a LLM-powered framework for testing and validating virtual agents.
+Agent Evaluation is a LLM-powered framework for testing virtual agents.
 
 ## How it works
 
