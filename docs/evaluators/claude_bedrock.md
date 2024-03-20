@@ -1,4 +1,6 @@
-# Anthropic Claude
+# Anthropic Claude on Amazon Bedrock
+
+This evaluator is implmented using [Anthropic's Claude](https://www.anthropic.com/claude) hosted on [Amazon Bedrock](https://aws.amazon.com/bedrock/claude/). 
 
 ## Prerequisites
 

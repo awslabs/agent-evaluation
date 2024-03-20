@@ -1,0 +1,26 @@
+name: CI
+on: [pull_request]
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        strategy:
+          matrix:
+            python-version: ["3.9", "3.10", "3.11", "3.12"]
+        steps:
+        - uses: actions/checkout@v4
+        - name: Setup Python ${{ matrix.python-version }}
+          uses: actions/setup-python@v4
+          with:
+            python-version: ${{ matrix.python-version }}
+        - name: Install dependencies
+          run: |
+            pip install --upgrade pip  
+            pip install .[dev]
+        - name: Flake8
+          run: flake8 src/
+        - name: Black
+          run:  black --check src/
+        - name: isort
+          run: isort src/ --check --diff
+        - name: Unit test
+          run: python -m pytest --junitxml=junit/test-results.xml --cov=src --cov-report=xml --cov-report=html

@@ -11,7 +11,7 @@ EMAIL = "agent-evaluation-oss-core-team@amazon.com"
 URL = "https://github.com/awslabs/agent-evaluation"
 
 PACKAGE_DIR = "src"
-REQUIRES_PYTHON = ">=3.7"
+REQUIRES_PYTHON = ">=3.9"
 REQUIREMENTS = [
     "pyyaml>=6.0.0",
     "boto3>=1.34.20",
@@ -68,8 +68,6 @@ setup(
         "Topic :: Software Development :: Testing",
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
