@@ -7,7 +7,7 @@ VERSION = "0.5.0"
 
 DESCRIPTION = "A LLM-powered framework for testing and validating virtual agents."
 AUTHOR = "Amazon Web Services"
-EMAIL = "agent-evaluation-framework@amazon.com"
+EMAIL = "agent-evaluation-oss-core-team@amazon.com"
 URL = "https://github.com/awslabs/agent-evaluation"
 
 PACKAGE_DIR = "src"

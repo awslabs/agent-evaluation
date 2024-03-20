@@ -4,7 +4,7 @@ Agent Evaluation is a LLM-powered framework for testing and validating virtual a
 
 ## How it works
 
-Agent Evaluation implements an agent ([Evaluator](./evaluators.md)) that will orchestrate conversations with your agent ([Target](./targets.md)) and evaluate the responses during the conversation.
+Agent Evaluation implements an agent ([Evaluator](./evaluators/index.md)) that will orchestrate conversations with your agent ([Target](./targets/index.md)) and evaluate the responses during the conversation.
 
 You simply define your test cases in the form of tasks, using natural language.
 
@@ -36,7 +36,7 @@ pip install agenteval
 ```
 
 
-You can also install from source by cloning the [repo](https://gitlab.aws.dev/genai-tooling-incubator/agenteval) and installing from the project root.
+You can also install from source by cloning the [repo](https://github.com/awslabs/agent-evaluation) and installing from the project root.
 
 ```bash
 pip install .

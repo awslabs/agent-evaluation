@@ -37,7 +37,7 @@ Update `tasks` with your test cases. Each task must have the following:
 
 !!! info
             
-    Refer to [Targets](./targets.md) for additional targets and their required configurations.
+    Refer to [Targets](./targets/index.md) for additional targets and their required configurations.
 
 Once you have updated the test plan, you can run your tests:
 

@@ -21,12 +21,21 @@ theme:
   features:
     - content.code.copy
     - content.code.annotate
+    - navigation.indexes
 nav:
   - Home: index.md
   - User Guide: user_guide.md
-  - Configuration: configuration.md
-  - Targets: targets.md
-  - Evaluators: evaluators.md
+  - configuration.md
+  - Targets:
+    - targets/index.md
+    - targets/bedrock_agents.md
+    - targets/q_for_business.md
+    - targets/sagemaker_endpoints.md
+    - targets/custom_targets.md
+  - Evaluators:
+    - evaluators/index.md
+    - Amazon Bedrock:
+      - evaluators/bedrock_claude.md
   - Reference:
     - cli: cli.md
     - task: task_api.md
