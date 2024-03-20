@@ -13,7 +13,7 @@ jobs:
           with:
             python-version: ${{ matrix.python-version }}
         - name: Install dependencies
-          run: pi pinstall .[dev]
+          run: pip install .[dev]
         - name: Flake8
           run: flake8 src/
         - name: Black
