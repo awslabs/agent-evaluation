@@ -5,7 +5,7 @@ from setuptools import find_packages
 
 VERSION = "0.1.0"
 
-DESCRIPTION = "A LLM-powered framework for testing and validating virtual agents."
+DESCRIPTION = "A LLM-powered framework for testing virtual agents."
 AUTHOR = "Amazon Web Services"
 EMAIL = "agent-evaluation-oss-core-team@amazon.com"
 URL = "https://github.com/awslabs/agent-evaluation"
