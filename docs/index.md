@@ -36,7 +36,7 @@ pip install agenteval
 ```
 
 
-You can also install from source by cloning the [repo](https://gitlab.aws.dev/genai-tooling-incubator/agenteval) and installing from the project root.
+You can also install from source by cloning the [repo](https://github.com/awslabs/agent-evaluation) and installing from the project root.
 
 ```bash
 pip install .
