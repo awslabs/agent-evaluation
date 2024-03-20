@@ -3,7 +3,7 @@ from distutils.core import setup
 
 from setuptools import find_packages
 
-VERSION = "0.5.0"
+VERSION = "0.1.0"
 
 DESCRIPTION = "A LLM-powered framework for testing and validating virtual agents."
 AUTHOR = "Amazon Web Services"
