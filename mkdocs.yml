@@ -42,7 +42,7 @@ nav:
     - target: target_api.md
     - evaluator: evaluator_api.md
 
-repo_url: https://gitlab.aws.dev/genai-tooling-incubator/agenteval
+repo_url: https://github.com/awslabs/agent-evaluation
 markdown_extensions:
   - admonition
   - pymdownx.details
