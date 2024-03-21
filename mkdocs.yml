@@ -25,23 +25,24 @@ theme:
 nav:
   - Home: index.md
   - User Guide: user_guide.md
-  - configuration.md
-  - Targets:
-    - targets/index.md
-    - targets/bedrock_agents.md
-    - targets/q_for_business.md
-    - targets/sagemaker_endpoints.md
-    - targets/custom_targets.md
+  - Configuration: configuration.md
   - Evaluators:
     - evaluators/index.md
-    - evaluators/claude_bedrock.md
+    - Amazon Bedrock:
+      - evaluators/bedrock/claude.md
+  - Targets:
+    - targets/index.md
+    - AWS:
+      - targets/aws/bedrock_agents.md
+      - targets/aws/q_business.md
+      - targets/aws/sagemaker_endpoints.md
   - Reference:
     - cli: cli.md
     - task: task_api.md
     - target: target_api.md
     - evaluator: evaluator_api.md
 
-repo_url: https://gitlab.aws.dev/genai-tooling-incubator/agenteval
+repo_url: https://github.com/awslabs/agent-evaluation
 markdown_extensions:
   - admonition
   - pymdownx.details
