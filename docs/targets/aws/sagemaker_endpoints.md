@@ -1,4 +1,4 @@
-# Amazon SageMaker Endpoints
+# Amazon SageMaker endpoints
 
 Amazon SageMaker is a fully managed service to prepare data and build, train, and deploy machine learning (ML) models for any use case with fully managed infrastructure, tools, and workflows. SageMaker endpoints are used to host ML models for real-time inference use cases. For more information, visit the AWS documentation [here](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints.html).
 

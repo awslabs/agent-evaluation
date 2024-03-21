@@ -2,7 +2,11 @@
 
 An Evaluator is an agent that evaluates a [Target](../targets/index.md) on a task.
 
-## Configurations
+---
+
+## Evaluators powered by Amazon Bedrock
+
+### Base configurations
 
 ```yaml
 evaluator:
@@ -28,3 +32,7 @@ AWS Region to send requests to. If unspecified, the region associated with the `
 The endpoint URL for the AWS service. If unspecified, the public endpoint based on `aws_region` will be used.
 
 ---
+
+### Available Evaluators
+
+- [Anthropic Claude](./bedrock/claude.md)
