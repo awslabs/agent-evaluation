@@ -26,16 +26,16 @@ nav:
   - Home: index.md
   - User Guide: user_guide.md
   - Configuration: configuration.md
+  - Evaluators:
+    - evaluators/index.md
+    - Amazon Bedrock:
+      - evaluators/bedrock/claude.md
   - Targets:
     - targets/index.md
     - AWS:
       - targets/aws/bedrock_agents.md
       - targets/aws/q_business.md
       - targets/aws/sagemaker_endpoints.md
-  - Evaluators:
-    - evaluators/index.md
-    - Amazon Bedrock:
-      - evaluators/bedrock/claude.md
   - Reference:
     - cli: cli.md
     - task: task_api.md
