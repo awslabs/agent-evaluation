@@ -1,4 +1,4 @@
-from agenteval.targets.target import AWSTarget
+from agenteval.targets.target import AWSTarget, TargetResponse
 
 _SERVICE_NAME = "qbusiness"
 
@@ -32,4 +32,4 @@ class QBusinessTarget(AWSTarget):
         if not self._conversation_id:
             self._conversation_id = response["conversationId"]
 
-        return response["systemMessage"]
+        return TargetResponse(response=response["systemMessage"])

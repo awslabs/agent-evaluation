@@ -29,9 +29,9 @@ class TestQBusinessTarget:
             "systemMessage": "test message",
         }
 
-        message = q_business_fixture.invoke("test prompt")
+        response = q_business_fixture.invoke("test prompt")
 
-        assert message == "test message"
+        assert response.response == "test message"
         assert q_business_fixture._parent_message_id == "test-sys-msg-id"
         assert q_business_fixture._conversation_id == "test-conv-id"
 

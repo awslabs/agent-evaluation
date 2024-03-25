@@ -7,7 +7,7 @@ from typing import Literal, Tuple
 from agenteval import jinja_env
 from agenteval.evaluators.claude import model_configs
 from agenteval.evaluators.evaluator import BedrockEvaluator
-from agenteval.task import TaskResult
+from agenteval.test_result import TestResult
 
 logger = logging.getLogger(__name__)
 
@@ -79,65 +79,110 @@ class ClaudeEvaluator(BedrockEvaluator):
             completion, [output_xml_element, "thinking"]
         )
 
-        self.add_to_trace(reasoning)
-
-        return output
+        return output, reasoning
 
     def _generate_initial_prompt(self) -> str:
-        return self._generate(
-            system_prompt=self._prompt_template_map["start_session"]["system"].render(),
-            prompt=self._prompt_template_map["start_session"]["prompt"].render(
-                step=self.task.steps[0]
-            ),
+        system_prompt = self._prompt_template_map["start_session"]["system"].render()
+        prompt = self._prompt_template_map["start_session"]["prompt"].render(
+            step=self.task.steps[0]
+        )
+
+        initial_prompt, reasoning = self._generate(
+            system_prompt=system_prompt,
+            prompt=prompt,
             output_xml_element="initial_prompt",
         )
 
+        self.trace.add_step(
+            system_prompt=system_prompt,
+            prompt=prompt,
+            initial_prompt=initial_prompt,
+            reasoning=reasoning,
+        )
+        return initial_prompt
+
     def _generate_task_status(self) -> str:
-        return self._generate(
-            system_prompt=self._prompt_template_map["task_status"]["system"].render(),
-            prompt=self._prompt_template_map["task_status"]["prompt"].render(
-                steps=self.task.steps, session=self.session
-            ),
+        system_prompt = self._prompt_template_map["task_status"]["system"].render()
+        prompt = self._prompt_template_map["task_status"]["prompt"].render(
+            steps=self.task.steps, conversation=self.conversation
+        )
+        task_status, reasoning = self._generate(
+            system_prompt=system_prompt,
+            prompt=prompt,
             output_xml_element="task_status",
         )
+        self.trace.add_step(
+            system_prompt=system_prompt,
+            prompt=prompt,
+            task_status=task_status,
+            reasoning=reasoning,
+        )
+        return task_status
 
     def _generate_evaluation(self) -> str:
-        return self._generate(
-            system_prompt=self._prompt_template_map["evaluate"]["system"].render(),
-            prompt=self._prompt_template_map["evaluate"]["prompt"].render(
-                expected_results=self.task.expected_results,
-                session=self.session,
-            ),
-            output_xml_element="eval",
+        system_prompt = self._prompt_template_map["evaluate"]["system"].render()
+        prompt = self._prompt_template_map["evaluate"]["prompt"].render(
+            expected_results=self.task.expected_results,
+            conversation=self.conversation,
         )
 
+        evaluation, reasoning = self._generate(
+            system_prompt=system_prompt,
+            prompt=prompt,
+            output_xml_element="eval",
+        )
+        self.trace.add_step(
+            system_prompt=system_prompt,
+            prompt=prompt,
+            evaluation=evaluation,
+            reasoning=reasoning,
+        )
+
+        return evaluation, reasoning
+
     def _generate_user_response(self) -> str:
-        return self._generate(
-            system_prompt=self._prompt_template_map["user_response"]["system"].render(),
-            prompt=self._prompt_template_map["user_response"]["prompt"].render(
-                steps=self.task.steps, session=self.session
-            ),
+        system_prompt = self._prompt_template_map["user_response"]["system"].render()
+        prompt = self._prompt_template_map["user_response"]["prompt"].render(
+            steps=self.task.steps, conversation=self.conversation
+        )
+
+        user_response, reasoning = self._generate(
+            system_prompt=system_prompt,
+            prompt=prompt,
             output_xml_element="user_response",
         )
 
-    def run(self) -> TaskResult:
-        success = False
-        description = "Max turns reached."
+        self.trace.add_step(
+            system_prompt=system_prompt,
+            prompt=prompt,
+            user_response=user_response,
+            reasoning=reasoning,
+        )
+        return user_response
 
-        while self.turns < self.task.max_turns:
-            if self.turns == 0:
+    def _invoke_target(self, user_input) -> str:
+        target_response = self.target.invoke(user_input)
+        self.trace.add_step(data=target_response.data)
+
+        return target_response.response
+
+    def run(self) -> TestResult:
+        success = False
+        eval_reasoning = ""
+        result = "Max turns reached."
+
+        while self.conversation.turns < self.task.max_turns:
+            if self.conversation.turns == 0:
                 # start convo
                 if self.task.initial_prompt:
                     user_input = self.task.initial_prompt
-                    self.add_to_trace("Initial prompt provided")
                 else:
                     user_input = self._generate_initial_prompt()
             else:
                 # generate next user response
                 user_input = self._generate_user_response()
 
-            target_response = self.target.invoke(user_input)
-            self.add_turn(user_input, target_response)
+            self.conversation.add_turn(user_input, self._invoke_target(user_input))
 
             # get task status
             task_status_category = self._generate_task_status()
@@ -146,20 +191,20 @@ class ClaudeEvaluator(BedrockEvaluator):
                 _TASK_STATUS_UNABLE_TO_COMPLETE_CATEGORY,
             ):
                 # evaluate
-                eval_category = self._generate_evaluation()
+                eval_category, eval_reasoning = self._generate_evaluation()
                 if eval_category == _EVAL_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY:
                     success = True
-                    description = "All expected results observed."
+                    result = "All expected results observed."
                 elif task_status_category == _TASK_STATUS_UNABLE_TO_COMPLETE_CATEGORY:
-                    description = "Agent was unable to complete a step."
+                    result = "Agent was unable to complete a step."
                 else:
-                    description = "Not all of the expected results were observed."
+                    result = "Not all of the expected results were observed."
                 # break since task has been completed
                 break
-        return TaskResult(
-            name=self.task.name,
+        return TestResult(
+            task_name=self.task.name,
             success=success,
-            description=description,
-            session=self.session,
-            trace=self.trace,
+            result=result,
+            reasoning=eval_reasoning,
+            conversation_handler=self.conversation,
         )

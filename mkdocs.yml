@@ -37,10 +37,13 @@ nav:
       - targets/aws/q_business.md
       - targets/aws/sagemaker_endpoints.md
   - Reference:
-    - cli: cli.md
-    - task: task_api.md
-    - target: target_api.md
-    - evaluator: evaluator_api.md
+    - cli: reference/cli.md
+    - conversation_handler: reference/conversation_handler.md
+    - evaluator: reference/evaluator.md
+    - target: reference/target.md
+    - task: reference/task.md
+    - test_result: reference/test_result.md
+    - trace_handler: reference/trace_handler.md
 
 repo_url: https://github.com/awslabs/agent-evaluation
 markdown_extensions:

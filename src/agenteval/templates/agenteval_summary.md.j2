@@ -15,37 +15,30 @@ This document provides a summary of the tests executed by Agent Evaluation.
 {% for task, result in zip(tasks, results) -%}
 ## <a id={{ task.name | replace(' ', '-') }}></a>{% if result.success %}:green_circle:{% else %}:red_circle:{% endif %} {{ task.name }}
 
-{{ result.description }}
-
 **Steps**
 {% for step in task.steps -%}
 {{ loop.index }}. {{ step }}
 {% endfor %}
 
-**Expected Results**
+**Expected results**
 {% for result in task.expected_results -%}
 {{ loop.index }}. {{ result }}
 {% endfor %}
 
-**Session**
+**Conversation**
 ```
-{% for sender, message in result.session -%}
+{% for sender, message in result.conversation -%}
 [{{ sender }}] {{ message }}
 {% endfor -%}
 ```
 
-<details>
-    <summary>
-    <b>Trace</b>
-    </summary>
+**Result**
+{{ result.description }}
 
+**Reasoning**
 ```
-{% for trace in result.trace -%}
-[EVALUATOR] {{ trace }}
-
-{% endfor -%}
+{{ result.reasoning }}
 ```
-</details>
 
 ---
 {% endfor %}

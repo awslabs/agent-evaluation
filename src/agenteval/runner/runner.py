@@ -63,7 +63,7 @@ class Runner:
                 target=target,
             )
 
-            result = evaluator.run()
+            result = evaluator.trace_run()
             if result.success is False:
                 self.num_failed += 1
 
@@ -77,7 +77,7 @@ class Runner:
         for _, result in self.results.items():
             logger_func = logger.info if result.success else logger.error
             logger_func(
-                f"[bold {'green' if result.success else 'red'}]{result.name}...{'PASSED' if result.success else 'FAILED'}",
+                f"[bold {'green' if result.success else 'red'}]{result.task_name}...{'PASSED' if result.success else 'FAILED'}",
             )
 
     def _log_pass_fail_count(self):

@@ -3,7 +3,7 @@ from typing import Optional
 
 from jsonpath_ng import parse
 
-from agenteval.targets.target import AWSTarget
+from agenteval.targets.target import AWSTarget, TargetResponse
 
 _SERVICE_NAME = "sagemaker-runtime"
 _CONTENT_TYPE = "application/json"
@@ -81,4 +81,4 @@ class SageMakerEndpointTarget(AWSTarget):
 
         response_body = json.loads(response.get("Body").read())
 
-        return self._query_response(response_body)
+        return TargetResponse(response=self._query_response(response_body))

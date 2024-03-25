@@ -5,12 +5,12 @@ from typing import Optional
 import boto3
 from botocore.client import BaseClient
 
+from agenteval.conversation_handler import ConversationHandler
 from agenteval.targets import BaseTarget
-from agenteval.task import Task, TaskResult
+from agenteval.task import Task
+from agenteval.test_result import TestResult
+from agenteval.trace_handler import TraceHandler
 
-_USER = "USER"
-_AGENT = "AGENT"
-_START_TURN_COUNT = 0
 _BEDROCK_RUNTIME_BOTO3_NAME = "bedrock-runtime"
 
 
@@ -19,60 +19,41 @@ class BaseEvaluator(ABC):
     classes.
 
     Attributes:
-        task (Task): The task being evaluated
-        target (BaseTarget): The target agent being evaluated
-        session (list[tuple]): The session log
-        trace (list[str]): The trace log
-        turns (int): The number of turns in the session
+        task (Task): The task being evaluated.
+        target (BaseTarget): The target agent being evaluated.
+        conversation (ConversationHandler): Conversation handler for capturing the interaction
+            between the evaluator (user) and target (agent).
+        trace (TraceHandler): Trace handler for capturing steps during evaluation.
     """
 
     def __init__(self, task: Task, target: BaseTarget):
         """Initialize the evaluator instance for a given `Task` and `Target`.
 
-        When initialized, the instance will contain empty `session` and `trace` logs,
-        and `turns` will start at `0`.
-
-        - Use `add_turn` to record a turn in the `session` and increment the `turn` counter by `1`.
-        - Use `add_to_trace` to add an entry to the `trace`.
-
         Args:
-            task (Task): The task being evaluated
-            target (BaseTarget): The target agent being evaluated
+            task (Task): The task being evaluated.
+            target (BaseTarget): The target agent being evaluated.
         """
         self.task = task
         self.target = target
-        self.session: list[tuple] = []
-        self.trace: list[str] = []
-        self.turns: int = _START_TURN_COUNT
-
-    def add_to_trace(self, entry: str) -> None:
-        """Add an entry to the trace log.
-
-        Args:
-            entry (str): The string to add to the trace
-        """
-        self.trace.append(entry)
-
-    def add_turn(self, user_input: str, target_response: str) -> None:
-        """Record a turn in the session log.
-
-        Args:
-            user_input (str): The user's input
-            target_response (str): The target's response
-
-        Increments the `turn` counter by `1`.
-        """
-        self.session.extend([(_USER, user_input), (_AGENT, target_response)])
-        self.turns += 1
+        self.conversation = ConversationHandler()
+        self.trace = TraceHandler(task_name=task.name)
 
     @abstractmethod
-    def run(self) -> TaskResult:
+    def run(self) -> TestResult:
         """Run evaluation on a task.
 
         Returns:
-            TaskResult: The result of the evaluation
+            TestResult: The test result for the task.
         """
         pass
+
+    def trace_run(self):
+        """
+        Runs the evaluator within a trace context manager to
+        capture trace data.
+        """
+        with self.trace:
+            return self.run()
 
 
 class AWSEvaluator(BaseEvaluator):
@@ -94,11 +75,11 @@ class AWSEvaluator(BaseEvaluator):
         Initialize the AWS evaluator.
 
         Args:
-            boto3_service_name (str): The `boto3` service name (e.g `"bedrock-runtime"`)
-            aws_profile (str, optional): The AWS profile name
-            aws_region (str, optional): The AWS region
-            endpoint_url (str, optional): The endpoint URL for the AWS service
-            **kwargs : Arguments for the BaseEvaluator initializer
+            boto3_service_name (str): The `boto3` service name (e.g `"bedrock-runtime"`).
+            aws_profile (str, optional): The AWS profile name.
+            aws_region (str, optional): The AWS region.
+            endpoint_url (str, optional): The endpoint URL for the AWS service.
+            **kwargs : Arguments for the BaseEvaluator initializer.
         """
         super().__init__(**kwargs)
 
@@ -119,10 +100,10 @@ class AWSEvaluator(BaseEvaluator):
         """Create a `boto3` client.
 
         Args:
-            boto3_service_name (str): The `boto3` service name (e.g `"bedrock-runtime"`)
-            aws_profile (str, optional): The AWS profile name
-            aws_region (str, optional): The AWS region
-            endpoint_url (str, optional): The endpoint URL for the AWS service
+            boto3_service_name (str): The `boto3` service name (e.g `"bedrock-runtime"`).
+            aws_profile (str, optional): The AWS profile name.
+            aws_region (str, optional): The AWS region.
+            endpoint_url (str, optional): The endpoint URL for the AWS service.
 
         Returns:
             BaseClient
@@ -136,11 +117,11 @@ class BedrockEvaluator(AWSEvaluator):
 
     def __init__(self, model_id: str, **kwargs):
         """
-        Initialize the Bedrock evaluator
+        Initialize the Bedrock evaluator.
 
         Args:
-            model_id (str): The ID of the Bedrock model used to run evaluation
-            **kwargs: Additional arguments passed to the parent class initializer
+            model_id (str): The ID of the Bedrock model used to run evaluation.
+            **kwargs: Additional arguments passed to the parent class initializer.
         """
         super().__init__(boto3_service_name=_BEDROCK_RUNTIME_BOTO3_NAME, **kwargs)
 
@@ -154,10 +135,10 @@ class BedrockEvaluator(AWSEvaluator):
         Refer to the `boto3` documentation for more details.
 
         Args:
-            request_body (dict): The request payload as a dictionary
+            request_body (dict): The request payload as a dictionary.
 
         Returns:
-            dict: The response from the model invocation
+            dict: The response from the model invocation.
 
         """
         return self.boto3_client.invoke_model(
