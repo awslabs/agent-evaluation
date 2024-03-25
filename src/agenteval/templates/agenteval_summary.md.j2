@@ -27,13 +27,13 @@ This document provides a summary of the tests executed by Agent Evaluation.
 
 **Conversation**
 ```
-{% for sender, message in result.conversation -%}
+{% for sender, message in result.conversation_handler -%}
 [{{ sender }}] {{ message }}
 {% endfor -%}
 ```
 
 **Result**
-{{ result.description }}
+{{ result.result }}
 
 **Reasoning**
 ```
