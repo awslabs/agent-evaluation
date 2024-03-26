@@ -14,9 +14,9 @@ def plan_fixture():
             bedrock_agent_id="test-agent-id",
             bedrock_agent_alias_id="test-alias-id",
         ),
-        tasks=[
-            plan.Task(
-                name="TestTask",
+        tests=[
+            plan.Test(
+                name="my_test",
                 steps=["step 1", "step 2"],
                 expected_results=["result 1"],
                 max_turns=2,
@@ -30,9 +30,9 @@ def plan_with_custom_target_fixture():
     return plan.Plan(
         evaluator_config=plan.EvaluatorConfig(type="bedrock-claude"),
         target_config=plan.TargetConfig(type="test.path.CustomTarget"),
-        tasks=[
-            plan.Task(
-                name="TestTask",
+        tests=[
+            plan.Test(
+                name="my_test",
                 steps=["step 1", "step 2"],
                 expected_results=["result 1"],
                 max_turns=2,
@@ -91,16 +91,16 @@ class TestPlan:
         )
         assert target_cls == CustomTarget
 
-    def test_load_tasks(self):
-        tasks = plan.Plan._load_tasks(
-            task_config=[
+    def test_load_tests(self):
+        tests = plan.Plan._load_tests(
+            test_config=[
                 {
-                    "name": "TestTask1",
+                    "name": "test_1",
                     "steps": ["step 1, step 2, step 3"],
                     "expected_results": ["result 1", "result 2"],
                 },
                 {
-                    "name": "TestTask2",
+                    "name": "test_2",
                     "steps": ["step 1"],
                     "expected_results": ["result 1"],
                     "max_turns": 5,
@@ -108,9 +108,9 @@ class TestPlan:
             ]
         )
 
-        assert len(tasks) == 2
-        assert tasks[0].max_turns == plan.defaults.MAX_TURNS
-        assert tasks[1].max_turns == 5
+        assert len(tests) == 2
+        assert tests[0].max_turns == plan.defaults.MAX_TURNS
+        assert tests[1].max_turns == 5
 
     def test_init_plan(self, tmp_path):
         plan.Plan.init_plan(tmp_path)

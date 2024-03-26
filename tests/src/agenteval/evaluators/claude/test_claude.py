@@ -4,13 +4,13 @@ import pytest
 
 from src.agenteval.evaluators.claude import claude
 from src.agenteval.evaluators import evaluator
-from src.agenteval.task import Task
+from src.agenteval.test import Test
 
 
 @pytest.fixture
-def task_fixture():
-    return Task(
-        name="TestTask",
+def test_fixture():
+    return Test(
+        name="my_test",
         steps=["step 1", "step 2"],
         expected_results=["result 1"],
         initial_prompt="test prompt",
@@ -24,7 +24,7 @@ def target_fixture(mocker):
 
 
 @pytest.fixture
-def evaluator_fixture(mocker, task_fixture, target_fixture):
+def evaluator_fixture(mocker, test_fixture, target_fixture):
 
     mock_session = mocker.patch.object(evaluator.boto3, "Session")
     mocker.patch.object(mock_session.return_value, "client")
@@ -34,7 +34,7 @@ def evaluator_fixture(mocker, task_fixture, target_fixture):
         aws_profile="test-profile",
         aws_region="us-west-2",
         endpoint_url=None,
-        task=task_fixture,
+        test=test_fixture,
         target=target_fixture,
     )
 
@@ -118,7 +118,7 @@ class TestClaudeEvaluator:
 
     def test_run_single_turn_initial_prompt_success(self, mocker, evaluator_fixture):
 
-        evaluator_fixture.task.initial_prompt = None
+        evaluator_fixture.test.initial_prompt = None
 
         mock_generate_initial_prompt = mocker.patch.object(
             evaluator_fixture, "_generate_initial_prompt"

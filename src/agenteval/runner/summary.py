@@ -1,13 +1,13 @@
 import os
 
 from agenteval import jinja_env
-from agenteval.task import Task
+from agenteval.test import Test
 from agenteval.test_result import TestResult
 
 _MARKDOWN_SUMMARY_TEMPLATE_PATH = "agenteval_summary.md.j2"
 
 
-def create_markdown_summary(tasks: list[Task], task_results: list[TestResult]) -> str:
+def create_markdown_summary(tests: list[Test], test_results: list[TestResult]) -> str:
     template = jinja_env.get_template(_MARKDOWN_SUMMARY_TEMPLATE_PATH)
 
     cwd = os.getcwd()
@@ -15,7 +15,7 @@ def create_markdown_summary(tasks: list[Task], task_results: list[TestResult]) -
         cwd, os.path.splitext(_MARKDOWN_SUMMARY_TEMPLATE_PATH)[0]
     )
 
-    rendered = template.render(tasks=tasks, results=task_results, zip=zip)
+    rendered = template.render(tests=tests, results=test_results, zip=zip)
 
     with open(summary_path, "w+") as f:
         f.write(rendered)

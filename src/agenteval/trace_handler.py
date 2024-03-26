@@ -12,18 +12,18 @@ class TraceHandler:
     Captures trace data.
 
     Attributes:
-        task_name (str): Name of the task.
+        test_name (str): Name of the test.
         steps (list): List of steps in the trace.
     """
 
-    def __init__(self, task_name: str, trace_dir: Optional[str] = None):
+    def __init__(self, test_name: str, trace_dir: Optional[str] = None):
         """
         Initialize the trace handler.
 
         Args:
-            task_name (str): Name of the trace
+            test_name (str): Name of the trace
         """
-        self.task_name = task_name
+        self.test_name = test_name
         self.trace_dir = trace_dir or os.path.join(os.getcwd(), _TRACE_DIR)
         self.start_time = None
         self.end_time = None
@@ -42,12 +42,12 @@ class TraceHandler:
 
         os.makedirs(self.trace_dir, exist_ok=True)
 
-        with open(os.path.join(self.trace_dir, f"{self.task_name}.json"), "w") as f:
+        with open(os.path.join(self.trace_dir, f"{self.test_name}.json"), "w") as f:
             json.dump(self._get_trace(), f, default=str)
 
     def _get_trace(self) -> str:
         return {
-            "task_name": self.task_name,
+            "test_name": self.test_name,
             "start_time": self.start_time,
             "end_time": self.end_time,
             "steps": self.steps,

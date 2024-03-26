@@ -17,7 +17,7 @@ from agenteval.targets import (
     QBusinessTarget,
     SageMakerEndpointTarget,
 )
-from agenteval.task import Task
+from agenteval.test import Test
 
 _PLAN_FILE_NAME = "agenteval.yml"
 
@@ -28,7 +28,7 @@ _INIT_PLAN = {
         "bedrock_agent_id": None,
         "bedrock_agent_alias_id": None,
     },
-    "tasks": [
+    "tests": [
         {
             "name": "RetrieveMissingDocuments",
             "steps": ["Ask agent for a list of missing documents for claim-006"],
@@ -60,14 +60,14 @@ class TargetConfig(BaseModel, extra="allow"):
 class Plan(BaseModel, validate_assignment=True, arbitrary_types_allowed=True):
     evaluator_config: EvaluatorConfig
     target_config: TargetConfig
-    tasks: list[Task]
+    tests: list[Test]
 
     @model_validator(mode="after")
-    def check_task_names_unique(self) -> Plan:
-        unique_names = len(set(task.name for task in self.tasks))
+    def check_test_names_unique(self) -> Plan:
+        unique_names = len(set(test.name for test in self.tests))
 
-        if unique_names != len(self.tasks):
-            raise ValueError("Task names must be unique")
+        if unique_names != len(self.tests):
+            raise ValueError("Test names must be unique")
 
         return self
 
@@ -79,10 +79,10 @@ class Plan(BaseModel, validate_assignment=True, arbitrary_types_allowed=True):
         return cls(
             evaluator_config=EvaluatorConfig(**plan.get("evaluator")),
             target_config=TargetConfig(**plan.get("target")),
-            tasks=cls._load_tasks(plan.get("tasks")),
+            tests=cls._load_tests(plan.get("tests")),
         )
 
-    def create_evaluator(self, task: Task, target: BaseTarget) -> BaseEvaluator:
+    def create_evaluator(self, test: Test, target: BaseTarget) -> BaseEvaluator:
         if self.evaluator_config.type in _EVALUATOR_MAP:
             evaluator_cls = _EVALUATOR_MAP[self.evaluator_config.type]
         else:
@@ -92,7 +92,7 @@ class Plan(BaseModel, validate_assignment=True, arbitrary_types_allowed=True):
                 raise TypeError(f"{evaluator_cls} is not a Evaluator subclass")
 
         return evaluator_cls(
-            task=task,
+            test=test,
             target=target,
             **self.evaluator_config.model_dump(exclude="type"),
         )
@@ -126,11 +126,11 @@ class Plan(BaseModel, validate_assignment=True, arbitrary_types_allowed=True):
             return yaml.safe_load(stream)
 
     @staticmethod
-    def _load_tasks(task_config: list[dict]) -> list[Task]:
-        tasks = []
-        for t in task_config:
-            tasks.append(
-                Task(
+    def _load_tests(test_config: list[dict]) -> list[Test]:
+        tests = []
+        for t in test_config:
+            tests.append(
+                Test(
                     name=t.get("name"),
                     steps=t.get("steps"),
                     expected_results=t.get("expected_results"),
@@ -138,7 +138,7 @@ class Plan(BaseModel, validate_assignment=True, arbitrary_types_allowed=True):
                     max_turns=t.get("max_turns", defaults.MAX_TURNS),
                 )
             )
-        return tasks
+        return tests
 
     @staticmethod
     def init_plan(plan_dir: Optional[str]) -> str:
