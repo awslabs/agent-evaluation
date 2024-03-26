@@ -47,6 +47,10 @@ agenteval run
 
 The results will be printed in your terminal and a Markdown summary will be available in `agenteval_summary.md`.
 
+You will also find traces saved under `agenteval_traces/`. This is useful for understanding the
+flow of evaluation.
+
+
 ## Writing test cases
 
 It is important to be clear and concise when writing your test cases.
