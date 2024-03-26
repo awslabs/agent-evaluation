@@ -15,19 +15,19 @@ target:
   endpoint_url:
 ```
 
-`aws_profile` *(string; optional)*
+`aws_profile` _(string; optional)_
 
 Named profile used to access AWS services and resources. If unspecified, the `default` profile is used.
 
 ---
 
-`aws_region` *(string; optional)*
+`aws_region` _(string; optional)_
 
 AWS Region to send requests to. If unspecified, the region associated with the `default` profile is used.
 
 ---
 
-`endpoint_url` *(string; optional)*
+`endpoint_url` _(string; optional)_
 
 The endpoint URL for the AWS service. If unspecified, the public endpoint based on `aws_region` will be used.
 
@@ -71,19 +71,17 @@ Once you have created your subclass, specify the Target in `agenteval.yaml`.
     target:
       type: path.to.my_custom_target.MyCustomTarget`
       my_agent_parameter: "value" # will be passed as `kwargs` when initializing the Target.
-      
+
     ```
 
 !!! warning
-    During a run, an instance of the Target will be created for each task in the test plan. We recommend avoiding testing Targets that load large models or vector stores into memory, as this can lead to a memory error. Consider deploying your agent and exposing it as a RESTful API.
-
+During a run, an instance of the Target will be created for each test in the test plan. We recommend avoiding testing Targets that load large models or vector stores into memory, as this can lead to a memory error. Consider deploying your agent and exposing it as a RESTful API.
 
 ### Examples
 
 #### Testing an agent exposed as a REST API
 
 Example coming soon.
-
 
 #### Testing a LangChain agent
 
@@ -134,7 +132,7 @@ Create a test plan that references `MyLangChainTarget`.
       model: claude-sonnet
     target:
       type: my_langchain_target.MyLangChainTarget
-    tasks:
+    tests:
     - name: CalculateTextLength
       steps:
       - "Ask agent to calculate the length of this text: Hello world!"
