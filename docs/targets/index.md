@@ -43,12 +43,12 @@ The endpoint URL for the AWS service. If unspecified, the public endpoint based 
 
 ## Custom Targets
 
-If you want to test an agent that is not natively supported, you can bring your own Target by creating a subclass of `BaseTarget`. The `BaseTarget` class is an abstract base class and all child classes must implement the `invoke` method to invoke the Target agent.
+If you want to test an agent that is not natively supported, you can bring your own Target by creating a subclass of [BaseTarget](../reference/target.md#src.agenteval.targets.target.BaseTarget). The `BaseTarget` class is an abstract base class and the child class must implement the `invoke` method to invoke your agent. This `invoke` method must also return a [TargetResponse](../reference/target.md#src.agenteval.targets.target.TargetResponse).
 
 !!! example "my_custom_target.py"
 
     ```python
-    from agenteval.targets import BaseTarget
+    from agenteval.targets import BaseTarget, TargetResponse
     from my_agent import MyAgent
 
     class MyCustomTarget(BaseTarget):
@@ -56,8 +56,11 @@ If you want to test an agent that is not natively supported, you can bring your 
         def __init__(self, **kwargs):
             self.agent = MyAgent(**kwargs)
 
-        def invoke(self, prompt: str) -> str:
-            return self.agent.invoke(prompt)
+        def invoke(self, prompt: str) -> TargetResponse:
+
+            response = self.agent.invoke(prompt)
+
+            return TargetResponse(response=response)
     ```
 
 Once you have created your subclass, specify the Target in `agenteval.yaml`.
@@ -94,7 +97,7 @@ We will create a simple [LangChain](https://python.langchain.com/docs/modules/ag
     from langchain import hub
     from langchain.agents import AgentExecutor, create_xml_agent
 
-    from agenteval.targets import BaseTarget
+    from agenteval.targets import BaseTarget, TargetResponse
 
     llm = Bedrock(model_id="anthropic.claude-v2:1")
 
@@ -114,8 +117,11 @@ We will create a simple [LangChain](https://python.langchain.com/docs/modules/ag
         def __init__(self, **kwargs):
             self.agent = AgentExecutor(agent=agent, tools=tools, verbose=False)
 
-        def invoke(self, prompt: str) -> str:
-            return self.agent.invoke({"input": prompt})["output"]
+        def invoke(self, prompt: str) -> TargetResponse:
+
+            response = self.agent.invoke({"input": prompt})["output"]
+
+            return TargetResponse(response=response)
     ```
 
 Create a test plan that references `MyLangChainTarget`.
@@ -123,6 +129,9 @@ Create a test plan that references `MyLangChainTarget`.
 !!! example "agenteval.yaml"
 
     ```yaml
+    evaluator:
+      type: bedrock-claude
+      model: claude-sonnet
     target:
       type: my_langchain_target.MyLangChainTarget
     tasks:
