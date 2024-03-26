@@ -23,7 +23,7 @@ def test_init_file_exists():
 
 def test_run(mocker):
     mock_plan = mocker.patch.object(cli.Plan, "load")
-    mock_plan.return_value.tasks = []
+    mock_plan.return_value.tests = []
 
     mock_runner = mocker.patch.object(cli, "Runner")
     mock_runner.return_value.num_failed = 0

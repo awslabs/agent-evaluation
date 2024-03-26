@@ -7,7 +7,7 @@ from botocore.client import BaseClient
 
 from agenteval.conversation_handler import ConversationHandler
 from agenteval.targets import BaseTarget
-from agenteval.task import Task
+from agenteval.test import Test
 from agenteval.test_result import TestResult
 from agenteval.trace_handler import TraceHandler
 
@@ -19,31 +19,31 @@ class BaseEvaluator(ABC):
     classes.
 
     Attributes:
-        task (Task): The task being evaluated.
+        test (Test): The test to conduct.
         target (BaseTarget): The target agent being evaluated.
         conversation (ConversationHandler): Conversation handler for capturing the interaction
             between the evaluator (user) and target (agent).
         trace (TraceHandler): Trace handler for capturing steps during evaluation.
     """
 
-    def __init__(self, task: Task, target: BaseTarget):
-        """Initialize the evaluator instance for a given `Task` and `Target`.
+    def __init__(self, test: Test, target: BaseTarget):
+        """Initialize the evaluator instance for a given `Test` and `Target`.
 
         Args:
-            task (Task): The task being evaluated.
+            test (Test): The test to conduct.
             target (BaseTarget): The target agent being evaluated.
         """
-        self.task = task
+        self.test = test
         self.target = target
         self.conversation = ConversationHandler()
-        self.trace = TraceHandler(task_name=task.name)
+        self.trace = TraceHandler(test_name=test.name)
 
     @abstractmethod
     def run(self) -> TestResult:
-        """Run evaluation on a task.
+        """Conduct a test.
 
         Returns:
-            TestResult: The test result for the task.
+            TestResult: The result of the test.
         """
         pass
 

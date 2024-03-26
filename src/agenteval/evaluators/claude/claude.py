@@ -72,7 +72,7 @@ class ClaudeEvaluator(BedrockEvaluator):
         completion = json.loads(response_body)["content"][0]["text"]
 
         logger.debug(
-            f"[{self.task.name}]\n[PROMPT]\n{prompt}\n[COMPLETION]\n{completion}"
+            f"[{self.test.name}]\n[PROMPT]\n{prompt}\n[COMPLETION]\n{completion}"
         )
 
         output, reasoning = self._extract_content_from_xml(
@@ -84,7 +84,7 @@ class ClaudeEvaluator(BedrockEvaluator):
     def _generate_initial_prompt(self) -> str:
         system_prompt = self._prompt_template_map["start_session"]["system"].render()
         prompt = self._prompt_template_map["start_session"]["prompt"].render(
-            step=self.task.steps[0]
+            step=self.test.steps[0]
         )
 
         initial_prompt, reasoning = self._generate(
@@ -104,7 +104,7 @@ class ClaudeEvaluator(BedrockEvaluator):
     def _generate_task_status(self) -> str:
         system_prompt = self._prompt_template_map["task_status"]["system"].render()
         prompt = self._prompt_template_map["task_status"]["prompt"].render(
-            steps=self.task.steps, conversation=self.conversation
+            steps=self.test.steps, conversation=self.conversation
         )
         task_status, reasoning = self._generate(
             system_prompt=system_prompt,
@@ -122,7 +122,7 @@ class ClaudeEvaluator(BedrockEvaluator):
     def _generate_evaluation(self) -> str:
         system_prompt = self._prompt_template_map["evaluate"]["system"].render()
         prompt = self._prompt_template_map["evaluate"]["prompt"].render(
-            expected_results=self.task.expected_results,
+            expected_results=self.test.expected_results,
             conversation=self.conversation,
         )
 
@@ -143,7 +143,7 @@ class ClaudeEvaluator(BedrockEvaluator):
     def _generate_user_response(self) -> str:
         system_prompt = self._prompt_template_map["user_response"]["system"].render()
         prompt = self._prompt_template_map["user_response"]["prompt"].render(
-            steps=self.task.steps, conversation=self.conversation
+            steps=self.test.steps, conversation=self.conversation
         )
 
         user_response, reasoning = self._generate(
@@ -171,11 +171,11 @@ class ClaudeEvaluator(BedrockEvaluator):
         eval_reasoning = ""
         result = "Max turns reached."
 
-        while self.conversation.turns < self.task.max_turns:
+        while self.conversation.turns < self.test.max_turns:
             if self.conversation.turns == 0:
                 # start convo
-                if self.task.initial_prompt:
-                    user_input = self.task.initial_prompt
+                if self.test.initial_prompt:
+                    user_input = self.test.initial_prompt
                 else:
                     user_input = self._generate_initial_prompt()
             else:
@@ -202,7 +202,7 @@ class ClaudeEvaluator(BedrockEvaluator):
                 # break since task has been completed
                 break
         return TestResult(
-            task_name=self.task.name,
+            test_name=self.test.name,
             success=success,
             result=result,
             reasoning=eval_reasoning,

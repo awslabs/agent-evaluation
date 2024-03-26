@@ -49,7 +49,7 @@ def init(plan_dir: Optional[str]):
     "--num-threads",
     type=int,
     required=False,
-    help="Number of threads (and thus tasks) to run concurrently. If unspecified, number of threads will equal the total number of tasks.",
+    help="Number of threads (and thus tests) to run concurrently. If unspecified, number of threads will equal the total number of tests.",
 )
 def run(
     plan_dir: Optional[str],

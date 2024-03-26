@@ -4,14 +4,14 @@ import pytest
 
 @pytest.fixture
 def trace_handler_fixture():
-    return trace_handler.TraceHandler("TestTask")
+    return trace_handler.TraceHandler("my_test")
 
 
 class TestTraceHandler:
 
     def test_init(self, trace_handler_fixture):
         assert trace_handler_fixture.steps == []
-        assert trace_handler_fixture.task_name == "TestTask"
+        assert trace_handler_fixture.test_name == "my_test"
 
     def test_add_step(self, trace_handler_fixture):
 
@@ -36,4 +36,4 @@ class TestTraceHandler:
 
         trace_handler_fixture._dump_trace()
 
-        assert (tmp_path / "test_dir" / "TestTask.json").exists()
+        assert (tmp_path / "test_dir" / "my_test.json").exists()
