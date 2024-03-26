@@ -1,6 +1,6 @@
 # Anthropic Claude
 
-This evaluator is implmented using [Anthropic's Claude](https://www.anthropic.com/claude) hosted on [Amazon Bedrock](https://aws.amazon.com/bedrock/claude/). 
+This evaluator is implemented using [Anthropic's Claude](https://www.anthropic.com/claude) hosted on [Amazon Bedrock](https://aws.amazon.com/bedrock/claude/).
 
 ## Prerequisites
 
@@ -14,13 +14,13 @@ The principal must have [InvokeModel](https://docs.aws.amazon.com/bedrock/latest
 
 ```yaml
 evaluator:
-  type: bedrock-claude 
+  type: bedrock-claude
   model:
 ```
 
-`model` *(string; optional)*
+`model` _(string; optional)_
 
-The Claude model to use as the Evaluator. This should be one of:
+The Claude model to use as the Evaluator. This should be one of following:
 
 - `claude-sonnet`
 - `claude`

@@ -1,6 +1,6 @@
 # Evaluators
 
-An Evaluator is an agent that evaluates a [Target](../targets/index.md) on a task.
+An Evaluator is an agent that evaluates a [Target](../targets/index.md) on a test.
 
 ---
 
@@ -15,19 +15,19 @@ evaluator:
   endpoint_url:
 ```
 
-`aws_profile` *(string; optional)*
+`aws_profile` _(string; optional)_
 
 Named profile used to access AWS services and resources. If unspecified, the `default` profile is used.
 
 ---
 
-`aws_region` *(string; optional)*
+`aws_region` _(string; optional)_
 
 AWS Region to send requests to. If unspecified, the region associated with the `default` profile is used.
 
 ---
 
-`endpoint_url` *(string; optional)*
+`endpoint_url` _(string; optional)_
 
 The endpoint URL for the AWS service. If unspecified, the public endpoint based on `aws_region` will be used.
 
