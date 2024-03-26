@@ -2,8 +2,9 @@
 *.ipynb
 
 # ignore test plan and summary at root
-/agenteval.yml
-/agenteval_summary.md
+agenteval_traces/
+agenteval.yml
+agenteval_summary.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

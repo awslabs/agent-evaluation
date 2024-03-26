@@ -5,6 +5,19 @@ from typing import Optional
 
 import boto3
 from botocore.client import BaseClient
+from pydantic import BaseModel
+
+
+class TargetResponse(BaseModel):
+    """A target's response.
+
+    Attributes:
+        response: The response string.
+        data: Additional data (if applicable).
+    """
+
+    response: str
+    data: Optional[dict] = None
 
 
 class BaseTarget(ABC):
@@ -13,14 +26,15 @@ class BaseTarget(ABC):
     """
 
     @abstractmethod
-    def invoke(self, prompt: str) -> str:
+    def invoke(self, prompt: str) -> TargetResponse:
         """Invoke the target with a prompt and return a response as a string.
 
         Args:
-            prompt: The prompt string to pass to the target
+            prompt: The prompt string to pass to the target.
 
         Returns:
-            The target's response as a string
+            A TargetResponse object containing the target's response string and
+            any trace data (if applicable).
         """
         pass
 
@@ -43,10 +57,10 @@ class AWSTarget(BaseTarget):
         Initialize the AWS target.
 
         Args:
-            boto3_service_name (str): The `boto3` service name (e.g `"bedrock-agent-runtime"`)
-            aws_profile (str, optional): The AWS profile name
-            aws_region (str, optional): The AWS region
-            endpoint_url (str, optional): The endpoint URL for the AWS service
+            boto3_service_name (str): The `boto3` service name (e.g `"bedrock-agent-runtime"`).
+            aws_profile (str, optional): The AWS profile name.
+            aws_region (str, optional): The AWS region.
+            endpoint_url (str, optional): The endpoint URL for the AWS service.
         """
         self.boto3_client = self._create_boto3_client(
             boto3_service_name=boto3_service_name,
@@ -65,10 +79,10 @@ class AWSTarget(BaseTarget):
         """Create a `boto3` client.
 
         Args:
-            boto3_service_name (str): The `boto3` service name (e.g `"bedrock-agent-runtime"`)
-            aws_profile (str, optional): The AWS profile name
-            aws_region (str, optional): The AWS region
-            endpoint_url (str, optional): The endpoint URL for the AWS service
+            boto3_service_name (str): The `boto3` service name (e.g `"bedrock-agent-runtime"`).
+            aws_profile (str, optional): The AWS profile name.
+            aws_region (str, optional): The AWS region.
+            endpoint_url (str, optional): The endpoint URL for the AWS service.
 
         Returns:
             BaseClient

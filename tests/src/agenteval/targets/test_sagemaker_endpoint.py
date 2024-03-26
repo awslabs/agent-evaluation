@@ -114,6 +114,7 @@ class TestSageMakerEndpointTarget:
         mock_query_response = mocker.patch.object(
             sagemaker_endpoint_fixture, "_query_response"
         )
+        mock_query_response.return_value = "test completion"
 
         mock_invoke_endpoint = mocker.patch.object(
             sagemaker_endpoint_fixture.boto3_client, "invoke_endpoint"
@@ -123,11 +124,12 @@ class TestSageMakerEndpointTarget:
             "Body": BytesIO(b'[{"generated_text": "test completion"}]')
         }
 
-        sagemaker_endpoint_fixture.invoke("test prompt")
+        response = sagemaker_endpoint_fixture.invoke("test prompt")
 
         mock_update_request.assert_called_once_with("test prompt")
 
         assert mock_invoke_endpoint.call_count == 1
+        assert response.response == "test completion"
 
         mock_query_response.assert_called_once_with(
             [{"generated_text": "test completion"}]

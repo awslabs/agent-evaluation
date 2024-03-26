@@ -8,11 +8,6 @@ from src.agenteval.task import Task
 
 
 @pytest.fixture
-def mock_client(mocker):
-    return mocker.MagicMock()
-
-
-@pytest.fixture
 def task_fixture():
     return Task(
         name="TestTask",
@@ -30,6 +25,7 @@ def target_fixture(mocker):
 
 @pytest.fixture
 def evaluator_fixture(mocker, task_fixture, target_fixture):
+
     mock_session = mocker.patch.object(evaluator.boto3, "Session")
     mocker.patch.object(mock_session.return_value, "client")
 
@@ -91,7 +87,7 @@ class TestClaudeEvaluator:
             "test system prompt", "test prompt", "test_element_name"
         )
 
-        assert result == "test output"
+        assert result == ("test output", "test reasoning")
 
         mock_invoke_model.assert_called_once_with(request_body=request_body)
         mock_extract_content_from_xml.assert_called_once_with(
@@ -99,10 +95,9 @@ class TestClaudeEvaluator:
             ["test_element_name", "thinking"],
         )
 
-        assert evaluator_fixture.trace == ["test reasoning"]
-
     def test_run_single_turn_success(self, mocker, evaluator_fixture):
-        mocker.patch.object(evaluator_fixture.target, "invoke")
+
+        mocker.patch.object(evaluator_fixture, "_invoke_target")
 
         mock_generate_task_status = mocker.patch.object(
             evaluator_fixture, "_generate_task_status"
@@ -113,7 +108,8 @@ class TestClaudeEvaluator:
             evaluator_fixture, "_generate_evaluation"
         )
         mock_generate_evaluation.return_value = (
-            claude._EVAL_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY
+            claude._EVAL_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY,
+            "",
         )
 
         result = evaluator_fixture.run()
@@ -121,6 +117,7 @@ class TestClaudeEvaluator:
         assert result.success is True
 
     def test_run_single_turn_initial_prompt_success(self, mocker, evaluator_fixture):
+
         evaluator_fixture.task.initial_prompt = None
 
         mock_generate_initial_prompt = mocker.patch.object(
@@ -128,7 +125,7 @@ class TestClaudeEvaluator:
         )
         mock_generate_initial_prompt.return_value = "test generated prompt"
 
-        mocker.patch.object(evaluator_fixture.target, "invoke")
+        mocker.patch.object(evaluator_fixture, "_invoke_target")
 
         mock_generate_task_status = mocker.patch.object(
             evaluator_fixture, "_generate_task_status"
@@ -139,7 +136,8 @@ class TestClaudeEvaluator:
             evaluator_fixture, "_generate_evaluation"
         )
         mock_generate_evaluation.return_value = (
-            claude._EVAL_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY
+            claude._EVAL_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY,
+            "",
         )
 
         result = evaluator_fixture.run()
@@ -148,7 +146,8 @@ class TestClaudeEvaluator:
         assert mock_generate_initial_prompt.call_count == 1
 
     def test_run_multi_turn_success(self, mocker, evaluator_fixture):
-        mocker.patch.object(evaluator_fixture.target, "invoke")
+
+        mocker.patch.object(evaluator_fixture, "_invoke_target")
 
         mock_generate_task_status = mocker.patch.object(
             evaluator_fixture, "_generate_task_status"
@@ -162,7 +161,8 @@ class TestClaudeEvaluator:
             evaluator_fixture, "_generate_evaluation"
         )
         mock_generate_evaluation.return_value = (
-            claude._EVAL_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY
+            claude._EVAL_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY,
+            "",
         )
 
         mock_generate_user_response = mocker.patch.object(
@@ -177,7 +177,8 @@ class TestClaudeEvaluator:
         assert mock_generate_user_response.call_count == 1
 
     def test_run_max_turns_exceeded(self, mocker, evaluator_fixture):
-        mocker.patch.object(evaluator_fixture.target, "invoke")
+
+        mocker.patch.object(evaluator_fixture, "_invoke_target")
 
         mock_generate_task_status = mocker.patch.object(
             evaluator_fixture, "_generate_task_status"
