@@ -41,7 +41,7 @@ nav:
     - conversation_handler: reference/conversation_handler.md
     - evaluator: reference/evaluator.md
     - target: reference/target.md
-    - task: reference/task.md
+    - test: reference/test.md
     - test_result: reference/test_result.md
     - trace_handler: reference/trace_handler.md
 
