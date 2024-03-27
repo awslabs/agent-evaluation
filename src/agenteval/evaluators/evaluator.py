@@ -24,9 +24,10 @@ class BaseEvaluator(ABC):
         conversation (ConversationHandler): Conversation handler for capturing the interaction
             between the evaluator (user) and target (agent).
         trace (TraceHandler): Trace handler for capturing steps during evaluation.
+        hook_path (str): The path to the hook module.
     """
 
-    def __init__(self, test: Test, target: BaseTarget):
+    def __init__(self, test: Test, target: BaseTarget, hook: Optional[str] = None):
         """Initialize the evaluator instance for a given `Test` and `Target`.
 
         Args:
@@ -37,6 +38,7 @@ class BaseEvaluator(ABC):
         self.target = target
         self.conversation = ConversationHandler()
         self.trace = TraceHandler(test_name=test.name)
+        self.hook_path = hook
 
     @abstractmethod
     def run(self) -> TestResult:
@@ -47,11 +49,11 @@ class BaseEvaluator(ABC):
         """
         pass
 
-    def trace_run(self):
+    def invoke(self):
         """
-        Runs the evaluator within a trace context manager to
-        capture trace data.
+        Run the evaluator within a trace context manager.
         """
+
         with self.trace:
             return self.run()
 
