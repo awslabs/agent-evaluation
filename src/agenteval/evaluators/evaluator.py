@@ -19,7 +19,7 @@ class BaseEvaluator(ABC):
     classes.
 
     Attributes:
-        test (Test): The test to conduct.
+        test (Test): The test case.
         target (BaseTarget): The target agent being evaluated.
         conversation (ConversationHandler): Conversation handler for capturing the interaction
             between the evaluator (user) and target (agent).
@@ -41,7 +41,7 @@ class BaseEvaluator(ABC):
         self.hook_path = hook
 
     @abstractmethod
-    def run(self) -> TestResult:
+    def evaluate(self) -> TestResult:
         """Conduct a test.
 
         Returns:
@@ -49,13 +49,13 @@ class BaseEvaluator(ABC):
         """
         pass
 
-    def invoke(self):
+    def run(self):
         """
         Run the evaluator within a trace context manager.
         """
 
         with self.trace:
-            return self.run()
+            return self.evaluate()
 
 
 class AWSEvaluator(BaseEvaluator):

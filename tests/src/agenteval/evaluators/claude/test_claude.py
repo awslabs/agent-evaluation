@@ -112,7 +112,7 @@ class TestClaudeEvaluator:
             "",
         )
 
-        result = evaluator_fixture.run()
+        result = evaluator_fixture.evaluate()
 
         assert result.success is True
 
@@ -140,7 +140,7 @@ class TestClaudeEvaluator:
             "",
         )
 
-        result = evaluator_fixture.run()
+        result = evaluator_fixture.evaluate()
 
         assert result.success is True
         assert mock_generate_initial_prompt.call_count == 1
@@ -170,7 +170,7 @@ class TestClaudeEvaluator:
         )
         mock_generate_user_response.return_value = "test user response"
 
-        result = evaluator_fixture.run()
+        result = evaluator_fixture.evaluate()
 
         assert result.success is True
         assert mock_generate_task_status.call_count == 2
@@ -193,7 +193,7 @@ class TestClaudeEvaluator:
         )
         mock_generate_user_response.return_value = "test user response"
 
-        result = evaluator_fixture.run()
+        result = evaluator_fixture.evaluate()
 
         assert result.success is False
         assert mock_generate_user_response.call_count == 1

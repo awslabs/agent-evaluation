@@ -63,7 +63,7 @@ class Runner:
                 target=target,
             )
 
-            result = evaluator.invoke()
+            result = evaluator.run()
             if result.success is False:
                 self.num_failed += 1
 
