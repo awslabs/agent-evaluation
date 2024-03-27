@@ -75,7 +75,7 @@ Once you have created your subclass, specify the Target in `agenteval.yaml`.
     ```
 
 !!! warning
-During a run, an instance of the Target will be created for each test in the test plan. We recommend avoiding testing Targets that load large models or vector stores into memory, as this can lead to a memory error. Consider deploying your agent and exposing it as a RESTful API.
+    During a run, an instance of the Target will be created for each test in the test plan. We recommend avoiding testing Targets that load large models or vector stores into memory, as this can lead to a memory error. Consider deploying your agent and exposing it as a RESTful API.
 
 ### Examples
 
