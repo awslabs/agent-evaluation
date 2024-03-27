@@ -79,9 +79,53 @@ During a run, an instance of the Target will be created for each test in the tes
 
 ### Examples
 
-#### Testing an agent exposed as a REST API
+#### Testing an agent deployed as a REST API
 
-Example coming soon.
+We will create a target which invokes an agent using REST.
+
+!!! example "my_api_target.py"
+
+    ```python
+    import json
+
+    import requests
+
+    from agenteval.targets import BaseTarget, TargetResponse
+
+
+    class MyAPITarget(BaseTarget):
+        def __init__(self, **kwargs):
+            self.url = kwargs.get("url")
+
+        def invoke(self, prompt: str) -> TargetResponse:
+            data = {"message": prompt}
+
+            response = requests.post(
+                self.url, json=data, headers={"Content-Type": "application/json"}
+            )
+
+            return TargetResponse(response=json.loads(response.content)["agentResponse"])
+    ```
+
+Create a test plan that references `MyAPITarget`.
+
+!!! example "agenteval.yaml"
+
+    ```yaml
+    evaluator:
+      type: bedrock-claude
+      model: claude-sonnet
+    target:
+      type: my_api_target.MyAPITarget
+      url: https://api.example.com/invoke
+    tests:
+    - name: GetBacklogTickets
+      steps:
+      - Ask agent how many tickets are left in the backlog
+      expected_results:
+      - Agent responds with 15 tickets
+    ```
+
 
 #### Testing a LangChain agent
 
