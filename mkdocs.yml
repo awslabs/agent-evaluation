@@ -40,6 +40,7 @@ nav:
     - cli: reference/cli.md
     - conversation_handler: reference/conversation_handler.md
     - evaluator: reference/evaluator.md
+    - hook: reference/hook.md
     - target: reference/target.md
     - test: reference/test.md
     - test_result: reference/test_result.md

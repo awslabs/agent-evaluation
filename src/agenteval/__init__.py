@@ -6,6 +6,9 @@ import os
 from jinja2 import Environment, PackageLoader
 from rich.logging import RichHandler
 
+from .hook import Hook
+
+__all__ = ["Hook"]
 _LOG_LEVEL_ENV = "LOG_LEVEL"
 _FORMAT = "%(message)s"
 
