@@ -7,11 +7,12 @@ class Test(BaseModel, validate_assignment=True):
     """A test case for an agent.
 
     Attributes:
-        name: Name of the test
-        steps: List of step to perform for the test
-        expected_results: List of expected results for the test
-        initial_prompt: Optional initial prompt
-        max_turns: Maximum number of turns allowed for the test
+        name: Name of the test.
+        steps: List of step to perform for the test.
+        expected_results: List of expected results for the test.
+        initial_prompt: Optional initial prompt.
+        max_turns: Maximum number of turns allowed for the test.
+        hook: The module path to an evaluation hook.
     """
 
     # do not collect as a test
@@ -22,3 +23,4 @@ class Test(BaseModel, validate_assignment=True):
     expected_results: list[str]
     initial_prompt: Optional[str] = None
     max_turns: int
+    hook: Optional[str] = None

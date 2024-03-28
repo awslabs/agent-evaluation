@@ -26,23 +26,20 @@ class BaseEvaluator(ABC):
         conversation (ConversationHandler): Conversation handler for capturing the interaction
             between the evaluator (user) and target (agent).
         trace (TraceHandler): Trace handler for capturing steps during evaluation.
-        hook_cls (type[Hook]): The evaluation hook class if provided.
         test_result (TestResult): The result of the test which is set in `BaseEvaluator.run`.
     """
 
-    def __init__(self, test: Test, target: BaseTarget, hook: Optional[str] = None):
+    def __init__(self, test: Test, target: BaseTarget):
         """Initialize the evaluator instance for a given `Test` and `Target`.
 
         Args:
             test (Test): The test case.
             target (BaseTarget): The target agent being evaluated.
-            hook (str, optional): The module path to the evaluator hook.
         """
         self.test = test
         self.target = target
         self.conversation = ConversationHandler()
         self.trace = TraceHandler(test_name=test.name)
-        self.hook_cls = self._get_hook_cls(hook)
         self.test_result = None
 
     @abstractmethod
@@ -54,24 +51,26 @@ class BaseEvaluator(ABC):
         """
         pass
 
-    def _get_hook_cls(self, module_path) -> Optional[Hook]:
-        if module_path:
-            hook_cls = import_class(module_path)
+    def _get_hook_cls(self, hook: Optional[str]) -> Optional[type[Hook]]:
+        if hook:
+            hook_cls = import_class(hook)
             validate_subclass(hook_cls, Hook)
             return hook_cls
 
     def run(self) -> TestResult:
         """
-        Run the evaluator within a trace context manager and execute hooks
+        Run the evaluator within a trace context manager and run hooks
         if provided.
         """
 
+        hook_cls = self._get_hook_cls(self.test.hook)
+
         with self.trace:
-            if self.hook_cls:
-                self.hook_cls.pre_evaluate(self.test, self.trace)
+            if hook_cls:
+                hook_cls.pre_evaluate(self.test, self.trace)
             self.test_result = self.evaluate()
-            if self.hook_cls:
-                self.hook_cls.post_evaluate(self.test, self.test_result, self.trace)
+            if hook_cls:
+                hook_cls.post_evaluate(self.test, self.test_result, self.trace)
 
         return self.test_result
 

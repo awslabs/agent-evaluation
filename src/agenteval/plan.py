@@ -122,6 +122,7 @@ class Plan(BaseModel, validate_assignment=True, arbitrary_types_allowed=True):
                     expected_results=t.get("expected_results"),
                     initial_prompt=t.get("initial_prompt"),
                     max_turns=t.get("max_turns", defaults.MAX_TURNS),
+                    hook=t.get("hook"),
                 )
             )
         return tests
