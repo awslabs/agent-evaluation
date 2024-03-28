@@ -12,6 +12,20 @@ class TestTraceHandler:
     def test_init(self, trace_handler_fixture):
         assert trace_handler_fixture.steps == []
         assert trace_handler_fixture.test_name == "my_test"
+        assert trace_handler_fixture.start_time is None
+        assert trace_handler_fixture.end_time is None
+
+    def test_enter(self, mocker, trace_handler_fixture):
+
+        mock_dump_trace = mocker.patch.object(trace_handler_fixture, "_dump_trace")
+
+        with trace_handler_fixture:
+            pass
+
+        assert isinstance(trace_handler_fixture.start_time, trace_handler.datetime)
+        assert isinstance(trace_handler_fixture.end_time, trace_handler.datetime)
+
+        mock_dump_trace.assert_called_once()
 
     def test_add_step(self, trace_handler_fixture):
 
