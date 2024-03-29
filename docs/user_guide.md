@@ -6,7 +6,7 @@ To begin, initialize a test plan.
 agenteval init
 ```
 
-This will create an `agenteval.yaml` file in the current directory.
+This will create an `agenteval.yml` file in the current directory.
 
 ```yaml
 evaluator:
@@ -125,7 +125,7 @@ For a hook that runs *after* evaluation, implement a `post_evaluate` method. Sim
 
 Once you have created your subclass, specify the hook for the test in `agenteval.yml`.
 
-!!! example "agenteval.yaml"
+!!! example "agenteval.yml"
 
     ```yaml
     tests:
@@ -193,7 +193,7 @@ In this example, we will test an agent that can make dinner reservations. In add
 
 Create a test that references the hook.
 
-!!! example "agenteval.yaml"
+!!! example "agenteval.yml"
 
     ```yaml
     tests:

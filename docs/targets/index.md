@@ -63,9 +63,9 @@ If you want to test an agent that is not natively supported, you can bring your 
             return TargetResponse(response=response)
     ```
 
-Once you have created your subclass, specify the Target in `agenteval.yaml`.
+Once you have created your subclass, specify the Target in `agenteval.yml`.
 
-!!! example "agenteval.yaml"
+!!! example "agenteval.yml"
 
     ```yaml
     target:
@@ -124,7 +124,7 @@ We will create a simple [LangChain](https://python.langchain.com/docs/modules/ag
 
 Create a test plan that references `MyLangChainTarget`.
 
-!!! example "agenteval.yaml"
+!!! example "agenteval.yml"
 
     ```yaml
     evaluator:
