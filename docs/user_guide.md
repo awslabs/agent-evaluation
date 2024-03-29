@@ -99,3 +99,44 @@ tests:
       - The agent returns the details on claim-006.
     initial_prompt: Can you let me know which claims are open?
 ```
+
+## Evaluation hooks
+You can specify hooks that run before and/or after evaluating a test. This is useful for performing integration testing, as well as any setup or cleanup tasks required.
+
+To create hooks, you will define a subclass of [Hook](reference/hook.md#src.agenteval.hook.Hook).
+
+For a hook that runs *before* evaluation, implement the `pre_evaluate` method. In this method, you have access to the [Test](reference/test.md#src.agenteval.test.Test) and [TraceHandler](reference/trace_handler.md#src.agenteval.trace_handler.TraceHandler) via the `test` and `trace` arguments, respectively.
+
+For a hook that runs *after* evaluation, implement the `post_evaluate` method. Similar to the `pre_evaluate` method, you have access to the `Test` and `TraceHandler`. You also have access to the [TestResult](reference/test_result.md#src.agenteval.test_result.TestResult) via the `test_result` argument. You may override the attributes of the `TestResult` if you plan to use this hook to perform additional testing, such as integration testing. 
+
+!!! example "my_evaluation_hook.py"
+    ```python
+    from agenteval import Hook
+
+    class MyEvaluationHook(Hook):
+
+      def pre_evaluate(test, trace):
+        # implement logic here
+
+      def post_evaluate(test, test_result, trace):
+        # implement logic here
+    ```
+
+Once you have created your subclass, specify the hook for the test in `agenteval.yml`.
+
+!!! example "agenteval.yaml"
+
+    ```yaml
+    tests:
+      - name: MakeReservation
+        steps:
+          - Ask the agent to create a reservation for 7 PM.
+        expected_results:
+          - The agent confirms that the reservation has been made.
+        hook: my_evaluation_hook.MyEvaluationHook
+    ```
+
+
+
+
+
