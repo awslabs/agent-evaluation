@@ -76,17 +76,6 @@ class TestPlan:
         with pytest.raises(TypeError):
             plan_with_custom_target_fixture.create_target()
 
-    # def test_get_class(self, mocker, plan_with_custom_target_fixture):
-    #     mock_import_class = mocker.patch.object(
-    #         plan_with_custom_target_fixture, "_import_class"
-    #     )
-    #     mock_import_class.return_value = CustomTarget
-
-    #     target_cls = plan_with_custom_target_fixture._get_class(
-    #         config=plan_with_custom_target_fixture.target_config,
-    #     )
-    #     assert target_cls == CustomTarget
-
     def test_load_tests(self):
         tests = plan.Plan._load_tests(
             test_config=[
