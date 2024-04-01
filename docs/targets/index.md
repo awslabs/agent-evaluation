@@ -63,9 +63,9 @@ If you want to test an agent that is not natively supported, you can bring your 
             return TargetResponse(response=response)
     ```
 
-Once you have created your subclass, specify the Target in `agenteval.yaml`.
+Once you have created your subclass, specify the Target in `agenteval.yml`.
 
-!!! example "agenteval.yaml"
+!!! example "agenteval.yml"
 
     ```yaml
     target:
@@ -75,13 +75,57 @@ Once you have created your subclass, specify the Target in `agenteval.yaml`.
     ```
 
 !!! warning
-During a run, an instance of the Target will be created for each test in the test plan. We recommend avoiding testing Targets that load large models or vector stores into memory, as this can lead to a memory error. Consider deploying your agent and exposing it as a RESTful API.
+    During a run, an instance of the Target will be created for each test in the test plan. We recommend avoiding testing Targets that load large models or vector stores into memory, as this can lead to a memory error. Consider deploying your agent and exposing it as a RESTful API.
 
 ### Examples
 
-#### Testing an agent exposed as a REST API
+#### Testing an agent deployed as a REST API
 
-Example coming soon.
+We will create a target which invokes an agent using REST.
+
+!!! example "my_api_target.py"
+
+    ```python
+    import json
+
+    import requests
+
+    from agenteval.targets import BaseTarget, TargetResponse
+
+
+    class MyAPITarget(BaseTarget):
+        def __init__(self, **kwargs):
+            self.url = kwargs.get("url")
+
+        def invoke(self, prompt: str) -> TargetResponse:
+            data = {"message": prompt}
+
+            response = requests.post(
+                self.url, json=data, headers={"Content-Type": "application/json"}
+            )
+
+            return TargetResponse(response=json.loads(response.content)["agentResponse"])
+    ```
+
+Create a test plan that references `MyAPITarget`.
+
+!!! example "agenteval.yml"
+
+    ```yaml
+    evaluator:
+      type: bedrock-claude
+      model: claude-sonnet
+    target:
+      type: my_api_target.MyAPITarget
+      url: https://api.example.com/invoke
+    tests:
+    - name: GetBacklogTickets
+      steps:
+      - Ask agent how many tickets are left in the backlog
+      expected_results:
+      - Agent responds with 15 tickets
+    ```
+
 
 #### Testing a LangChain agent
 
@@ -124,7 +168,7 @@ We will create a simple [LangChain](https://python.langchain.com/docs/modules/ag
 
 Create a test plan that references `MyLangChainTarget`.
 
-!!! example "agenteval.yaml"
+!!! example "agenteval.yml"
 
     ```yaml
     evaluator:
