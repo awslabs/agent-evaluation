@@ -3,7 +3,7 @@ import pytest
 
 
 class DummyAWSEvaluator(evaluator.AWSEvaluator):
-    def run(self):
+    def evaluate(self):
         pass
 
 

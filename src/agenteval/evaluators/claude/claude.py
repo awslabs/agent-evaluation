@@ -166,7 +166,7 @@ class ClaudeEvaluator(BedrockEvaluator):
 
         return target_response.response
 
-    def run(self) -> TestResult:
+    def evaluate(self) -> TestResult:
         success = False
         eval_reasoning = ""
         result = "Max turns reached."

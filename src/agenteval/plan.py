@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-import importlib
 import logging
 import os
 import sys
-from typing import Optional, Union
+from typing import Optional
 
 import yaml
 from pydantic import BaseModel, model_validator
@@ -18,6 +17,7 @@ from agenteval.targets import (
     SageMakerEndpointTarget,
 )
 from agenteval.test import Test
+from agenteval.utils import import_class, validate_subclass
 
 _PLAN_FILE_NAME = "agenteval.yml"
 
@@ -86,10 +86,8 @@ class Plan(BaseModel, validate_assignment=True, arbitrary_types_allowed=True):
         if self.evaluator_config.type in _EVALUATOR_MAP:
             evaluator_cls = _EVALUATOR_MAP[self.evaluator_config.type]
         else:
-            evaluator_cls = self._get_class(self.evaluator_config)
-
-            if not issubclass(evaluator_cls, BaseEvaluator):
-                raise TypeError(f"{evaluator_cls} is not a Evaluator subclass")
+            evaluator_cls = import_class(self.evaluator_config.type)
+            validate_subclass(evaluator_cls, BaseEvaluator)
 
         return evaluator_cls(
             test=test,
@@ -103,22 +101,10 @@ class Plan(BaseModel, validate_assignment=True, arbitrary_types_allowed=True):
         if self.target_config.type in _TARGET_MAP:
             target_cls = _TARGET_MAP[self.target_config.type]
         else:
-            target_cls = self._get_class(self.target_config)
-
-            if not issubclass(target_cls, BaseTarget):
-                raise TypeError(f"{target_cls} is not a Target subclass")
+            target_cls = import_class(self.target_config.type)
+            validate_subclass(target_cls, BaseTarget)
 
         return target_cls(**self.target_config.model_dump(exclude="type"))
-
-    def _get_class(self, config: Union[EvaluatorConfig, TargetConfig]) -> type:
-        module_path, class_name = config.type.rsplit(".", 1)
-        return self._import_class(module_path, class_name)
-
-    @staticmethod
-    def _import_class(module_path: str, class_name: str) -> type[BaseTarget]:
-        module = importlib.import_module(module_path)
-        target_cls = getattr(module, class_name)
-        return target_cls
 
     @staticmethod
     def _load_yaml(path: str) -> dict:
@@ -136,6 +122,7 @@ class Plan(BaseModel, validate_assignment=True, arbitrary_types_allowed=True):
                     expected_results=t.get("expected_results"),
                     initial_prompt=t.get("initial_prompt"),
                     max_turns=t.get("max_turns", defaults.MAX_TURNS),
+                    hook=t.get("hook"),
                 )
             )
         return tests
