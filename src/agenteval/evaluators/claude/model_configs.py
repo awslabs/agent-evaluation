@@ -3,6 +3,8 @@ CLAUDE_MODEL_ID_MAP = {
     "claude-instant": "anthropic.claude-instant-v1",
     "claude-sonnet": "anthropic.claude-3-sonnet-20240229-v1:0",
 }
+DEFAULT_MODEL = "claude-sonnet"
+
 ANTHROPIC_VERSION = "bedrock-2023-05-31"
 ROLE = "user"
 MAX_TOKENS_TO_SAMPLE = 300

@@ -22,7 +22,7 @@ from agenteval.utils import import_class, validate_subclass
 _PLAN_FILE_NAME = "agenteval.yml"
 
 _INIT_PLAN = {
-    "evaluator": {"type": "bedrock-claude", "model": "claude-sonnet"},
+    "evaluator": {"type": "bedrock-claude"},
     "target": {
         "type": "bedrock-agent",
         "bedrock_agent_id": None,

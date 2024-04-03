@@ -30,7 +30,11 @@ _EVAL_NOT_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY = "B"
 
 class ClaudeEvaluator(BedrockEvaluator):
     def __init__(
-        self, model: Literal["claude-sonnet", "claude", "claude-instant"], **kwargs
+        self,
+        model: Literal[
+            "claude-sonnet", "claude", "claude-instant"
+        ] = model_configs.DEFAULT_MODEL,
+        **kwargs,
     ):
         super().__init__(model_id=model_configs.CLAUDE_MODEL_ID_MAP[model], **kwargs)
 
