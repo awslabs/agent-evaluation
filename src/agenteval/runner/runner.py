@@ -1,5 +1,6 @@
 import concurrent.futures
 import logging
+import time
 from typing import Optional
 
 from rich.progress import Progress
@@ -8,8 +9,6 @@ from agenteval.plan import Plan
 from agenteval.runner.summary import create_markdown_summary
 
 logger = logging.getLogger(__name__)
-
-_MARKDOWN_SUMMARY_TEMPLATE_PATH = "agenteval_summary.md.j2"
 
 
 class Runner:
@@ -29,8 +28,9 @@ class Runner:
         self.num_failed = 0
 
     def run(self):
-        logger.info(f"Running {self.num_tests} tests")
+        self._log_run_start()
 
+        self.start_time = time.time()
         with Progress(transient=True) as self.progress:
             self.tracker = self.progress.add_task("running...", total=self.num_tests)
 
@@ -46,14 +46,11 @@ class Runner:
                         executor.shutdown(wait=False, cancel_futures=True)
                         raise Exception(thread_status)
 
-        self._log_test_result()
-        self._log_pass_fail_count()
-        summary_path = create_markdown_summary(
-            self.plan.tests, list(self.results.values())
-        )
-        logger.info(f"Summary available at {summary_path}")
+        self._log_run_end()
 
-        self._exit()
+        create_markdown_summary(self.plan.tests, list(self.results.values()))
+
+        return self.num_failed
 
     def run_test(self, test):
         try:
@@ -73,6 +70,25 @@ class Runner:
         except Exception as e:
             return e
 
+    def _log_run_start(self):
+        logger.info("Starting tests. Use CTRL+C to exit.")
+
+        logger.info(self.plan)
+
+        logger.info(f"Number of tests = {self.num_tests}")
+
+        if self.num_threads > 1:
+            logger.info(f"Max workers = {self.num_threads}")
+        else:
+            logger.warning("Concurrency not enabled since num-threads <= 1")
+
+    def _log_run_end(self):
+        self._log_test_result()
+        self._log_pass_fail_count()
+        logger.info(
+            f"--- Completed in {round(time.time() - self.start_time, 2)} seconds ---"
+        )
+
     def _log_test_result(self):
         for _, result in self.results.items():
             logger_func = logger.info if result.success else logger.error
@@ -89,6 +105,3 @@ class Runner:
         )
         logger_func = logger.error if self.num_failed else logger.info
         logger_func(status_str)
-
-    def _exit(self):
-        exit(1 if self.num_failed else 0)

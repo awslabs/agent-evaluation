@@ -1,8 +1,11 @@
+import logging
 import os
 
 from agenteval import jinja_env
 from agenteval.test import Test
 from agenteval.test_result import TestResult
+
+logger = logging.getLogger(__name__)
 
 _MARKDOWN_SUMMARY_TEMPLATE_PATH = "agenteval_summary.md.j2"
 
@@ -20,4 +23,4 @@ def create_markdown_summary(tests: list[Test], test_results: list[TestResult]) -
     with open(summary_path, "w+") as f:
         f.write(rendered)
 
-    return summary_path
+    logger.info(f"Summary available at {summary_path}")
