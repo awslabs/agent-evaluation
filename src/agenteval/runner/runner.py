@@ -71,19 +71,18 @@ class Runner:
             return e
 
     def _log_run_start(self):
-        logger.info("Starting tests. Use CTRL+C to exit.")
+        logger.info(
+            f"Starting {self.num_tests} tests with max {self.num_threads} workers. Use CTRL+C to exit."
+        )
 
-        logger.info(self.plan)
-
-        logger.info(f"Number of tests = {self.num_tests}")
-
-        if self.num_threads > 1:
-            logger.info(f"Max workers = {self.num_threads}")
-        else:
-            logger.warning("Concurrency not enabled since num-threads <= 1")
+        if self.verbose:
+            logger.info(self.plan)
 
     def _log_run_end(self):
-        self._log_test_result()
+
+        if self.verbose:
+            self._log_test_result()
+
         self._log_pass_fail_count()
         logger.info(
             f"--- Completed in {round(time.time() - self.start_time, 2)} seconds ---"
