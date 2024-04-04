@@ -11,7 +11,7 @@ from agenteval.test_result import TestResult
 
 logger = logging.getLogger(__name__)
 
-_PROMPT_TEMPLATE_ROOT = "evaluator/claude"
+_PROMPT_TEMPLATE_ROOT = "evaluators/claude"
 _SYSTEM_PROMPT_DIR = "system"
 _PROMPT_TEMPLATE_NAMES = [
     "start_session",
