@@ -28,6 +28,7 @@ def test_run(mocker):
     mock_runner = mocker.patch.object(cli, "Runner")
     mock_runner.return_value.num_failed = 0
     mock_run = mocker.patch.object(mock_runner.return_value, "run")
+    mock_run.return_value = 0
 
     result = runner.invoke(cli.cli, ["run"])
 

@@ -9,9 +9,10 @@ import yaml
 from pydantic import BaseModel, model_validator
 
 from agenteval import defaults
-from agenteval.evaluators import BaseEvaluator, ClaudeEvaluator
-from agenteval.targets import (
-    BaseTarget,
+from agenteval.evaluators import BaseEvaluator
+from agenteval.evaluators.aws.bedrock import ClaudeEvaluator
+from agenteval.targets import BaseTarget
+from agenteval.targets.aws import (
     BedrockAgentTarget,
     QBusinessTarget,
     SageMakerEndpointTarget,

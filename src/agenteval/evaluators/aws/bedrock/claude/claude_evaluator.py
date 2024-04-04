@@ -5,8 +5,8 @@ import re
 from typing import Literal, Tuple
 
 from agenteval import jinja_env
-from agenteval.evaluators.claude import model_configs
-from agenteval.evaluators.evaluator import BedrockEvaluator
+from agenteval.evaluators.aws.bedrock import BedrockEvaluator
+from agenteval.evaluators.aws.bedrock.claude import model_configs
 from agenteval.test_result import TestResult
 
 logger = logging.getLogger(__name__)

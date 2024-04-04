@@ -1,15 +1,15 @@
-from src.agenteval.targets import target
+from src.agenteval.targets.aws import aws_target
 import pytest
 
 
-class DummyAWSTarget(target.AWSTarget):
+class DummyAWSTarget(aws_target.AWSTarget):
     def invoke(self):
         pass
 
 
 @pytest.fixture
 def aws_target_fixture(mocker):
-    mock_session = mocker.patch.object(target.boto3, "Session")
+    mock_session = mocker.patch.object(aws_target.boto3, "Session")
     mocker.patch.object(mock_session.return_value, "client")
 
     return DummyAWSTarget(
@@ -22,7 +22,7 @@ def aws_target_fixture(mocker):
 
 class TestAWSTarget:
     def test_create_runtime_client(self, mocker, aws_target_fixture):
-        mock_session = mocker.patch.object(target.boto3, "Session")
+        mock_session = mocker.patch.object(aws_target.boto3, "Session")
         mock_client = mocker.patch.object(mock_session.return_value, "client")
 
         aws_target_fixture._create_boto3_client(

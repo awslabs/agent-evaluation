@@ -79,7 +79,6 @@ class Runner:
             logger.info(self.plan)
 
     def _log_run_end(self):
-
         if self.verbose:
             self._log_test_result()
 
