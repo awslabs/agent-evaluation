@@ -40,11 +40,11 @@ class Runner:
                 futures = [
                     executor.submit(self.run_test, test) for test in self.plan.tests
                 ]
-                for future in futures:
-                    thread_status = future.result()
-                    if thread_status != "success":
-                        executor.shutdown(wait=False, cancel_futures=True)
-                        raise Exception(thread_status)
+                for future in concurrent.futures.as_completed(futures):
+                    try:
+                        future.result()
+                    except Exception as e:
+                        raise e
 
         self._log_run_end()
 
@@ -53,22 +53,18 @@ class Runner:
         return self.num_failed
 
     def run_test(self, test):
-        try:
-            target = self.plan.create_target()
-            evaluator = self.plan.create_evaluator(
-                test=test,
-                target=target,
-            )
+        target = self.plan.create_target()
+        evaluator = self.plan.create_evaluator(
+            test=test,
+            target=target,
+        )
 
-            result = evaluator.run()
-            if result.success is False:
-                self.num_failed += 1
+        result = evaluator.run()
+        if result.success is False:
+            self.num_failed += 1
 
-            self.progress.update(self.tracker, advance=1)
-            self.results[test.name] = result
-            return "success"
-        except Exception as e:
-            return e
+        self.progress.update(self.tracker, advance=1)
+        self.results[test.name] = result
 
     def _log_run_start(self):
         logger.info(
