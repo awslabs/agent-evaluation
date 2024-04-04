@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 _PROMPT_TEMPLATE_ROOT = "evaluators/claude"
 _SYSTEM_PROMPT_DIR = "system"
 _PROMPT_TEMPLATE_NAMES = [
-    "start_session",
+    "start_conversation",
     "user_response",
     "task_status",
     "evaluate",
@@ -86,8 +86,10 @@ class ClaudeEvaluator(BedrockEvaluator):
         return output, reasoning
 
     def _generate_initial_prompt(self) -> str:
-        system_prompt = self._prompt_template_map["start_session"]["system"].render()
-        prompt = self._prompt_template_map["start_session"]["prompt"].render(
+        system_prompt = self._prompt_template_map["start_conversation"][
+            "system"
+        ].render()
+        prompt = self._prompt_template_map["start_conversation"]["prompt"].render(
             step=self.test.steps[0]
         )
 
