@@ -16,7 +16,7 @@ class TraceHandler:
         steps (list): List of steps in the trace.
     """
 
-    def __init__(self, test_name: str, trace_dir: Optional[str] = None):
+    def __init__(self, test_name: str, work_dir: str):
         """
         Initialize the trace handler.
 
@@ -24,7 +24,7 @@ class TraceHandler:
             test_name (str): Name of the trace
         """
         self.test_name = test_name
-        self.trace_dir = trace_dir or os.path.join(os.getcwd(), _TRACE_DIR)
+        self.trace_dir = os.path.join(work_dir, _TRACE_DIR)
         self.start_time = None
         self.end_time = None
         self.steps = []

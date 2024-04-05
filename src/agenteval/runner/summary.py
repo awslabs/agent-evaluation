@@ -7,12 +7,13 @@ from agenteval.test_result import TestResult
 _MARKDOWN_SUMMARY_TEMPLATE_PATH = "agenteval_summary.md.j2"
 
 
-def create_markdown_summary(tests: list[Test], test_results: list[TestResult]) -> str:
+def create_markdown_summary(
+    work_dir: str, tests: list[Test], test_results: list[TestResult]
+) -> str:
     template = jinja_env.get_template(_MARKDOWN_SUMMARY_TEMPLATE_PATH)
 
-    cwd = os.getcwd()
     summary_path = os.path.join(
-        cwd, os.path.splitext(_MARKDOWN_SUMMARY_TEMPLATE_PATH)[0]
+        work_dir, os.path.splitext(_MARKDOWN_SUMMARY_TEMPLATE_PATH)[0]
     )
 
     rendered = template.render(tests=tests, results=test_results, zip=zip)

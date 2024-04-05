@@ -4,7 +4,7 @@ import pytest
 
 @pytest.fixture
 def trace_handler_fixture():
-    return trace_handler.TraceHandler("my_test")
+    return trace_handler.TraceHandler("my_test", "test_dir")
 
 
 class TestTraceHandler:

@@ -1,5 +1,6 @@
 import concurrent.futures
 import logging
+import os
 from typing import Optional
 
 from rich.progress import Progress
@@ -18,8 +19,10 @@ class Runner:
         plan: Plan,
         verbose: bool,
         num_threads: Optional[int],
+        work_dir: Optional[str],
     ):
         self.plan = plan
+        self.work_dir = work_dir if work_dir else os.getcwd()
         self.num_tests = len(self.plan.tests)
         self.verbose = verbose
         self.num_threads = num_threads
@@ -49,7 +52,7 @@ class Runner:
         self._log_test_result()
         self._log_pass_fail_count()
         summary_path = create_markdown_summary(
-            self.plan.tests, list(self.results.values())
+            self.work_dir, self.plan.tests, list(self.results.values())
         )
         logger.info(f"Summary available at {summary_path}")
 
@@ -61,6 +64,7 @@ class Runner:
             evaluator = self.plan.create_evaluator(
                 test=test,
                 target=target,
+                work_dir=self.work_dir,
             )
 
             result = evaluator.run()
