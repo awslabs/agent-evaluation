@@ -27,7 +27,7 @@ class Runner:
         self.results = {test.name: None for test in self.plan.tests}
         self.num_failed = 0
 
-    def run(self):
+    def run(self) -> int:
         self._log_run_start()
 
         self.start_time = time.time()

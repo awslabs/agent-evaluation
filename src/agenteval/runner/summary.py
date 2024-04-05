@@ -11,7 +11,7 @@ _TEMPLATE_ROOT = "summary"
 _TEMPLATE_FILE_NAME = "agenteval_summary.md.j2"
 
 
-def create_markdown_summary(tests: list[Test], test_results: list[TestResult]) -> str:
+def create_markdown_summary(tests: list[Test], test_results: list[TestResult]):
     template = jinja_env.get_template(os.path.join(_TEMPLATE_ROOT, _TEMPLATE_FILE_NAME))
 
     cwd = os.getcwd()
