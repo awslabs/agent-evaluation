@@ -1,15 +1,15 @@
-from src.agenteval.evaluators import evaluator
+from src.agenteval.evaluators.aws import aws_evaluator
 import pytest
 
 
-class DummyAWSEvaluator(evaluator.AWSEvaluator):
+class DummyAWSEvaluator(aws_evaluator.AWSEvaluator):
     def evaluate(self):
         pass
 
 
 @pytest.fixture
 def aws_evaluator_fixture(mocker):
-    mock_session = mocker.patch.object(evaluator.boto3, "Session")
+    mock_session = mocker.patch.object(aws_evaluator.boto3, "Session")
     mocker.patch.object(mock_session.return_value, "client")
 
     return DummyAWSEvaluator(
@@ -24,7 +24,7 @@ def aws_evaluator_fixture(mocker):
 
 class TestAWSEvaluator:
     def test_create_boto3_client(self, mocker, aws_evaluator_fixture):
-        mock_session = mocker.patch.object(evaluator.boto3, "Session")
+        mock_session = mocker.patch.object(aws_evaluator.boto3, "Session")
         mock_client = mocker.patch.object(mock_session.return_value, "client")
 
         aws_evaluator_fixture._create_boto3_client(

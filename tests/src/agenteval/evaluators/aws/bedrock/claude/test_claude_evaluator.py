@@ -2,8 +2,8 @@ import io
 
 import pytest
 
-from src.agenteval.evaluators.claude import claude
-from src.agenteval.evaluators import evaluator
+from src.agenteval.evaluators.aws.bedrock.claude import claude_evaluator
+from src.agenteval.evaluators.aws import aws_evaluator
 from src.agenteval.test import Test
 
 
@@ -26,10 +26,10 @@ def target_fixture(mocker):
 @pytest.fixture
 def evaluator_fixture(mocker, test_fixture, target_fixture):
 
-    mock_session = mocker.patch.object(evaluator.boto3, "Session")
+    mock_session = mocker.patch.object(aws_evaluator.boto3, "Session")
     mocker.patch.object(mock_session.return_value, "client")
 
-    fixture = claude.ClaudeEvaluator(
+    fixture = claude_evaluator.ClaudeEvaluator(
         model="claude",
         aws_profile="test-profile",
         aws_region="us-west-2",
@@ -79,7 +79,7 @@ class TestClaudeEvaluator:
         )
         mock_extract_content_from_xml.return_value = "test output", "test reasoning"
 
-        request_body = claude.model_configs.REQUEST_BODY
+        request_body = claude_evaluator.model_configs.REQUEST_BODY
         request_body["system"] = "test system prompt"
         request_body["messages"][0]["content"][0]["text"] = "test prompt"
 
@@ -102,13 +102,15 @@ class TestClaudeEvaluator:
         mock_generate_task_status = mocker.patch.object(
             evaluator_fixture, "_generate_task_status"
         )
-        mock_generate_task_status.return_value = claude._TASK_STATUS_COMPLETED_CATEGORY
+        mock_generate_task_status.return_value = (
+            claude_evaluator._TASK_STATUS_COMPLETED_CATEGORY
+        )
 
         mock_generate_evaluation = mocker.patch.object(
             evaluator_fixture, "_generate_evaluation"
         )
         mock_generate_evaluation.return_value = (
-            claude._EVAL_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY,
+            claude_evaluator._EVAL_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY,
             "",
         )
 
@@ -130,13 +132,15 @@ class TestClaudeEvaluator:
         mock_generate_task_status = mocker.patch.object(
             evaluator_fixture, "_generate_task_status"
         )
-        mock_generate_task_status.return_value = claude._TASK_STATUS_COMPLETED_CATEGORY
+        mock_generate_task_status.return_value = (
+            claude_evaluator._TASK_STATUS_COMPLETED_CATEGORY
+        )
 
         mock_generate_evaluation = mocker.patch.object(
             evaluator_fixture, "_generate_evaluation"
         )
         mock_generate_evaluation.return_value = (
-            claude._EVAL_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY,
+            claude_evaluator._EVAL_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY,
             "",
         )
 
@@ -153,15 +157,15 @@ class TestClaudeEvaluator:
             evaluator_fixture, "_generate_task_status"
         )
         mock_generate_task_status.side_effect = [
-            claude._TASK_STATUS_NOT_COMPLETED_CATEGORY,
-            claude._TASK_STATUS_COMPLETED_CATEGORY,
+            claude_evaluator._TASK_STATUS_NOT_COMPLETED_CATEGORY,
+            claude_evaluator._TASK_STATUS_COMPLETED_CATEGORY,
         ]
 
         mock_generate_evaluation = mocker.patch.object(
             evaluator_fixture, "_generate_evaluation"
         )
         mock_generate_evaluation.return_value = (
-            claude._EVAL_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY,
+            claude_evaluator._EVAL_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY,
             "",
         )
 
@@ -184,8 +188,8 @@ class TestClaudeEvaluator:
             evaluator_fixture, "_generate_task_status"
         )
         mock_generate_task_status.side_effect = [
-            claude._TASK_STATUS_NOT_COMPLETED_CATEGORY,
-            claude._TASK_STATUS_NOT_COMPLETED_CATEGORY,
+            claude_evaluator._TASK_STATUS_NOT_COMPLETED_CATEGORY,
+            claude_evaluator._TASK_STATUS_NOT_COMPLETED_CATEGORY,
         ]
 
         mock_generate_user_response = mocker.patch.object(

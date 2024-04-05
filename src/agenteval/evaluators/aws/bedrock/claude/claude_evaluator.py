@@ -5,16 +5,16 @@ import re
 from typing import Literal, Tuple
 
 from agenteval import jinja_env
-from agenteval.evaluators.claude import model_configs
-from agenteval.evaluators.evaluator import BedrockEvaluator
+from agenteval.evaluators.aws.bedrock import BedrockEvaluator
+from agenteval.evaluators.aws.bedrock.claude import model_configs
 from agenteval.test_result import TestResult
 
 logger = logging.getLogger(__name__)
 
-_PROMPT_TEMPLATE_ROOT = "evaluator/claude"
+_PROMPT_TEMPLATE_ROOT = "evaluators/claude"
 _SYSTEM_PROMPT_DIR = "system"
 _PROMPT_TEMPLATE_NAMES = [
-    "start_session",
+    "start_conversation",
     "user_response",
     "task_status",
     "evaluate",
@@ -30,7 +30,11 @@ _EVAL_NOT_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY = "B"
 
 class ClaudeEvaluator(BedrockEvaluator):
     def __init__(
-        self, model: Literal["claude-sonnet", "claude", "claude-instant"], **kwargs
+        self,
+        model: Literal[
+            "claude-sonnet", "claude", "claude-instant"
+        ] = model_configs.DEFAULT_MODEL,
+        **kwargs,
     ):
         super().__init__(model_id=model_configs.CLAUDE_MODEL_ID_MAP[model], **kwargs)
 
@@ -82,8 +86,10 @@ class ClaudeEvaluator(BedrockEvaluator):
         return output, reasoning
 
     def _generate_initial_prompt(self) -> str:
-        system_prompt = self._prompt_template_map["start_session"]["system"].render()
-        prompt = self._prompt_template_map["start_session"]["prompt"].render(
+        system_prompt = self._prompt_template_map["start_conversation"][
+            "system"
+        ].render()
+        prompt = self._prompt_template_map["start_conversation"]["prompt"].render(
             step=self.test.steps[0]
         )
 

@@ -1,15 +1,14 @@
 import pytest
 
-from src.agenteval.targets import q_business
-from src.agenteval.targets import target
+from src.agenteval.targets.aws import q_business_target, aws_target
 
 
 @pytest.fixture
 def q_business_fixture(mocker):
-    mock_session = mocker.patch.object(target.boto3, "Session")
+    mock_session = mocker.patch.object(aws_target.boto3, "Session")
     mocker.patch.object(mock_session.return_value, "client")
 
-    fixture = q_business.QBusinessTarget(
+    fixture = q_business_target.QBusinessTarget(
         q_business_application_id="test-app-id",
         q_business_user_id="test-user-id",
         aws_profile="test-profile",

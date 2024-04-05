@@ -1,5 +1,6 @@
 import concurrent.futures
 import logging
+import time
 from typing import Optional
 
 from rich.progress import Progress
@@ -8,8 +9,6 @@ from agenteval.plan import Plan
 from agenteval.runner.summary import create_markdown_summary
 
 logger = logging.getLogger(__name__)
-
-_MARKDOWN_SUMMARY_TEMPLATE_PATH = "agenteval_summary.md.j2"
 
 
 class Runner:
@@ -28,9 +27,10 @@ class Runner:
         self.results = {test.name: None for test in self.plan.tests}
         self.num_failed = 0
 
-    def run(self):
-        logger.info(f"Running {self.num_tests} tests")
+    def run(self) -> int:
+        self._log_run_start()
 
+        self.start_time = time.time()
         with Progress(transient=True) as self.progress:
             self.tracker = self.progress.add_task("running...", total=self.num_tests)
 
@@ -40,38 +40,48 @@ class Runner:
                 futures = [
                     executor.submit(self.run_test, test) for test in self.plan.tests
                 ]
-                for future in futures:
-                    thread_status = future.result()
-                    if thread_status != "success":
-                        executor.shutdown(wait=False, cancel_futures=True)
-                        raise Exception(thread_status)
+                for future in concurrent.futures.as_completed(futures):
+                    try:
+                        future.result()
+                    except Exception as e:
+                        raise e
 
-        self._log_test_result()
-        self._log_pass_fail_count()
-        summary_path = create_markdown_summary(
-            self.plan.tests, list(self.results.values())
-        )
-        logger.info(f"Summary available at {summary_path}")
+        self._log_run_end()
 
-        self._exit()
+        create_markdown_summary(self.plan.tests, list(self.results.values()))
+
+        return self.num_failed
 
     def run_test(self, test):
-        try:
-            target = self.plan.create_target()
-            evaluator = self.plan.create_evaluator(
-                test=test,
-                target=target,
-            )
+        target = self.plan.create_target()
+        evaluator = self.plan.create_evaluator(
+            test=test,
+            target=target,
+        )
 
-            result = evaluator.run()
-            if result.success is False:
-                self.num_failed += 1
+        result = evaluator.run()
+        if result.success is False:
+            self.num_failed += 1
 
-            self.progress.update(self.tracker, advance=1)
-            self.results[test.name] = result
-            return "success"
-        except Exception as e:
-            return e
+        self.progress.update(self.tracker, advance=1)
+        self.results[test.name] = result
+
+    def _log_run_start(self):
+        logger.info(
+            f"Starting {self.num_tests} tests with max {self.num_threads} workers. Use CTRL+C to exit."
+        )
+
+        if self.verbose:
+            logger.info(self.plan)
+
+    def _log_run_end(self):
+        if self.verbose:
+            self._log_test_result()
+
+        self._log_pass_fail_count()
+        logger.info(
+            f"--- Completed in {round(time.time() - self.start_time, 2)} seconds ---"
+        )
 
     def _log_test_result(self):
         for _, result in self.results.items():
@@ -89,6 +99,3 @@ class Runner:
         )
         logger_func = logger.error if self.num_failed else logger.info
         logger_func(status_str)
-
-    def _exit(self):
-        exit(1 if self.num_failed else 0)

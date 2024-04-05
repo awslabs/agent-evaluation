@@ -1,15 +1,15 @@
 import pytest
-from src.agenteval.targets import sagemaker_endpoint
-from src.agenteval.targets import target
+from src.agenteval.targets.aws import sagemaker_endpoint_target, aws_target
+
 from io import BytesIO
 
 
 @pytest.fixture
 def sagemaker_endpoint_fixture(mocker):
-    mock_session = mocker.patch.object(target.boto3, "Session")
+    mock_session = mocker.patch.object(aws_target.boto3, "Session")
     mocker.patch.object(mock_session.return_value, "client")
 
-    fixture = sagemaker_endpoint.SageMakerEndpointTarget(
+    fixture = sagemaker_endpoint_target.SageMakerEndpointTarget(
         endpoint_name="test-endpoint",
         request_body={"inputs": None, "temperature": 0},
         input_path="$.inputs",
@@ -30,8 +30,8 @@ class TestSageMakerEndpointTarget:
 
         assert sagemaker_endpoint_fixture._args == {
             "EndpointName": "test-endpoint",
-            "ContentType": sagemaker_endpoint._CONTENT_TYPE,
-            "Accept": sagemaker_endpoint._ACCEPT,
+            "ContentType": sagemaker_endpoint_target._CONTENT_TYPE,
+            "Accept": sagemaker_endpoint_target._ACCEPT,
             "InferenceComponentName": "test-component",
         }
 
@@ -41,25 +41,25 @@ class TestSageMakerEndpointTarget:
             (
                 "test prompt 1",
                 {"inputs": None},
-                sagemaker_endpoint.parse("$.inputs"),
+                sagemaker_endpoint_target.parse("$.inputs"),
                 {"inputs": "test prompt 1"},
             ),
             (
                 "test prompt 2",
                 {"inputs": {"prompt": None}},
-                sagemaker_endpoint.parse("$.inputs.prompt"),
+                sagemaker_endpoint_target.parse("$.inputs.prompt"),
                 {"inputs": {"prompt": "test prompt 2"}},
             ),
             (
                 "test prompt 3",
                 [{"inputs": None}],
-                sagemaker_endpoint.parse("$.[0].inputs"),
+                sagemaker_endpoint_target.parse("$.[0].inputs"),
                 [{"inputs": "test prompt 3"}],
             ),
             (
                 "test prompt 4",
                 {"inputs": [{"prompt": None}]},
-                sagemaker_endpoint.parse("$.inputs.[0].prompt"),
+                sagemaker_endpoint_target.parse("$.inputs.[0].prompt"),
                 {"inputs": [{"prompt": "test prompt 4"}]},
             ),
         ],
@@ -74,24 +74,24 @@ class TestSageMakerEndpointTarget:
 
         assert sagemaker_endpoint_fixture._args[
             "Body"
-        ] == sagemaker_endpoint.json.dumps(expected)
+        ] == sagemaker_endpoint_target.json.dumps(expected)
 
     @pytest.mark.parametrize(
         "response_body,output_jp_expr,expected",
         [
             (
                 [{"generated_text": "test completion 1"}],
-                sagemaker_endpoint.parse("$.[0].generated_text"),
+                sagemaker_endpoint_target.parse("$.[0].generated_text"),
                 "test completion 1",
             ),
             (
                 {"output": {"completion": "test completion 2"}},
-                sagemaker_endpoint.parse("$.output.completion"),
+                sagemaker_endpoint_target.parse("$.output.completion"),
                 "test completion 2",
             ),
             (
                 {"output": [{"completion": "test completion 3"}]},
-                sagemaker_endpoint.parse("$.output.[0].completion"),
+                sagemaker_endpoint_target.parse("$.output.[0].completion"),
                 "test completion 3",
             ),
         ],

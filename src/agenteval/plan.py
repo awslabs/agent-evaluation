@@ -9,9 +9,10 @@ import yaml
 from pydantic import BaseModel, model_validator
 
 from agenteval import defaults
-from agenteval.evaluators import BaseEvaluator, ClaudeEvaluator
-from agenteval.targets import (
-    BaseTarget,
+from agenteval.evaluators import BaseEvaluator
+from agenteval.evaluators.aws.bedrock import ClaudeEvaluator
+from agenteval.targets import BaseTarget
+from agenteval.targets.aws import (
     BedrockAgentTarget,
     QBusinessTarget,
     SageMakerEndpointTarget,
@@ -22,7 +23,7 @@ from agenteval.utils import import_class, validate_subclass
 _PLAN_FILE_NAME = "agenteval.yml"
 
 _INIT_PLAN = {
-    "evaluator": {"type": "bedrock-claude", "model": "claude-sonnet"},
+    "evaluator": {"type": "bedrock-claude"},
     "target": {
         "type": "bedrock-agent",
         "bedrock_agent_id": None,
