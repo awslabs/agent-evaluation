@@ -3,7 +3,8 @@ from typing import Optional
 
 from jsonpath_ng import parse
 
-from agenteval.targets.target import AWSTarget, TargetResponse
+from agenteval.targets import TargetResponse
+from agenteval.targets.aws import AWSTarget
 
 _SERVICE_NAME = "sagemaker-runtime"
 _CONTENT_TYPE = "application/json"

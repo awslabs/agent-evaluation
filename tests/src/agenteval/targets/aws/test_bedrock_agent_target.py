@@ -2,16 +2,15 @@ import uuid
 
 import pytest
 
-from src.agenteval.targets import bedrock_agent
-from src.agenteval.targets import target
+from src.agenteval.targets.aws import bedrock_agent_target, aws_target
 
 
 @pytest.fixture
 def bedrock_agent_fixture(mocker):
-    mock_session = mocker.patch.object(target.boto3, "Session")
+    mock_session = mocker.patch.object(aws_target.boto3, "Session")
     mocker.patch.object(mock_session.return_value, "client")
 
-    fixture = bedrock_agent.BedrockAgentTarget(
+    fixture = bedrock_agent_target.BedrockAgentTarget(
         bedrock_agent_id="test-agent-id",
         bedrock_agent_alias_id="test-alias-id",
         aws_profile="test-profile",

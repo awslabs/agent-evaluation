@@ -73,13 +73,28 @@ def run(
     num_threads: Optional[int],
     work_dir: Optional[str],
 ):
-    plan = Plan.load(plan_dir)
-    if work_dir:
-        validate_directory(work_dir)
-    runner = Runner(
-        plan,
-        verbose,
-        num_threads,
-        work_dir,
-    )
-    runner.run()
+
+    try:
+        plan = Plan.load(plan_dir)
+        if work_dir:
+            validate_directory(work_dir)
+        runner = Runner(
+            plan,
+            verbose,
+            num_threads,
+            work_dir,
+        )
+        num_failed = runner.run()
+        _num_failed_exit(num_failed)
+
+    except Exception as e:
+        _exception_exit(e)
+
+
+def _num_failed_exit(num_failed):
+    exit(1 if num_failed else 0)
+
+
+def _exception_exit(e):
+    logger.exception(f"Error running test: {e}")
+    exit(1)
