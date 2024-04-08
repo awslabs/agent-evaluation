@@ -38,7 +38,9 @@ class ClaudeEvaluator(BedrockEvaluator):
     def __init__(
         self,
         model: Literal[
-            "claude-sonnet", "claude-haiku", "claude", "claude-instant"
+            "claude-sonnet",
+            "claude-haiku",
+            "claude",
         ] = model_configs.DEFAULT_MODEL,
         **kwargs,
     ):

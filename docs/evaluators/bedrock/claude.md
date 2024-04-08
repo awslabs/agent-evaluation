@@ -9,7 +9,6 @@ The principal must have [InvokeModel](https://docs.aws.amazon.com/bedrock/latest
 - Anthropic Claude 3 Sonnet (`anthropic.claude-3-sonnet-20240229-v1:0`)
 - Anthropic Claude 3 Haiku (`anthropic.claude-3-haiku-20240307-v1:0`)
 - Anthropic Claude (`anthropic.claude-v2:1`)
-- Anthropic Claude Instant (`anthropic.claude-instant-v1`)
 
 ## Configurations
 
@@ -26,7 +25,6 @@ The Claude model to use as the Evaluator. This should be one of following:
 - `claude-sonnet`
 - `claude-haiku`
 - `claude`
-- `claude-instant`
 
 If unspecified, `claude-haiku` will be used.
 
