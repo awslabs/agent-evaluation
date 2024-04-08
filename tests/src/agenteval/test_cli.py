@@ -37,6 +37,7 @@ def test_run(mocker):
         mock_plan.return_value,
         False,
         None,
+        None,
     )
     assert mock_run.call_count == 1
     assert result.exit_code == 0

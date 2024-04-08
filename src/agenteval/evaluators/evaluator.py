@@ -23,17 +23,18 @@ class BaseEvaluator(ABC):
         test_result (TestResult): The result of the test which is set in `BaseEvaluator.run`.
     """
 
-    def __init__(self, test: Test, target: BaseTarget):
+    def __init__(self, test: Test, target: BaseTarget, work_dir: str):
         """Initialize the evaluator instance for a given `Test` and `Target`.
 
         Args:
             test (Test): The test case.
             target (BaseTarget): The target agent being evaluated.
+            work_dir (str): The work directory.
         """
         self.test = test
         self.target = target
         self.conversation = ConversationHandler()
-        self.trace = TraceHandler(test_name=test.name)
+        self.trace = TraceHandler(work_dir=work_dir, test_name=test.name)
         self.test_result = None
 
     @abstractmethod

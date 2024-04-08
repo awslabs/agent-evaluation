@@ -16,6 +16,7 @@ def aws_evaluator_fixture(mocker):
         boto3_service_name="test-name",
         test=mocker.MagicMock(),
         target=mocker.MagicMock(),
+        work_dir="test-dir",
         aws_profile="test-profile",
         aws_region="us-west-2",
         endpoint_url=None,

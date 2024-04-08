@@ -36,6 +36,7 @@ def evaluator_fixture(mocker, test_fixture, target_fixture):
         endpoint_url=None,
         test=test_fixture,
         target=target_fixture,
+        work_dir="test_dir"
     )
 
     return fixture

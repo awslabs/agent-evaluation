@@ -83,7 +83,9 @@ class Plan(BaseModel, validate_assignment=True, arbitrary_types_allowed=True):
             tests=cls._load_tests(plan.get("tests")),
         )
 
-    def create_evaluator(self, test: Test, target: BaseTarget) -> BaseEvaluator:
+    def create_evaluator(
+        self, test: Test, target: BaseTarget, work_dir: str
+    ) -> BaseEvaluator:
         if self.evaluator_config.type in _EVALUATOR_MAP:
             evaluator_cls = _EVALUATOR_MAP[self.evaluator_config.type]
         else:
@@ -93,6 +95,7 @@ class Plan(BaseModel, validate_assignment=True, arbitrary_types_allowed=True):
         return evaluator_cls(
             test=test,
             target=target,
+            work_dir=work_dir,
             **self.evaluator_config.model_dump(exclude="type"),
         )
 
