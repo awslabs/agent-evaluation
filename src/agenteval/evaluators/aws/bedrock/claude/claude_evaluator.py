@@ -2,7 +2,6 @@ import json
 import logging
 import os
 import re
-from enum import StrEnum
 from typing import Literal, Tuple
 
 from agenteval import jinja_env
@@ -20,6 +19,15 @@ _PROMPT_TEMPLATE_NAMES = [
     "generate_test_status",
     "generate_evaluation",
 ]
+
+# enable backwards-compatible StrEnum
+try:
+    from enum import StrEnum
+except ImportError:
+    from enum import Enum
+
+    class StrEnum(str, Enum):
+        pass
 
 
 class TestStatusCategories(StrEnum):
