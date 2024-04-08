@@ -2,14 +2,14 @@
 
 Agent Evaluation is a LLM-powered framework for testing virtual agents.
 
-## Documentation
+## 📚 Documentation
 
 To get started, please visit the full documentation [here](https://awslabs.github.io/agent-evaluation/). To contribute, please refer to [CONTRIBUTING.md](./CONTRIBUTING.md)
 
-## Creators
+## ✨ Contributors
 
-[<img src="https://github.com/tonykchen.png" width="60px;"/><br /><sub><a href="https://github.com/tonykchen">tonykchen</a></sub>](https://github.com/tonykchen/)
+Shout out to these awesome contributors:
 
-[<img src="https://github.com/bobbywlindsey.png" width="60px;"/><br /><sub><a href="https://github.com/bobbywlindsey">bobbywlindsey</a></sub>](https://github.com/bobbywlindsey/)
-
-[<img src="https://github.com/sharonxiaohanli.png" width="60px;"/><br /><sub><a href="https://github.com/sharonxiaohanli">sharonxiaohanli</a></sub>](https://github.com/sharonxiaohanli/)
+<a href="https://awslabs/agent-evaluation/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=awslabs/agent-evaluation" />
+</a>
