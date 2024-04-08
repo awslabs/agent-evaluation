@@ -35,7 +35,7 @@ def evaluator_fixture(mocker, test_fixture, target_fixture):
         endpoint_url=None,
         test=test_fixture,
         target=target_fixture,
-        work_dir="test_dir"
+        work_dir="test_dir",
     )
 
     return fixture
@@ -102,14 +102,14 @@ class TestClaudeEvaluator:
             evaluator_fixture, "_generate_test_status"
         )
         mock_generate_test_status.return_value = (
-            claude_evaluator._TEST_STATUS_ALL_STEPS_ATTEMPTED_CAT
+            claude_evaluator.TestStatusCategories.ALL_STEPS_ATTEMPTED.value
         )
 
         mock_generate_evaluation = mocker.patch.object(
             evaluator_fixture, "_generate_evaluation"
         )
         mock_generate_evaluation.return_value = (
-            claude_evaluator._EVALUATION_ALL_EXPECTED_OBSERVED_CAT,
+            claude_evaluator.EvaluationCategories.ALL_EXPECTED_RESULTS_OBSERVED.value,
             "",
         )
 
@@ -131,14 +131,14 @@ class TestClaudeEvaluator:
             evaluator_fixture, "_generate_test_status"
         )
         mock_generate_test_status.return_value = (
-            claude_evaluator._TEST_STATUS_ALL_STEPS_ATTEMPTED_CAT
+            claude_evaluator.TestStatusCategories.ALL_STEPS_ATTEMPTED.value
         )
 
         mock_generate_evaluation = mocker.patch.object(
             evaluator_fixture, "_generate_evaluation"
         )
         mock_generate_evaluation.return_value = (
-            claude_evaluator._EVALUATION_ALL_EXPECTED_OBSERVED_CAT,
+            claude_evaluator.EvaluationCategories.ALL_EXPECTED_RESULTS_OBSERVED.value,
             "",
         )
 
@@ -159,15 +159,15 @@ class TestClaudeEvaluator:
             evaluator_fixture, "_generate_test_status"
         )
         mock_generate_test_status.side_effect = [
-            claude_evaluator._TEST_STATUS_NOT_ALL_STEPS_ATTEMPTED_CAT,
-            claude_evaluator._TEST_STATUS_ALL_STEPS_ATTEMPTED_CAT,
+            claude_evaluator.TestStatusCategories.NOT_ALL_STEPS_ATTEMPTED.value,
+            claude_evaluator.TestStatusCategories.ALL_STEPS_ATTEMPTED.value,
         ]
 
         mock_generate_evaluation = mocker.patch.object(
             evaluator_fixture, "_generate_evaluation"
         )
         mock_generate_evaluation.return_value = (
-            claude_evaluator._EVALUATION_ALL_EXPECTED_OBSERVED_CAT,
+            claude_evaluator.EvaluationCategories.ALL_EXPECTED_RESULTS_OBSERVED.value,
             "",
         )
 
@@ -184,8 +184,8 @@ class TestClaudeEvaluator:
             evaluator_fixture, "_generate_test_status"
         )
         mock_generate_test_status.side_effect = [
-            claude_evaluator._TEST_STATUS_NOT_ALL_STEPS_ATTEMPTED_CAT,
-            claude_evaluator._TEST_STATUS_NOT_ALL_STEPS_ATTEMPTED_CAT,
+            claude_evaluator.TestStatusCategories.NOT_ALL_STEPS_ATTEMPTED.value,
+            claude_evaluator.TestStatusCategories.NOT_ALL_STEPS_ATTEMPTED.value,
         ]
 
         mock_generate_user_response = mocker.patch.object(

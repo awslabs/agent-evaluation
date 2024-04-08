@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import re
+from enum import StrEnum
 from typing import Literal, Tuple
 
 from agenteval import jinja_env
@@ -20,18 +21,25 @@ _PROMPT_TEMPLATE_NAMES = [
     "generate_evaluation",
 ]
 
-_TEST_STATUS_ALL_STEPS_ATTEMPTED_CAT = "A"
-_TEST_STATUS_NOT_ALL_STEPS_ATTEMPTED_CAT = "B"
-_EVALUATION_ALL_EXPECTED_OBSERVED_CAT = "A"
-_EVALUATION_NOT_ALL_EXPECTED_OBSERVED_CAT = "B"
 
-_MAX_TURNS_REACHED_RESULT = "Maximum turns reached."
-_EVALUATION_ALL_EXPECTED_OBSERVED_RESULT = (
-    "All of the expected results can be observed in the conversation."
-)
-_EVALUATION_NOT_ALL_EXPECTED_OBSERVED_RESULT = (
-    "Not all of the expected results can be observed in the conversation."
-)
+class TestStatusCategories(StrEnum):
+    ALL_STEPS_ATTEMPTED = "A"
+    NOT_ALL_STEPS_ATTEMPTED = "B"
+
+
+class EvaluationCategories(StrEnum):
+    ALL_EXPECTED_RESULTS_OBSERVED = "A"
+    NOT_ALL_EXPECTED_RESULTS_OBSERVED = "B"
+
+
+class Results(StrEnum):
+    MAX_TURNS_REACHED = "Maximum turns reached."
+    ALL_EXPECTED_RESULTS_OBSERVED = (
+        "All of the expected results can be observed in the conversation."
+    )
+    NOT_ALL_EXPECTED_RESULTS_OBSERVED = (
+        "Not all of the expected results can be observed in the conversation."
+    )
 
 
 class ClaudeEvaluator(BedrockEvaluator):
@@ -188,7 +196,7 @@ class ClaudeEvaluator(BedrockEvaluator):
 
     def evaluate(self) -> TestResult:
         success = False
-        result = _MAX_TURNS_REACHED_RESULT
+        result = Results.MAX_TURNS_REACHED.value
         reasoning = ""
 
         while self.conversation.turns < self.test.max_turns:
@@ -207,13 +215,16 @@ class ClaudeEvaluator(BedrockEvaluator):
 
             # get test status
             test_status = self._generate_test_status()
-            if test_status == _TEST_STATUS_ALL_STEPS_ATTEMPTED_CAT:
+            if test_status == TestStatusCategories.ALL_STEPS_ATTEMPTED:
                 # evaluate conversation
                 eval_category, reasoning = self._generate_evaluation()
-                if eval_category == _EVALUATION_NOT_ALL_EXPECTED_OBSERVED_CAT:
-                    result = _EVALUATION_NOT_ALL_EXPECTED_OBSERVED_RESULT
-                elif eval_category == _EVALUATION_ALL_EXPECTED_OBSERVED_CAT:
-                    result = _EVALUATION_ALL_EXPECTED_OBSERVED_RESULT
+                if (
+                    eval_category
+                    == EvaluationCategories.NOT_ALL_EXPECTED_RESULTS_OBSERVED.value  # noqa: W503
+                ):
+                    result = Results.NOT_ALL_EXPECTED_RESULTS_OBSERVED.value
+                else:
+                    result = Results.ALL_EXPECTED_RESULTS_OBSERVED.value
                     success = True
 
                 break
