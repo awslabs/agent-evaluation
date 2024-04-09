@@ -71,7 +71,7 @@ To test multiple user-agent interactions, you can provide multiple `steps` to or
 
 ```yaml
 tests:
-  - name: GetOpenClaimsDetails
+  - name: GetOpenClaimsWithDetails
     steps:
       - Ask the agent which claims are open.
       - Ask the agent for details on claim-006.
@@ -89,7 +89,7 @@ You can test an agent's ability to prompt the user for data when you include it 
 
 ```yaml
 tests:
-  - name: GetOpenClaimsAuto
+  - name: GetAutoOpenClaims
     steps:
       - Ask the agent which claims are open.
         When the agent asks for the claim type, respond with "Auto".
@@ -103,7 +103,7 @@ By default, the first user message in the test is automatically generated based 
 
 ```yaml
 tests:
-  - name: GetClaimsOutstandingDocuments
+  - name: GetClaimsWithMissingDocuments
     steps:
       - Ask agent which claims still have missing documents.
     initial_prompt: Can you let me know which claims still have missing documents?
