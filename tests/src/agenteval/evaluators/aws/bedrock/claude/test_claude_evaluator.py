@@ -25,7 +25,6 @@ def target_fixture(mocker):
 
 @pytest.fixture
 def evaluator_fixture(mocker, test_fixture, target_fixture):
-
     mock_session = mocker.patch.object(aws_evaluator.boto3, "Session")
     mocker.patch.object(mock_session.return_value, "client")
 
@@ -36,7 +35,7 @@ def evaluator_fixture(mocker, test_fixture, target_fixture):
         endpoint_url=None,
         test=test_fixture,
         target=target_fixture,
-        work_dir="test_dir"
+        work_dir="test_dir",
     )
 
     return fixture
@@ -97,21 +96,20 @@ class TestClaudeEvaluator:
         )
 
     def test_run_single_turn_success(self, mocker, evaluator_fixture):
-
         mocker.patch.object(evaluator_fixture, "_invoke_target")
 
-        mock_generate_task_status = mocker.patch.object(
-            evaluator_fixture, "_generate_task_status"
+        mock_generate_test_status = mocker.patch.object(
+            evaluator_fixture, "_generate_test_status"
         )
-        mock_generate_task_status.return_value = (
-            claude_evaluator._TASK_STATUS_COMPLETED_CATEGORY
+        mock_generate_test_status.return_value = (
+            claude_evaluator.TestStatusCategories.ALL_STEPS_ATTEMPTED.value
         )
 
         mock_generate_evaluation = mocker.patch.object(
             evaluator_fixture, "_generate_evaluation"
         )
         mock_generate_evaluation.return_value = (
-            claude_evaluator._EVAL_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY,
+            claude_evaluator.EvaluationCategories.ALL_EXPECTED_RESULTS_OBSERVED.value,
             "",
         )
 
@@ -120,7 +118,6 @@ class TestClaudeEvaluator:
         assert result.success is True
 
     def test_run_single_turn_initial_prompt_success(self, mocker, evaluator_fixture):
-
         evaluator_fixture.test.initial_prompt = None
 
         mock_generate_initial_prompt = mocker.patch.object(
@@ -130,18 +127,18 @@ class TestClaudeEvaluator:
 
         mocker.patch.object(evaluator_fixture, "_invoke_target")
 
-        mock_generate_task_status = mocker.patch.object(
-            evaluator_fixture, "_generate_task_status"
+        mock_generate_test_status = mocker.patch.object(
+            evaluator_fixture, "_generate_test_status"
         )
-        mock_generate_task_status.return_value = (
-            claude_evaluator._TASK_STATUS_COMPLETED_CATEGORY
+        mock_generate_test_status.return_value = (
+            claude_evaluator.TestStatusCategories.ALL_STEPS_ATTEMPTED.value
         )
 
         mock_generate_evaluation = mocker.patch.object(
             evaluator_fixture, "_generate_evaluation"
         )
         mock_generate_evaluation.return_value = (
-            claude_evaluator._EVAL_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY,
+            claude_evaluator.EvaluationCategories.ALL_EXPECTED_RESULTS_OBSERVED.value,
             "",
         )
 
@@ -151,46 +148,44 @@ class TestClaudeEvaluator:
         assert mock_generate_initial_prompt.call_count == 1
 
     def test_run_multi_turn_success(self, mocker, evaluator_fixture):
-
         mocker.patch.object(evaluator_fixture, "_invoke_target")
-
-        mock_generate_task_status = mocker.patch.object(
-            evaluator_fixture, "_generate_task_status"
-        )
-        mock_generate_task_status.side_effect = [
-            claude_evaluator._TASK_STATUS_NOT_COMPLETED_CATEGORY,
-            claude_evaluator._TASK_STATUS_COMPLETED_CATEGORY,
-        ]
-
-        mock_generate_evaluation = mocker.patch.object(
-            evaluator_fixture, "_generate_evaluation"
-        )
-        mock_generate_evaluation.return_value = (
-            claude_evaluator._EVAL_ALL_EXPECTED_RESULT_OBSERVED_CATEGORY,
-            "",
-        )
 
         mock_generate_user_response = mocker.patch.object(
             evaluator_fixture, "_generate_user_response"
         )
         mock_generate_user_response.return_value = "test user response"
 
+        mock_generate_test_status = mocker.patch.object(
+            evaluator_fixture, "_generate_test_status"
+        )
+        mock_generate_test_status.side_effect = [
+            claude_evaluator.TestStatusCategories.NOT_ALL_STEPS_ATTEMPTED.value,
+            claude_evaluator.TestStatusCategories.ALL_STEPS_ATTEMPTED.value,
+        ]
+
+        mock_generate_evaluation = mocker.patch.object(
+            evaluator_fixture, "_generate_evaluation"
+        )
+        mock_generate_evaluation.return_value = (
+            claude_evaluator.EvaluationCategories.ALL_EXPECTED_RESULTS_OBSERVED.value,
+            "",
+        )
+
         result = evaluator_fixture.evaluate()
 
         assert result.success is True
-        assert mock_generate_task_status.call_count == 2
+        assert mock_generate_test_status.call_count == 2
         assert mock_generate_user_response.call_count == 1
 
     def test_run_max_turns_exceeded(self, mocker, evaluator_fixture):
-
         mocker.patch.object(evaluator_fixture, "_invoke_target")
 
-        mock_generate_task_status = mocker.patch.object(
-            evaluator_fixture, "_generate_task_status"
+        mock_generate_test_status = mocker.patch.object(
+            evaluator_fixture, "_generate_test_status"
         )
-        mock_generate_task_status.side_effect = [
-            claude_evaluator._TASK_STATUS_NOT_COMPLETED_CATEGORY,
-            claude_evaluator._TASK_STATUS_NOT_COMPLETED_CATEGORY,
+        mock_generate_test_status.side_effect = [
+            claude_evaluator.TestStatusCategories.NOT_ALL_STEPS_ATTEMPTED.value,
+            claude_evaluator.TestStatusCategories.NOT_ALL_STEPS_ATTEMPTED.value,
         ]
 
         mock_generate_user_response = mocker.patch.object(

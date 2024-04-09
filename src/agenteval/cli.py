@@ -73,7 +73,6 @@ def run(
     num_threads: Optional[int],
     work_dir: Optional[str],
 ):
-
     try:
         plan = Plan.load(plan_dir)
         if work_dir:
