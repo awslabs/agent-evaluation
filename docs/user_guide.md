@@ -11,7 +11,6 @@ This will create an `agenteval.yml` file in the current directory.
 ```yaml
 evaluator:
   type: bedrock-claude
-  model: claude-sonnet
 target:
   type: bedrock-agent
   bedrock_agent_id: null
@@ -64,7 +63,7 @@ tests:
       - The agent returns a list of open claims.
 ```
 
-If your test cases are complex, consider breaking them down into multiple `steps`, `expected_results`, and/or `tests`.
+If your test case is complex, consider breaking it down into multiple, smaller `tests`.
 
 ### Multi-turn conversations
 
@@ -72,32 +71,44 @@ To test multiple user-agent interactions, you can provide multiple `steps` to or
 
 ```yaml
 tests:
-  - name: GetOpenClaimWithDetails
+  - name: GetOpenClaimsDetails
     steps:
       - Ask the agent which claims are open.
-      - Once the agent responds with the list of open claims, ask for the details
-        on claim-006.
+      - Ask the agent for details on claim-006.
     expected_results:
+      - The agent returns a list of open claims.
       - The agent returns the details on claim-006.
 ```
 
 The maximum number of turns allowed for a conversation is configured using the `max_turns` parameter for the test (defaults to `2` when not specified).
 If the number of turns in the conversation reaches the `max_turns` limit, then the test will fail.
 
-### Specify the first user message
+### Providing data
 
-By default, the first user message in the test is automatically generated based on the list of `steps`. To override this message, you can specify the `initial_prompt`.
+You can test an agent's ability to prompt the user for data when you include it within the step. For example:
 
 ```yaml
 tests:
-  - name: GetOpenClaimWithDetails
+  - name: GetOpenClaimsAuto
     steps:
       - Ask the agent which claims are open.
-      - Once the agent responds with the list of open claims, ask for the details
-        on claim-006.
+        When the agent asks for the claim type, respond with "Auto".
     expected_results:
-      - The agent returns the details on claim-006.
-    initial_prompt: Can you let me know which claims are open?
+      - The agent returns claim-001 and claim-002
+```
+
+### Specify the first user message
+
+By default, the first user message in the test is automatically generated based on the first step. To override this message, you can specify the `initial_prompt`.
+
+```yaml
+tests:
+  - name: GetClaimsOutstandingDocuments
+    steps:
+      - Ask agent which claims still have missing documents.
+    initial_prompt: Can you let me know which claims still have missing documents?
+    expected_results:
+      - The agent returns claim-003 and claim-004
 ```
 
 ## Evaluation hooks
