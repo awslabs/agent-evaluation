@@ -26,6 +26,6 @@ The Claude model to use as the Evaluator. This should be one of following:
 - `claude-haiku`
 - `claude`
 
-If unspecified, `claude-haiku` will be used.
+If unspecified, `claude-sonnet` will be used.
 
 ---

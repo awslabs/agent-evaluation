@@ -3,7 +3,7 @@ CLAUDE_MODEL_ID_MAP = {
     "claude-sonnet": "anthropic.claude-3-sonnet-20240229-v1:0",
     "claude-haiku": "anthropic.claude-3-haiku-20240307-v1:0",
 }
-DEFAULT_MODEL = "claude-haiku"
+DEFAULT_MODEL = "claude-sonnet"
 
 ANTHROPIC_VERSION = "bedrock-2023-05-31"
 ROLE = "user"
