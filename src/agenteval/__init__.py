@@ -30,4 +30,4 @@ def configure_logger():
 
 configure_logger()
 
-jinja_env = Environment(loader=PackageLoader(__name__))
+jinja_env = Environment(loader=PackageLoader(__name__), autoescape=True)
