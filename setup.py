@@ -13,13 +13,13 @@ URL = "https://github.com/awslabs/agent-evaluation"
 PACKAGE_DIR = "src"
 REQUIRES_PYTHON = ">=3.9"
 REQUIREMENTS = [
-    "pyyaml>=6.0.0",
-    "boto3>=1.34.20",
-    "click>=8.1.3",
-    "pydantic>=2.1.0",
-    "rich>=13.7.0",
-    "jinja2>=3.1.3",
-    "jsonpath-ng>=1.6.1",
+    "pyyaml~=6.0",
+    "boto3>=1.34.20,<2.0",
+    "click~=8.0",
+    "pydantic>=2.1.0,<3.0",
+    "rich>=13.7.0,<14.0",
+    "jinja2>=3.1.3,<4.0",
+    "jsonpath-ng>=1.6.1,<2.0",
 ]
 DEV_REQUIREMENTS = [
     "flake8",
@@ -32,7 +32,7 @@ DEV_REQUIREMENTS = [
     "mkdocs-material",
     "mkdocstrings[python]",
     "mkdocs-click",
-    "bandit"
+    "bandit",
 ]
 
 PACKAGE_DATA = {
