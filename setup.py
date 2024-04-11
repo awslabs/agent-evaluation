@@ -32,6 +32,7 @@ DEV_REQUIREMENTS = [
     "mkdocs-material",
     "mkdocstrings[python]",
     "mkdocs-click",
+    "bandit"
 ]
 
 PACKAGE_DATA = {
