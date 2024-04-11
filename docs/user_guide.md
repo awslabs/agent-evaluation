@@ -114,7 +114,7 @@ tests:
 ## Evaluation hooks
 You can specify hooks that run before and/or after evaluating a test. This is useful for performing integration testing, as well as any setup or cleanup tasks required.
 
-To create hooks, you will define a subclass of [Hook](reference/hook.md#src.agenteval.hook.Hook).
+To create your hooks, define a Python module containing a subclass of [Hook](reference/hook.md#src.agenteval.hook.Hook). The name of this module should contain the suffix `_hook` (e.g. `my_evaluation_hook`).
 
 For a hook that runs *before* evaluation, implement a `pre_evaluate` method. In this method, you have access to the [Test](reference/test.md#src.agenteval.test.Test) and [TraceHandler](reference/trace_handler.md#src.agenteval.trace_handler.TraceHandler) via the `test` and `trace` arguments, respectively.
 
@@ -150,7 +150,7 @@ Once you have created your subclass, specify the hook for the test in `agenteval
 
 In this example, we will test an agent that can make dinner reservations. In addition to evaluating the conversation, we want to test that the reservation is written to the backend database. To do this, we will create a post evaluation hook that queries a PostgreSQL database for the reservation record. If the record is not found, we will override the `TestResult`.
 
-!!! example "test_record_insert.py"
+!!! example "test_record_insert_hook.py"
 
     ```python
     import boto3
@@ -174,8 +174,8 @@ In this example, we will test an agent that can make dinner reservations. In add
 
       return json.loads(secret)
 
-    class TestRecordInsert(Hook):
-      
+    class TestRecordInsertHook(Hook):
+
       def post_evaluate(test, test_result, trace):
 
         # get database secret from AWS Secrets Manager
@@ -213,5 +213,5 @@ Create a test that references the hook.
       - Ask agent to make a reservation under the name Bob for 7 PM.
       expected_results:
       - The agent confirms that a reservation has been made.
-      hook: test_record_insert.TestRecordInsert
+      hook: test_record_insert_hook.TestRecordInsert
     ```

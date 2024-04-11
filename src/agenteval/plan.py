@@ -18,7 +18,7 @@ from agenteval.targets.aws import (
     SageMakerEndpointTarget,
 )
 from agenteval.test import Test
-from agenteval.utils import import_class, validate_subclass
+from agenteval.utils import import_class
 
 _PLAN_FILE_NAME = "agenteval.yml"
 
@@ -89,8 +89,9 @@ class Plan(BaseModel, validate_assignment=True, arbitrary_types_allowed=True):
         if self.evaluator_config.type in _EVALUATOR_MAP:
             evaluator_cls = _EVALUATOR_MAP[self.evaluator_config.type]
         else:
-            evaluator_cls = import_class(self.evaluator_config.type)
-            validate_subclass(evaluator_cls, BaseEvaluator)
+            evaluator_cls = import_class(
+                self.evaluator_config.type, parent_class=BaseEvaluator
+            )
 
         return evaluator_cls(
             test=test,
@@ -105,8 +106,7 @@ class Plan(BaseModel, validate_assignment=True, arbitrary_types_allowed=True):
         if self.target_config.type in _TARGET_MAP:
             target_cls = _TARGET_MAP[self.target_config.type]
         else:
-            target_cls = import_class(self.target_config.type)
-            validate_subclass(target_cls, BaseTarget)
+            target_cls = import_class(self.target_config.type, parent_class=BaseTarget)
 
         return target_cls(**self.target_config.model_dump(exclude="type"))
 

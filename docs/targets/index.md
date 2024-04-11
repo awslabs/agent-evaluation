@@ -43,7 +43,7 @@ The endpoint URL for the AWS service. If unspecified, the public endpoint based 
 
 ## Custom Targets
 
-If you want to test an agent that is not natively supported, you can bring your own Target by creating a subclass of [BaseTarget](../reference/target.md#src.agenteval.targets.target.BaseTarget). The `BaseTarget` class is an abstract base class and the child class must implement the `invoke` method to invoke your agent. This `invoke` method must also return a [TargetResponse](../reference/target.md#src.agenteval.targets.target.TargetResponse).
+If you want to test an agent that is not natively supported, you can bring your own Target by defining a Python module containing a subclass of [BaseTarget](../reference/target.md#src.agenteval.targets.target.BaseTarget). The name of this module should contain the suffix `_target` (e.g. `my_custom_target`), and the subclass should implement the `invoke` method to invoke your agent.
 
 !!! example "my_custom_target.py"
 

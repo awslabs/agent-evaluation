@@ -65,17 +65,6 @@ class TestPlan:
 
         assert isinstance(target, CustomTarget)
 
-    def test_create_target_not_subclass(self, mocker, plan_with_custom_target_fixture):
-        mock_import_class = mocker.patch("src.agenteval.plan.import_class")
-
-        class InvalidTarget:
-            pass
-
-        mock_import_class.return_value = InvalidTarget
-
-        with pytest.raises(TypeError):
-            plan_with_custom_target_fixture.create_target()
-
     def test_load_tests(self):
         tests = plan.Plan._load_tests(
             test_config=[
