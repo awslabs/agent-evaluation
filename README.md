@@ -12,6 +12,6 @@ To get started, please visit the full documentation [here](https://awslabs.githu
 
 Shout out to these awesome contributors:
 
-<a href="https://awslabs/agent-evaluation/graphs/contributors">
+<a href="https://github.com/awslabs/agent-evaluation/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=awslabs/agent-evaluation" />
 </a>
