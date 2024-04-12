@@ -4,37 +4,12 @@ from distutils.core import setup
 from setuptools import find_packages
 
 VERSION = "0.1.0"
-
 DESCRIPTION = "A LLM-powered framework for testing virtual agents."
 AUTHOR = "Amazon Web Services"
 EMAIL = "agent-evaluation-oss-core-team@amazon.com"
 URL = "https://github.com/awslabs/agent-evaluation"
-
 PACKAGE_DIR = "src"
 REQUIRES_PYTHON = ">=3.9"
-REQUIREMENTS = [
-    "pyyaml~=6.0",
-    "boto3>=1.34.20,<2.0",
-    "click~=8.0",
-    "pydantic>=2.1.0,<3.0",
-    "rich>=13.7.0,<14.0",
-    "jinja2>=3.1.3,<4.0",
-    "jsonpath-ng>=1.6.1,<2.0",
-]
-DEV_REQUIREMENTS = [
-    "flake8",
-    "black",
-    "isort",
-    "pytest",
-    "pytest-cov",
-    "pytest-mock",
-    "mkdocs",
-    "mkdocs-material",
-    "mkdocstrings[python]",
-    "mkdocs-click",
-    "bandit",
-]
-
 PACKAGE_DATA = {
     "": [
         "templates/**/*",
@@ -43,7 +18,8 @@ PACKAGE_DATA = {
 
 
 def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    with open(os.path.join(os.path.dirname(__file__), fname)) as f:
+        return f.read()
 
 
 setup(
@@ -55,8 +31,8 @@ setup(
     description=DESCRIPTION,
     long_description=read("README.md"),
     python_requires=REQUIRES_PYTHON,
-    install_requires=REQUIREMENTS,
-    extras_require={"dev": DEV_REQUIREMENTS},
+    install_requires=read("requirements.txt").splitlines(),
+    extras_require={"dev": read("requirements-dev.txt").splitlines()},
     entry_points={"console_scripts": ["agenteval=agenteval.cli:cli"]},
     author=AUTHOR,
     author_email=EMAIL,
