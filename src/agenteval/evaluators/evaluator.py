@@ -7,7 +7,7 @@ from agenteval.targets import BaseTarget
 from agenteval.test import Test
 from agenteval.test_result import TestResult
 from agenteval.trace_handler import TraceHandler
-from agenteval.utils import import_class, validate_subclass
+from agenteval.utils import import_class
 
 
 class BaseEvaluator(ABC):
@@ -48,8 +48,7 @@ class BaseEvaluator(ABC):
 
     def _get_hook_cls(self, hook: Optional[str]) -> Optional[type[Hook]]:
         if hook:
-            hook_cls = import_class(hook)
-            validate_subclass(hook_cls, Hook)
+            hook_cls = import_class(hook, parent_class=Hook)
             return hook_cls
 
     def run(self) -> TestResult:

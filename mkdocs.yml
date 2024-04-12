@@ -2,7 +2,9 @@ site_name: Agent Evaluation
 theme:
   name: material
   icon:
-    annotation: material/plus-circle-outline 
+    annotation: material/plus-circle-outline
+  logo: logo.png
+  favicon: favicon.svg
   palette:
   - media: "(prefers-color-scheme: light)"
     scheme: default
