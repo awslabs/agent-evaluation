@@ -66,11 +66,11 @@ class ClaudeEvaluator(BedrockEvaluator):
             name: {
                 "system": jinja_env.get_template(
                     os.path.join(
-                        _PROMPT_TEMPLATE_ROOT, _SYSTEM_PROMPT_DIR, f"{name}.j2"
+                        _PROMPT_TEMPLATE_ROOT, _SYSTEM_PROMPT_DIR, f"{name}.jinja"
                     )
                 ),
                 "prompt": jinja_env.get_template(
-                    os.path.join(_PROMPT_TEMPLATE_ROOT, f"{name}.j2")
+                    os.path.join(_PROMPT_TEMPLATE_ROOT, f"{name}.jinja")
                 ),
             }
             for name in _PROMPT_TEMPLATE_NAMES

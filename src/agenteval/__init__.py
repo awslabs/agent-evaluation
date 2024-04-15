@@ -33,7 +33,7 @@ configure_logger()
 jinja_env = Environment(
     loader=PackageLoader(__name__),
     autoescape=select_autoescape(
-        disabled_extensions=["j2", "md"],
+        disabled_extensions=["jinja"],
         default_for_string=True,
         default=True,
     ),
