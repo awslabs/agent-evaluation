@@ -1,3 +1,6 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 CLAUDE_MODEL_ID_MAP = {
     "claude": "anthropic.claude-v2:1",
     "claude-sonnet": "anthropic.claude-3-sonnet-20240229-v1:0",
