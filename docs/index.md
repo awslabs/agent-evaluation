@@ -31,7 +31,7 @@ Agent Evaluation requires `python>=3.9`. Please make sure you have an acceptable
 To install:
 
 ```bash
-pip install agenteval
+pip install agent-evaluation
 ```
 
 You can also install from source by cloning the [repo](https://github.com/awslabs/agent-evaluation) and installing from the project root.
