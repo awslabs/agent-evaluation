@@ -3,7 +3,7 @@ from typing import Optional
 from agenteval.evaluators import BaseEvaluator
 from agenteval.utils import create_boto3_client
 
-_DEFAULT_RETRY_ATTEMPTS = 10
+_DEFAULT_MAX_RETRY = 10
 
 
 class AWSEvaluator(BaseEvaluator):
@@ -19,7 +19,7 @@ class AWSEvaluator(BaseEvaluator):
         aws_profile: Optional[str] = None,
         aws_region: Optional[str] = None,
         endpoint_url: Optional[str] = None,
-        max_retry_attempts: int = _DEFAULT_RETRY_ATTEMPTS,
+        max_retry: int = _DEFAULT_MAX_RETRY,
         **kwargs,
     ):
         """
@@ -30,7 +30,7 @@ class AWSEvaluator(BaseEvaluator):
             aws_profile (str, optional): The AWS profile name.
             aws_region (str, optional): The AWS region.
             endpoint_url (str, optional): The endpoint URL for the AWS service.
-            max_retry_attempts (int, optional): The maximum number of retry attempts.
+            max_retry (int, optional): The maximum number of retry attempts.
             **kwargs : Arguments for the BaseEvaluator initializer.
         """
         super().__init__(**kwargs)
@@ -40,5 +40,5 @@ class AWSEvaluator(BaseEvaluator):
             aws_profile=aws_profile,
             aws_region=aws_region,
             endpoint_url=endpoint_url,
-            max_retry_attempts=max_retry_attempts,
+            max_retry=max_retry,
         )

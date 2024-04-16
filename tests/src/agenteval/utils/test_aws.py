@@ -11,7 +11,7 @@ def test_create_boto3_client(mocker):
         aws_profile="test-profile",
         aws_region="us-west-2",
         endpoint_url=None,
-        max_retry_attempts=10,
+        max_retry=10,
     )
 
     mock_config.assert_called_once_with(
