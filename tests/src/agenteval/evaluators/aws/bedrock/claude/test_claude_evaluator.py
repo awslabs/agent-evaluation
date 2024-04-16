@@ -3,7 +3,7 @@ import io
 import pytest
 
 from src.agenteval.evaluators.aws.bedrock.claude import claude_evaluator
-from src.agenteval.evaluators.aws import aws_evaluator
+from src.agenteval.utils import aws
 from src.agenteval.test import Test
 
 
@@ -25,7 +25,7 @@ def target_fixture(mocker):
 
 @pytest.fixture
 def evaluator_fixture(mocker, test_fixture, target_fixture):
-    mock_session = mocker.patch.object(aws_evaluator.boto3, "Session")
+    mock_session = mocker.patch.object(aws.boto3, "Session")
     mocker.patch.object(mock_session.return_value, "client")
 
     fixture = claude_evaluator.ClaudeEvaluator(

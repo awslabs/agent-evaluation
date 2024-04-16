@@ -1,13 +1,13 @@
 import pytest
-from src.agenteval.targets.aws import sagemaker_endpoint_target, aws_target
+from src.agenteval.targets.aws import sagemaker_endpoint_target
+from src.agenteval.utils import aws
 
 from io import BytesIO
 
 
 @pytest.fixture
 def sagemaker_endpoint_fixture(mocker):
-    mock_session = mocker.patch.object(aws_target.boto3, "Session")
-    mocker.patch.object(mock_session.return_value, "client")
+    mocker.patch.object(aws.boto3, "Session")
 
     fixture = sagemaker_endpoint_target.SageMakerEndpointTarget(
         endpoint_name="test-endpoint",
@@ -25,9 +25,7 @@ def sagemaker_endpoint_fixture(mocker):
 
 
 class TestSageMakerEndpointTarget:
-
     def test_base_args(self, sagemaker_endpoint_fixture):
-
         assert sagemaker_endpoint_fixture._args == {
             "EndpointName": "test-endpoint",
             "ContentType": sagemaker_endpoint_target._CONTENT_TYPE,
@@ -67,7 +65,6 @@ class TestSageMakerEndpointTarget:
     def test_update_request(
         self, prompt, request_body, input_jp_expr, expected, sagemaker_endpoint_fixture
     ):
-
         sagemaker_endpoint_fixture._request_body = request_body
         sagemaker_endpoint_fixture._input_jp_expr = input_jp_expr
         sagemaker_endpoint_fixture._update_request(prompt)
@@ -99,14 +96,12 @@ class TestSageMakerEndpointTarget:
     def test_query_response(
         self, response_body, output_jp_expr, expected, sagemaker_endpoint_fixture
     ):
-
         sagemaker_endpoint_fixture._output_jp_expr = output_jp_expr
         value = sagemaker_endpoint_fixture._query_response(response_body)
 
         assert value == expected
 
     def test_invoke(self, mocker, sagemaker_endpoint_fixture):
-
         mock_update_request = mocker.patch.object(
             sagemaker_endpoint_fixture, "_update_request"
         )
