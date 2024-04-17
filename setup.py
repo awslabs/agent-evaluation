@@ -31,6 +31,7 @@ setup(
     package_data=PACKAGE_DATA,
     description=DESCRIPTION,
     long_description=read("README.md"),
+    long_description_content_type="text/markdown",
     python_requires=REQUIRES_PYTHON,
     install_requires=read("requirements.txt").splitlines(),
     extras_require={"dev": read("requirements-dev.txt").splitlines()},
