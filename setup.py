@@ -3,6 +3,7 @@ from distutils.core import setup
 
 from setuptools import find_packages
 
+DIST_NAME = "agent-evaluation"
 VERSION = "0.1.0"
 DESCRIPTION = "A LLM-powered framework for testing virtual agents."
 AUTHOR = "Amazon Web Services"
@@ -23,13 +24,14 @@ def read(fname):
 
 
 setup(
-    name="agenteval",
+    name=DIST_NAME,
     version=VERSION,
     packages=find_packages(where=PACKAGE_DIR),
     package_dir={"": PACKAGE_DIR},
     package_data=PACKAGE_DATA,
     description=DESCRIPTION,
     long_description=read("README.md"),
+    long_description_content_type="text/markdown",
     python_requires=REQUIRES_PYTHON,
     install_requires=read("requirements.txt").splitlines(),
     extras_require={"dev": read("requirements-dev.txt").splitlines()},

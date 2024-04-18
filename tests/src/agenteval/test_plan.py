@@ -1,7 +1,7 @@
 import os
 
 from src.agenteval import plan
-from src.agenteval.targets.aws import aws_target
+from src.agenteval.utils import aws
 import pytest
 
 
@@ -50,8 +50,7 @@ class CustomTarget(plan.BaseTarget):
 
 class TestPlan:
     def test_create_target_aws_type(self, mocker, plan_fixture):
-        mock_session = mocker.patch.object(aws_target.boto3, "Session")
-        mocker.patch.object(mock_session.return_value, "client")
+        mocker.patch.object(aws.boto3, "Session")
 
         target_cls = plan_fixture.create_target()
         assert isinstance(target_cls, plan.BedrockAgentTarget)

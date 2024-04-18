@@ -55,6 +55,12 @@ The endpoint URL for the AWS service. If unspecified, the public endpoint based 
 
 ---
 
+`max_retry` _(integer; optional)_
+
+The maximum number of retry attempts. The default is `10`.
+
+---
+
 ### Available Evaluators
 
 - [Anthropic Claude](./bedrock/claude.md)

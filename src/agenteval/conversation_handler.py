@@ -1,3 +1,6 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 _USER = "USER"
 _AGENT = "AGENT"
 _START_TURN_COUNT = 0
