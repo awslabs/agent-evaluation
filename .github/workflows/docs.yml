@@ -1,7 +1,9 @@
 name: Publish docs
 on: [pull_request]
 jobs:
-    test:
+    publish:
+        permissions:
+          contents: write
         runs-on: ubuntu-latest
         steps:
         - uses: actions/checkout@v4
