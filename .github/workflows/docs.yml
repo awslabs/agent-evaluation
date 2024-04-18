@@ -17,3 +17,6 @@ jobs:
             pip install mkdocs-material mkdocstrings[python] mkdocs-click
         - name: Deploy docs
           run: mkdocs gh-deploy --force
+          env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
