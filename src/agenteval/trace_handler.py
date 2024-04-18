@@ -62,7 +62,6 @@ class TraceHandler:
         Args:
             step_name (str, optional): The name of the step. Defaults to
                 the name of the caller function
-            **kwargs: Additional data to include in the step
         """
         step_name = step_name or inspect.stack()[1].function
         step = {"timestamp": datetime.now(timezone.utc), "step_name": step_name}

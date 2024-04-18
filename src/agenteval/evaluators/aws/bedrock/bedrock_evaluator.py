@@ -17,7 +17,6 @@ class BedrockEvaluator(AWSEvaluator):
 
         Args:
             model_id (str): The ID of the Bedrock model used to run evaluation.
-            **kwargs: Additional arguments passed to the parent class initializer.
         """
         super().__init__(boto3_service_name=_BEDROCK_RUNTIME_BOTO3_NAME, **kwargs)
 
