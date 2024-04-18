@@ -17,6 +17,7 @@ from agenteval.evaluators.aws.bedrock import ClaudeEvaluator
 from agenteval.targets import BaseTarget
 from agenteval.targets.aws import (
     BedrockAgentTarget,
+    BedrockKnowledgebaseTarget,
     QBusinessTarget,
     SageMakerEndpointTarget,
 )
@@ -47,6 +48,7 @@ _TARGET_MAP = {
     "bedrock-agent": BedrockAgentTarget,
     "q-business": QBusinessTarget,
     "sagemaker-endpoint": SageMakerEndpointTarget,
+    "bedrock-knowledgebase": BedrockKnowledgebaseTarget,
 }
 
 sys.path.append(".")

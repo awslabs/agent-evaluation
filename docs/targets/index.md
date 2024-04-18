@@ -45,6 +45,7 @@ The maximum number of retry attempts. The default is `10`.
 - [Agents for Amazon Bedrock](./aws/bedrock_agents.md)
 - [Amazon Q for Business](./aws/q_business.md)
 - [Amazon SageMaker endpoints](./aws/sagemaker_endpoints.md)
+- [Knowledge bases for Amazon Bedrock](./aws/bedrock_knowledgebases.md)
 
 ---
 
