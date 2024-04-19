@@ -1,9 +1,10 @@
 # Evaluators
 
-An Evaluator is an agent that evaluates a [Target](../targets/index.md) on a test. The diagram below depicts the workflow used during evaluation.
+An Evaluator is a LLM agent that evaluates a [Target](../targets/index.md) on a test. The diagram below depicts the workflow that is conducted during evaluation.
 
 ``` mermaid
 graph TD
+  classDef nodeText font-size:10pt;
   A((Start)) --> B{Initial<br>prompt?}
   B -->|yes| C(Invoke agent)
   B -->|no| D(Generate initial prompt)
@@ -13,24 +14,23 @@ graph TD
   F --> |yes| G(Evaluate conversation)
   F --> |no| H{Max turns<br>reached?}
   H --> |yes| I(Fail)
-  style I stroke:#f00
   H --> |no| J(Generate user response)
   J --> C
   G --> K{All expected<br>results<br>observed?}
   K --> |yes| L(Pass)
-  style L stroke:#0f0
   K --> |no| I(Fail)
   I --> M((End))
   L --> M
+  class A,B,C,D,E,F,G,H,I,J,K,L,M nodeText;
+  style I stroke:#f00
+  style L stroke:#0f0
 ```
 
 ---
 
-## Evaluators powered by Amazon Bedrock
+## Base configurations
 
-### Base configurations
-
-```yaml
+```yaml title="agenteval.yml"
 evaluator:
   aws_profile:
   aws_region:
@@ -61,6 +61,6 @@ The maximum number of retry attempts. The default is `10`.
 
 ---
 
-### Available Evaluators
+## Built-in Evaluators
 
-- [Anthropic Claude](./bedrock/claude.md)
+- [Amazon Bedrock](bedrock.md)
