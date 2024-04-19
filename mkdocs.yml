@@ -36,6 +36,7 @@ nav:
     - targets/index.md
     - AWS:
       - targets/aws/bedrock_agents.md
+      - targets/aws/bedrock_knowledgebases.md
       - targets/aws/q_business.md
       - targets/aws/sagemaker_endpoints.md
   - Reference:

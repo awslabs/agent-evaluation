@@ -1,0 +1,19 @@
+name: Publish docs
+on:
+  release:
+    types: [published]
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v4
+        - uses: actions/setup-python@v4
+          with:
+            python-version: 3.11
+        - name: Install dependencies
+          run: |
+            pip install --upgrade pip
+            pip install .  
+            pip install mkdocs-material mkdocstrings[python] mkdocs-click
+        - name: Deploy
+          run: mkdocs gh-deploy --force
