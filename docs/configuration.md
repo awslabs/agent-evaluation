@@ -1,26 +1,26 @@
 # Configuration
 
-```yaml
+```yaml title="agenteval.yml"
 evaluator:
 target:
 tests:
-  - name:
-    steps:
-    expected_results:
-    initial_prompt:
-    max_turns:
-    hook:
+- name:
+  steps:
+  expected_results:
+  initial_prompt:
+  max_turns:
+  hook:
 ```
 
 `evaluator` _(map)_
 
-The evaluator to use for testing. Refer to [Evaluators](./evaluators/index.md) for the required configurations.
+Refer to [Evaluators](evaluators/index.md) for the required configurations.
 
 ---
 
 `target` _(map)_
 
-The agent to test. Refer to [Targets](./targets/index.md) for the required configurations.
+Refer to [Targets](targets/index.md) for the required configurations.
 
 ---
 
@@ -33,6 +33,6 @@ A list of tests. Each test maps with the following fields:
 - `expected_results` _(list of strings)_: The expected results for the test.
 - `initial_prompt` _(string; optional)_: The first message that is sent to the agent, which starts the conversation. If unspecified, the message will be generated based on the `steps` provided.
 - `max_turns` _(integer; optional)_: The maximum number of user-agent exchanges before the test fails. The default is `2`.
-- `hook` _(string; optional)_: The module path to an evaluation hook.
+- `hook` _(string; optional)_: The module path to an evaluation hook. Refer to [Hooks](hooks.md) for more details.
 
 ---

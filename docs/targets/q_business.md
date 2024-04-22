@@ -15,7 +15,7 @@ The principal must have the following permissions:
 
 ## Configurations
 
-```yaml
+```yaml title="agenteval.yml"
 target:
   type: q-business
   q_business_application_id:
