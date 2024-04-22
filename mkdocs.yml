@@ -1,46 +1,56 @@
 site_name: Agent Evaluation
+copyright: Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 theme:
   name: material
   icon:
     annotation: material/plus-circle-outline
   logo: logo.png
   favicon: favicon.svg
+  font:
+    text: Inter
+    code:  Roboto Mono
   palette:
   - media: "(prefers-color-scheme: light)"
     scheme: default
     primary: white
-    accent: white
+    accent: deep purple
     toggle:
       icon: material/weather-night
       name: "Switch to dark mode"
   - media: "(prefers-color-scheme: dark)"
     scheme: slate
     primary: black
-    accent: black
+    accent: deep purple
     toggle:
       icon: material/weather-sunny
       name: "Switch to light mode"
   features:
+    - header.autohide
     - content.code.copy
     - content.code.annotate
     - navigation.indexes
+    - navigation.footer
+    - navigation.top
+    - navigation.tabs
 nav:
   - Home: index.md
+  - Installation: installation.md
   - User Guide: user_guide.md
-  - Configuration: configuration.md
-  - Evaluators:
-    - evaluators/index.md
-    - Amazon Bedrock:
-      - evaluators/bedrock/claude.md
-  - Targets:
-    - targets/index.md
-    - AWS:
-      - targets/aws/bedrock_agents.md
-      - targets/aws/bedrock_knowledgebases.md
-      - targets/aws/q_business.md
-      - targets/aws/sagemaker_endpoints.md
+  - Configuration:
+    - configuration.md
+    - Evaluators:
+      - evaluators/index.md
+      - evaluators/bedrock.md
+    - Targets:
+      - targets/index.md
+      - targets/bedrock_agents.md
+      - targets/bedrock_knowledgebases.md
+      - targets/q_business.md
+      - targets/sagemaker_endpoints.md
+      - targets/custom_targets.md
+    - Hooks: hooks.md
+  - CLI: cli.md
   - Reference:
-    - cli: reference/cli.md
     - conversation_handler: reference/conversation_handler.md
     - evaluator: reference/evaluator.md
     - hook: reference/hook.md
@@ -53,6 +63,9 @@ repo_url: https://github.com/awslabs/agent-evaluation
 markdown_extensions:
   - admonition
   - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
