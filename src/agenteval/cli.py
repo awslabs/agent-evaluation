@@ -62,7 +62,7 @@ def init(plan_dir: Optional[str]):
     "--num-threads",
     type=int,
     required=False,
-    help="Number of threads (and thus tests) to run concurrently. If unspecified, number of threads will equal the total number of tests.",
+    help="Number of threads (and thus tests) to run concurrently. If unspecified, number of threads will be capped at 45.",
 )
 @click.option(
     "--work-dir",

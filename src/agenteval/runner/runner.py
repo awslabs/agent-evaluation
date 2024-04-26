@@ -12,6 +12,9 @@ from rich.progress import Progress
 from agenteval.plan import Plan
 from agenteval.runner.summary import create_markdown_summary
 
+# Default max number of threads not exceeding Bedrock service quota:
+# https://docs.aws.amazon.com/bedrock/latest/userguide/quotas.html
+_DEFAULT_MAX_NUM_THREADS = 45
 logger = logging.getLogger(__name__)
 
 
@@ -29,7 +32,7 @@ class Runner:
         self.verbose = verbose
         self.num_threads = num_threads
         if not self.num_threads:
-            self.num_threads = self.num_tests
+            self.num_threads = min(self.num_tests, _DEFAULT_MAX_NUM_THREADS)
         self.results = {test.name: None for test in self.plan.tests}
         self.num_failed = 0
 
