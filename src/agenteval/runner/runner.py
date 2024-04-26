@@ -9,6 +9,7 @@ from typing import Optional
 
 from rich.progress import Progress
 
+from agenteval.defaults import MAX_NUM_THREADS
 from agenteval.plan import Plan
 from agenteval.runner.summary import create_markdown_summary
 
@@ -29,7 +30,7 @@ class Runner:
         self.verbose = verbose
         self.num_threads = num_threads
         if not self.num_threads:
-            self.num_threads = self.num_tests
+            self.num_threads = min(self.num_tests, MAX_NUM_THREADS)
         self.results = {test.name: None for test in self.plan.tests}
         self.num_failed = 0
 
