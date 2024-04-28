@@ -19,15 +19,17 @@ The principal must have the following permissions:
 ```yaml title="agenteval.yml"
 target:
   type: sagemaker-endpoint
-  endpoint_name:
+  endpoint_name: my-endpoint-name
   request_body:
-  input_path:
-  output_path:
-  custom_attributes:
-  target_model:
-  target_variant:
-  target_container_hostname:
-  inference_component_name:
+    input_text: None
+    temperature: 0.1
+  input_path: $.input_text
+  output_path: $.[0].generated_text
+  custom_attributes: my-attributes
+  target_model: my-model
+  target_variant: my-variant
+  target_container_hostname: my-hostname
+  inference_component_name: my-component-name
 ```
 
 `endpoint_name` _(string)_

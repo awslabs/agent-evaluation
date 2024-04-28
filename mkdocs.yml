@@ -40,24 +40,23 @@ nav:
     - configuration.md
     - Evaluators:
       - evaluators/index.md
-      - evaluators/bedrock.md
     - Targets:
       - targets/index.md
       - targets/bedrock_agents.md
-      - targets/bedrock_knowledgebases.md
+      - targets/bedrock_knowledge_bases.md
       - targets/q_business.md
       - targets/sagemaker_endpoints.md
       - targets/custom_targets.md
     - Hooks: hooks.md
   - CLI: cli.md
   - Reference:
-    - conversation_handler: reference/conversation_handler.md
+    - conversation: reference/conversation.md
     - evaluator: reference/evaluator.md
     - hook: reference/hook.md
     - target: reference/target.md
     - test: reference/test.md
     - test_result: reference/test_result.md
-    - trace_handler: reference/trace_handler.md
+    - trace: reference/trace.md
 
 repo_url: https://github.com/awslabs/agent-evaluation
 markdown_extensions:

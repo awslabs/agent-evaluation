@@ -72,11 +72,11 @@ Create a test plan that references `MyAPITarget`.
       type: my_api_target.MyAPITarget
       url: https://api.example.com/invoke
     tests:
-    - name: GetBacklogTickets
-      steps:
-      - Ask agent how many tickets are left in the backlog
-      expected_results:
-      - Agent responds with 15 tickets
+      get_backlog_tickets:
+        steps:
+        - Ask agent how many tickets are left in the backlog
+        expected_results:
+        - Agent responds with 15 tickets
     ```
 
 
@@ -130,9 +130,9 @@ Create a test plan that references `MyLangChainTarget`.
     target:
       type: my_langchain_target.MyLangChainTarget
     tests:
-    - name: CalculateTextLength
-      steps:
-      - "Ask agent to calculate the length of this text: Hello world!"
-      expected_results:
-      - The agent responds that the length is 12.
+      calculate_text_length:
+        steps:
+        - "Ask agent to calculate the length of this text: Hello world!"
+        expected_results:
+        - The agent responds that the length is 12.
     ```

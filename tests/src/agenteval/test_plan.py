@@ -1,89 +1,47 @@
 import os
 
 from src.agenteval import plan
-from src.agenteval.utils import aws
 import pytest
 
-
-@pytest.fixture
-def plan_fixture():
-    return plan.Plan(
-        evaluator_config=plan.EvaluatorConfig(type="bedrock-claude"),
-        target_config=plan.TargetConfig(
-            type="bedrock-agent",
-            bedrock_agent_id="test-agent-id",
-            bedrock_agent_alias_id="test-alias-id",
-        ),
-        tests=[
-            plan.Test(
-                name="my_test",
-                steps=["step 1", "step 2"],
-                expected_results=["result 1"],
-                max_turns=2,
-            )
-        ],
-    )
-
-
-@pytest.fixture
-def plan_with_custom_target_fixture():
-    return plan.Plan(
-        evaluator_config=plan.EvaluatorConfig(type="bedrock-claude"),
-        target_config=plan.TargetConfig(type="test.path.CustomTarget"),
-        tests=[
-            plan.Test(
-                name="my_test",
-                steps=["step 1", "step 2"],
-                expected_results=["result 1"],
-                max_turns=2,
-            )
-        ],
-    )
-
-
-class CustomTarget(plan.BaseTarget):
-    test_attribute: str
-
-    def invoke(self, prompt):
-        return "test response"
+test_config = {
+    "test_1": {
+        "steps": ["step 1, step 2, step 3"],
+        "expected_results": ["result 1", "result 2"],
+    },
+    "test_2": {
+        "steps": ["step 1"],
+        "expected_results": ["result 1"],
+        "max_turns": 5,
+    },
+    "test_3": {
+        "steps": ["step 1"],
+        "expected_results": ["result 1"],
+    },
+}
 
 
 class TestPlan:
-    def test_create_target_aws_type(self, mocker, plan_fixture):
-        mocker.patch.object(aws.boto3, "Session")
-
-        target_cls = plan_fixture.create_target()
-        assert isinstance(target_cls, plan.BedrockAgentTarget)
-
-    def test_create_target_custom_type(self, mocker, plan_with_custom_target_fixture):
-        mock_import_class = mocker.patch("src.agenteval.plan.import_class")
-
-        mock_import_class.return_value = CustomTarget
-
-        target = plan_with_custom_target_fixture.create_target()
-
-        assert isinstance(target, CustomTarget)
-
     def test_load_tests(self):
-        tests = plan.Plan._load_tests(
-            test_config=[
-                {
-                    "name": "test_1",
-                    "steps": ["step 1, step 2, step 3"],
-                    "expected_results": ["result 1", "result 2"],
-                },
-                {
-                    "name": "test_2",
-                    "steps": ["step 1"],
-                    "expected_results": ["result 1"],
-                    "max_turns": 5,
-                },
-            ]
-        )
+        tests = plan.Plan._load_tests(test_config=test_config, filter=None)
 
-        assert len(tests) == 2
+        assert len(tests) == 3
         assert tests[0].max_turns == plan.defaults.MAX_TURNS
         assert tests[1].max_turns == 5
+
+    def test_load_tests_filter(self):
+        tests = plan.Plan._load_tests(test_config=test_config, filter="test_2,test_3")
+        assert len(tests) == 2
+
+    @pytest.mark.parametrize(
+        "input,expected",
+        [
+            ("test_1", ["test_1"]),
+            ("test_1,test_2", ["test_1", "test_2"]),
+            ("test_1, test_2 ", ["test_1", "test_2"]),
+        ],
+    )
+    def test_parse_filter_test_names(self, input, expected):
+        assert expected == plan.Plan._parse_filter(input)
 
     def test_init_plan(self, tmp_path):
         plan.Plan.init_plan(tmp_path)

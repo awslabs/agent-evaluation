@@ -2,25 +2,31 @@
 
 ```yaml title="agenteval.yml"
 evaluator:
+  model: claude-3
 target:
+  type: bedrock-agent
+  bedrock_agent_id: string
+  bedrock_agent_alias_id: string
 tests:
-- name:
-  steps:
-  expected_results:
-  initial_prompt:
-  max_turns:
-  hook:
+  retrieve_missing_documents:
+    steps:
+    - Ask agent for a list of missing documents for claim-006.
+    expected_results:
+    - The agent returns a list of missing documents.
+    initial_prompt: Give me a list of missing documents for claim-006.
+    max_turns: 2
+    hook: path.to.MyHook
 ```
 
 `evaluator` _(map)_
 
-Refer to [Evaluators](evaluators/index.md) for the required configurations.
+Refer to [Evaluators](evaluators/index.md) for the available configurations.
 
 ---
 
 `target` _(map)_
 
-Refer to [Targets](targets/index.md) for the required configurations.
+Refer to [Targets](targets/index.md) for the available configurations.
 
 ---
 

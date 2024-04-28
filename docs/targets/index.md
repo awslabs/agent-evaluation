@@ -1,6 +1,6 @@
 # Targets
 
-A Target represents the agent you want to test.
+A target represents the agent you want to test.
 
 ---
 
@@ -8,10 +8,10 @@ A Target represents the agent you want to test.
 
 ```yaml title="agenteval.yml"
 target:
-  aws_profile:
-  aws_region:
-  endpoint_url:
-  max_retry:
+  aws_profile: my-profile
+  aws_region: us-west-2
+  endpoint_url: my-endpoint-url
+  max_retry: 10
 ```
 
 `aws_profile` _(string; optional)_
@@ -38,10 +38,10 @@ The maximum number of retry attempts. The default is `10`.
 
 ---
 
-## Built-in Targets
+## Built-in targets
 
 - [Agents for Amazon Bedrock](bedrock_agents.md)
-- [Knowledge bases for Amazon Bedrock](bedrock_knowledgebases.md)
+- [Knowledge bases for Amazon Bedrock](bedrock_knowledge_bases.md)
 - [Amazon Q for Business](q_business.md)
 - [Amazon SageMaker endpoints](sagemaker_endpoints.md)
 

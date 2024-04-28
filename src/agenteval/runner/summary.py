@@ -15,7 +15,7 @@ _TEMPLATE_FILE_NAME = "agenteval_summary.md.jinja"
 
 
 def create_markdown_summary(
-    work_dir: str, tests: list[Test], test_results: list[TestResult]
+    work_dir: str, tests: list[Test], test_results: list[TestResult], verbose: bool
 ):
     template = jinja_env.get_template(os.path.join(_TEMPLATE_ROOT, _TEMPLATE_FILE_NAME))
 
@@ -26,4 +26,5 @@ def create_markdown_summary(
     with open(summary_path, "w+") as f:
         f.write(rendered)
 
-    logger.info(f"Summary available at {summary_path}")
+    if verbose:
+        logger.info(f"Summary available at {summary_path}")
