@@ -46,6 +46,12 @@ def init(plan_dir: Optional[str]):
 
 @cli.command(help="Run test plan.")
 @click.option(
+    "--filter",
+    type=str,
+    required=False,
+    help="Specifies the test(s) to run. Multiple tests should be seperated using a comma. If unspecified, all tests from the test plan will be run.",
+)
+@click.option(
     "--plan-dir",
     type=str,
     required=False,
@@ -71,13 +77,14 @@ def init(plan_dir: Optional[str]):
     help="The directory where the test result and trace will be generated. If unspecified, then the current working directory is used.",
 )
 def run(
+    filter: Optional[str],
     plan_dir: Optional[str],
     verbose: bool,
     num_threads: Optional[int],
     work_dir: Optional[str],
 ):
     try:
-        plan = Plan.load(plan_dir)
+        plan = Plan.load(plan_dir, filter)
         if work_dir:
             validate_directory(work_dir)
         runner = Runner(

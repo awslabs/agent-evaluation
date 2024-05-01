@@ -11,6 +11,7 @@ omit = [
 profile = "black"
 skip = [
     "tests",
+    "__init__.py"
 ]
 
 [tool.black]

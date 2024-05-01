@@ -18,8 +18,8 @@ The principal must have the following permissions:
 ```yaml title="agenteval.yml"
 target:
   type: q-business
-  q_business_application_id:
-  q_business_user_id:
+  q_business_application_id: my-app-id
+  q_business_user_id: my-user-id
 ```
 
 `q_business_application_id` *(string)*

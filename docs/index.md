@@ -2,7 +2,7 @@
 
 Agent Evaluation is a generative AI-powered framework for testing virtual agents.
 
-Internally, Agent Evaluation implements an LLM agent ([Evaluator](evaluators/index.md)) that will orchestrate conversations with your own agent ([Target](targets/index.md)) and evaluate the responses during the conversation.
+Internally, Agent Evaluation implements an LLM agent ([evaluator](evaluators/index.md)) that will orchestrate conversations with your own agent ([target](targets/index.md)) and evaluate the responses during the conversation.
 
 ## Key features
 
@@ -23,7 +23,7 @@ Internally, Agent Evaluation implements an LLM agent ([Evaluator](evaluators/ind
 
     [:octicons-arrow-right-24: User Guide](user_guide.md#getting-started)
 
--   :material-target:{ .lg .middle } __Built-in Targets__
+-   :material-target:{ .lg .middle } __Built-in targets__
 
     ---
 

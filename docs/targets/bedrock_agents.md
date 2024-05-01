@@ -13,8 +13,8 @@ The principal must have the following permissions:
 ```yaml title="agenteval.yml"
 target:
   type: bedrock-agent
-  bedrock_agent_id:
-  bedrock_agent_alias_id:
+  bedrock_agent_id: my-agent-id
+  bedrock_agent_alias_id: my-alias-id
 ```
 
 `bedrock_agent_id` *(string)*
