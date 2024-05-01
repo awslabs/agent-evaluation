@@ -1,4 +1,5 @@
-from agenteval.targets import Boto3Target, TargetResponse
+from agenteval.target_response import TargetResponse
+from agenteval.targets import Boto3Target
 
 _SERVICE_NAME = "qbusiness"
 
