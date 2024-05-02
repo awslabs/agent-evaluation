@@ -4,6 +4,7 @@ theme:
   name: material
   icon:
     annotation: material/plus-circle-outline
+    repo: material/github
   logo: logo.png
   favicon: favicon.svg
   font:
@@ -57,8 +58,8 @@ nav:
     - test: reference/test.md
     - test_result: reference/test_result.md
     - trace: reference/trace.md
-
 repo_url: https://github.com/awslabs/agent-evaluation
+repo_name: awslabs/agent-evaluation
 markdown_extensions:
   - admonition
   - pymdownx.details
