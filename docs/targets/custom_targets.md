@@ -24,8 +24,11 @@ Once you have created your subclass, specify the module path to the Target.
 ```yaml title="agenteval.yml"
 target:
   type: path.to.my_custom_target.MyCustomTarget`
-  my_agent_parameter: "value" # will be passed as `kwargs` when initializing the Target.
+  my_agent_parameter: "value" # (1)
 ```
+
+1. This will be passed as `kwargs` when initializing the Target.
+
 
 !!! warning
     During a run, an instance of the Target will be created for each test in the test plan. We recommend avoiding testing Targets that load large models or vector stores into memory, as this can lead to a memory error. Consider deploying your agent and exposing it as a RESTful service.
