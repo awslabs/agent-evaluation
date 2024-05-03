@@ -75,6 +75,10 @@ markdown_extensions:
   - attr_list
   - md_in_html
   - mkdocs-click
+extra:
+  analytics:
+    provider: google
+    property: G-KEHF0ES7XR
 extra_css:
   - stylesheets/extra.css
 plugins:
