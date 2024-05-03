@@ -11,7 +11,7 @@ Agent Evaluation is a generative AI-powered framework for testing virtual agents
 
 Internally, Agent Evaluation implements an LLM agent (evaluator) that will orchestrate conversations with your own agent (target) and evaluate the responses during the conversation.
 
-## Key features
+## ✨ Key features
 
 - Built-in support for popular AWS services including [Amazon Bedrock](https://aws.amazon.com/bedrock/), [Amazon Q Business](https://aws.amazon.com/q/business/), and [Amazon SageMaker](https://aws.amazon.com/sagemaker/). You can also [bring your own agent](https://awslabs.github.io/agent-evaluation/targets/custom_targets/) to test using Agent Evaluation.
 - Orchestrate concurrent, multi-turn conversations with your agent while evaluating its responses.
@@ -22,7 +22,7 @@ Internally, Agent Evaluation implements an LLM agent (evaluator) that will orche
 
 To get started, please visit the full documentation [here](https://awslabs.github.io/agent-evaluation/). To contribute, please refer to [CONTRIBUTING.md](./CONTRIBUTING.md)
 
-## ✨ Contributors
+## 👏 Contributors
 
 Shout out to these awesome contributors:
 
