@@ -1,11 +1,12 @@
 # Amazon Q for Business
 
-Amazon Q is a fully managed, generative-AI powered assistant that you can configure to answer questions, provide summaries, generate content, and complete tasks based on data in your enterprise. For more information, visit the AWS documentation [here](https://docs.aws.amazon.com/amazonq/latest/business-use-dg/what-is.html).
+Amazon Q Business is a generative AI–powered assistant that can answer questions, provide summaries, generate content, and securely complete tasks based on data and information in your enterprise systems. For more information, visit the AWS documentation [here](https://docs.aws.amazon.com/amazonq/latest/business-use-dg/what-is.html).
 
 
 !!! warning
 
-    Amazon Q is in preview release and is subject to change.
+    This integration currently works only with applications that do not require AWS IAM Identity Center. Support for
+    IAM Identity Center-enabled applications will be available in a future release.
 
 ## Prerequisites
 

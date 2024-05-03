@@ -6,7 +6,7 @@ Internally, Agent Evaluation implements an LLM agent ([evaluator](evaluators/ind
 
 ## Key features
 
-- Built-in support for popular AWS services including [Amazon Bedrock](https://aws.amazon.com/bedrock/), [Amazon Q Business](https://aws.amazon.com/q/business/), and [Amazon SageMaker](https://aws.amazon.com/sagemaker/). You can also [bring their own agents](targets/custom_targets.md) to test using Agent Evaluation.
+- Built-in support for popular AWS services including [Amazon Bedrock](https://aws.amazon.com/bedrock/), [Amazon Q Business](https://aws.amazon.com/q/business/), and [Amazon SageMaker](https://aws.amazon.com/sagemaker/). You can also [bring your own agent](targets/custom_targets.md) to test using Agent Evaluation.
 - Orchestrate concurrent, multi-turn conversations with your agent while evaluating its responses.
 - Define [hooks](hooks.md) to perform additional tasks such as integration testing.
 - Can be incorporated into CI/CD pipelines to expedite the time to delivery while maintaining the stability of agents in production environments.
