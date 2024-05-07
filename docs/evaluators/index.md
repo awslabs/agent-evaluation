@@ -47,7 +47,7 @@ You can view the total number of input tokens processed and output tokens genera
 !!! note
     If you have purchased Provisioned Throughput model units for the `model` used to run evaluation, you can specify this resource using the `provisioned_throughput_arn` configuration.
 
-### Cost example
+### Example
 
 Let's use this [Amazon Bedrock agent](https://github.com/aws-samples/amazon-bedrock-workshop/tree/main/05_Agents/insurance_claims_agent/without_kb) as a target we want to test.
 
