@@ -9,7 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Convert the `q_business_user_id` configuration as optional to support applications that require AWS IAM Identity Center ([#56](https://github.com/awslabs/agent-evaluation/pull/56))
+- Changed `TargetResponse` to a top-level import ([#57](https://github.com/awslabs/agent-evaluation/pull/57))
 
+### Fixed
+- Documentation for creating custom targets ([#57](https://github.com/awslabs/agent-evaluation/pull/57))
 
 ## [0.1.0] - 2024-05-03
 
