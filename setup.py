@@ -4,11 +4,11 @@ from distutils.core import setup
 from setuptools import find_packages
 
 DIST_NAME = "agent-evaluation"
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 DESCRIPTION = "A generative AI-powered framework for testing virtual agents."
 AUTHOR = "Amazon Web Services"
 EMAIL = "agent-evaluation-oss-core-team@amazon.com"
-URL = "https://github.com/awslabs/agent-evaluation"
+URL = "https://awslabs.github.io/agent-evaluation/"
 PACKAGE_DIR = "src"
 REQUIRES_PYTHON = ">=3.9"
 PACKAGE_DATA = {
