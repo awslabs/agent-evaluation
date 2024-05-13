@@ -10,8 +10,9 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 from rich.logging import RichHandler
 
 from .hook import Hook
+from .target_response import TargetResponse
 
-__all__ = ["Hook"]
+__all__ = ["Hook", "TargetResponse"]
 __version__ = version("agent-evaluation")
 
 

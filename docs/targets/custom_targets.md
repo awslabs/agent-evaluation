@@ -3,7 +3,8 @@
 If you want to test an agent that is not natively supported, you can bring your own Target by defining a Python module containing a subclass of [BaseTarget](../reference/target.md#src.agenteval.targets.target.BaseTarget). The name of this module must contain the suffix `_target` (e.g. `my_custom_target`), and the subclass should implement the `invoke` method to invoke your agent.
 
 ```python title="my_custom_target.py"
-from agenteval.targets import BaseTarget, TargetResponse
+from agenteval.targets import BaseTarget
+from agenteval import TargetResponse
 from my_agent import MyAgent
 
 class MyCustomTarget(BaseTarget):
@@ -46,7 +47,8 @@ We will implement a custom Target that invokes an agent exposed as a REST API.
 
     import requests
 
-    from agenteval.targets import BaseTarget, TargetResponse
+    from agenteval.targets import BaseTarget
+    from agenteval import TargetResponse
 
 
     class MyAPITarget(BaseTarget):
@@ -69,8 +71,7 @@ Create a test plan that references `MyAPITarget`.
 
     ```yaml
     evaluator:
-      type: bedrock-claude
-      model: claude-sonnet
+      model: claude-3
     target:
       type: my_api_target.MyAPITarget
       url: https://api.example.com/invoke
@@ -95,7 +96,8 @@ We will create a simple [LangChain](https://python.langchain.com/docs/modules/ag
     from langchain import hub
     from langchain.agents import AgentExecutor, create_xml_agent
 
-    from agenteval.targets import BaseTarget, TargetResponse
+    from agenteval.targets import BaseTarget
+    from agenteval import TargetResponse
 
     llm = Bedrock(model_id="anthropic.claude-v2:1")
 
@@ -128,8 +130,7 @@ Create a test plan that references `MyLangChainTarget`.
 
     ```yaml
     evaluator:
-      type: bedrock-claude
-      model: claude-sonnet
+      model: claude-3
     target:
       type: my_langchain_target.MyLangChainTarget
     tests:
