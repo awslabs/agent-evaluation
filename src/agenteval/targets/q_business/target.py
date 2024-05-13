@@ -1,6 +1,6 @@
 from typing import Optional
 
-from agenteval.target_response import TargetResponse
+from agenteval import TargetResponse
 from agenteval.targets import Boto3Target
 
 _SERVICE_NAME = "qbusiness"
