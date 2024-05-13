@@ -71,8 +71,7 @@ Create a test plan that references `MyAPITarget`.
 
     ```yaml
     evaluator:
-      type: bedrock-claude
-      model: claude-sonnet
+      model: claude-3
     target:
       type: my_api_target.MyAPITarget
       url: https://api.example.com/invoke
@@ -131,8 +130,7 @@ Create a test plan that references `MyLangChainTarget`.
 
     ```yaml
     evaluator:
-      type: bedrock-claude
-      model: claude-sonnet
+      model: claude-3
     target:
       type: my_langchain_target.MyLangChainTarget
     tests:
