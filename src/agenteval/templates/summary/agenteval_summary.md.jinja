@@ -6,14 +6,14 @@ This document provides a summary of the tests executed by Agent Evaluation.
 ---
 ## Tests
 {% for test, result in zip(tests, results) -%}
-- [{% if result.success %}:green_circle:{% else %}:red_circle:{% endif %} {{ test.name }}](#{{ test.name | replace(' ', '-') }})
+- [{% if result.success %}🟢{% else %}🔴{% endif %} {{ test.name }}](#{{ test.name | replace(' ', '-') }})
 {% endfor %}
 
 ---
 
 
 {% for test, result in zip(tests, results) -%}
-## <a id={{ test.name | replace(' ', '-') }}></a>{% if result.success %}:green_circle:{% else %}:red_circle:{% endif %} {{ test.name }}
+## <a id={{ test.name | replace(' ', '-') }}></a>{% if result.success %}🟢{% else %}🔴{% endif %} {{ test.name }}
 
 **Steps**
 {% for step in test.steps -%}
