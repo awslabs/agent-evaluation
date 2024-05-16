@@ -1,23 +1,27 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import logging
 import os
+from enum import Enum
 from typing import Optional
 
 import click
 
 from agenteval.plan import Plan
-from agenteval.runner import Runner
-
-logger = logging.getLogger(__name__)
+from agenteval.plan.exceptions import TestFailureError
 
 
-def validate_directory(directory):
-    if not os.path.isdir(directory):
-        raise NotADirectoryError(f"{directory} is not a directory")
-    if not os.access(directory, os.R_OK) or not os.access(directory, os.W_OK):
-        raise PermissionError(f"No read/write permissions for {directory}")
+class ExitCode(Enum):
+    TESTS_FAILED = 1
+    PLAN_ALREADY_EXISTS = 2
+
+
+def validate_directory(ctx, param, value):
+    if value:
+        if not os.path.isdir(value):
+            raise click.BadParameter(f"{value} is not a directory")
+        if not os.access(value, os.R_OK) or not os.access(value, os.W_OK):
+            raise click.BadParameter(f"No read/write permissions for {value}")
 
 
 @click.group()
@@ -31,17 +35,13 @@ def cli():
     type=str,
     required=False,
     help="The destination directory for storing the test plan. If unspecified, then the test plan is saved to the current working directory.",
+    callback=validate_directory,
 )
 def init(plan_dir: Optional[str]):
-    if plan_dir:
-        validate_directory(plan_dir)
     try:
-        path = Plan.init_plan(plan_dir)
-        logger.info(f"[green]Test plan created at {path}")
-
-    except FileExistsError as e:
-        logger.error(f"[red]{e}")
-        exit(1)
+        Plan.init_plan(plan_dir)
+    except FileExistsError:
+        exit(ExitCode.PLAN_ALREADY_EXISTS.value)
 
 
 @cli.command(help="Run test plan.")
@@ -56,6 +56,7 @@ def init(plan_dir: Optional[str]):
     type=str,
     required=False,
     help="The directory where the test plan is stored. If unspecified, then the current working directory is used.",
+    callback=validate_directory,
 )
 @click.option(
     "--verbose",
@@ -75,6 +76,7 @@ def init(plan_dir: Optional[str]):
     type=str,
     required=False,
     help="The directory where the test result and trace will be generated. If unspecified, then the current working directory is used.",
+    callback=validate_directory,
 )
 def run(
     filter: Optional[str],
@@ -84,26 +86,10 @@ def run(
     work_dir: Optional[str],
 ):
     try:
-        plan = Plan.load(plan_dir, filter)
-        if work_dir:
-            validate_directory(work_dir)
-        runner = Runner(
-            plan,
-            verbose,
-            num_threads,
-            work_dir,
+        plan = Plan.load(plan_dir)
+        plan.run(
+            verbose=verbose, num_threads=num_threads, work_dir=work_dir, filter=filter
         )
-        num_failed = runner.run()
-        _num_failed_exit(num_failed)
 
-    except Exception as e:
-        _exception_exit(e)
-
-
-def _num_failed_exit(num_failed):
-    exit(1 if num_failed else 0)
-
-
-def _exception_exit(e):
-    logger.exception(f"Error running test: {e}")
-    exit(1)
+    except TestFailureError:
+        exit(ExitCode.TESTS_FAILED.value)

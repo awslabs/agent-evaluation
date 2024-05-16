@@ -8,8 +8,7 @@ from typing import Optional
 from agenteval.conversation import Conversation
 from agenteval.hook import Hook
 from agenteval.targets import BaseTarget
-from agenteval.test import Test
-from agenteval.test_result import TestResult
+from agenteval.test import Test, TestResult
 from agenteval.trace import Trace
 from agenteval.utils import create_boto3_client, import_class
 

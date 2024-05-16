@@ -1,8 +1,7 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from agenteval.test import Test
-from agenteval.test_result import TestResult
+from agenteval.test import Test, TestResult
 from agenteval.trace import Trace
 
 

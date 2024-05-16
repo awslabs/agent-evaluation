@@ -1,5 +1,3 @@
-from typing import Optional
-
 from pydantic import BaseModel
 
 from agenteval.evaluators import BaseEvaluator
@@ -15,13 +13,14 @@ _EVALUATOR_MAP = {
 class EvaluatorFactory(BaseModel):
     config: dict
 
-    def create(
-        self, test: Test, target: BaseTarget, work_dir: Optional[str]
-    ) -> BaseEvaluator:
-        evaluator_cls = _EVALUATOR_MAP[self.config["model"]]
+    def create(self, test: Test, target: BaseTarget, work_dir: str) -> BaseEvaluator:
+        evaluator_cls = self._get_evaluator_class()
         return evaluator_cls(
             test=test,
             target=target,
             work_dir=work_dir,
             **{k: v for k, v in self.config.items() if k != "model"}
         )
+
+    def _get_evaluator_class(self) -> type[BaseEvaluator]:
+        return _EVALUATOR_MAP[self.config["model"]]

@@ -10,7 +10,7 @@ from typing import Tuple
 from agenteval import jinja_env
 from agenteval.evaluators import BaseEvaluator
 from agenteval.evaluators.claude_3 import model_configs
-from agenteval.test_result import TestResult
+from agenteval.test import TestResult
 
 logger = logging.getLogger(__name__)
 
