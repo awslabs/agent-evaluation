@@ -13,6 +13,22 @@ _TEMPLATE_FILE_NAME = "agenteval_summary.md.jinja"
 def create_markdown_summary(
     work_dir: str, tests: list[Test], test_results: list[TestResult]
 ):
+    """
+    Create a Markdown summary of the test results.
+
+    This function uses a Jinja2 template to render a Markdown summary of the
+    provided tests and test results.
+
+    The summary is then written to a file in the specified working directory.
+
+    Args:
+        work_dir (str): The directory where the summary file will be created.
+        tests (list[Test]): A list of tests.
+        test_results (list[TestResult]): A list of test results.
+
+    Returns:
+        None
+    """
     template = jinja_env.get_template(os.path.join(_TEMPLATE_ROOT, _TEMPLATE_FILE_NAME))
     summary_path = os.path.join(work_dir, os.path.splitext(_TEMPLATE_FILE_NAME)[0])
 

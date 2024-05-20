@@ -15,11 +15,13 @@ class Conversation:
     """
 
     def __init__(self):
+        """
+        Initialize the conversation.
+        """
         self.messages = []
         self.turns = _START_TURN_COUNT
 
     def __iter__(self):
-        """Allow iteration over conversation messages."""
         return iter(self.messages)
 
     def add_turn(self, user_message: str, agent_response: str):

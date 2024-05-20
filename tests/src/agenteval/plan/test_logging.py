@@ -8,7 +8,7 @@ def test_log_run_start(caplog):
         (
             logging.logger.name,
             logging.logging.INFO,
-            "Starting 10 tests",
+            "Starting 10 test(s)",
         ),
         (
             logging.logger.name,

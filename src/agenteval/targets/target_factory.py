@@ -19,9 +19,22 @@ _TARGET_MAP = {
 
 
 class TargetFactory(BaseModel):
+    """A factory for creating instances of `BaseTarget` subclasses.
+
+    Attributes:
+        config: A dictionary containing the configuration parameters
+            needed to create a `BaseTarget` instance.
+    """
+
     config: dict
 
     def create(self) -> BaseTarget:
+        """Create an instance of the target class specified in the configuration.
+
+        Returns:
+            BaseTarget: An instance of the target class, with the configuration
+                parameters applied.
+        """
         target_cls = self._get_target_class()
 
         return target_cls(**{k: v for k, v in self.config.items() if k != "type"})

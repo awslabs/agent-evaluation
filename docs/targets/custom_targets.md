@@ -1,6 +1,8 @@
 # Custom Targets
 
-If you want to test an agent that is not natively supported, you can bring your own Target by defining a Python module containing a subclass of [BaseTarget](../reference/target.md#src.agenteval.targets.target.BaseTarget). The name of this module must contain the suffix `_target` (e.g. `my_custom_target`), and the subclass should implement the `invoke` method to invoke your agent.
+If you want to test an agent that is not natively supported, you can bring your own Target by defining a Python module containing a subclass of [BaseTarget](../reference/base_target.md#src.agenteval.targets.base_target.BaseTarget). The name of this module must contain the suffix `_target` (e.g. `my_custom_target`).
+
+The subclass should implement the `invoke` method to invoke your agent and return a [TargetResponse](../reference/target_response.md#src.agenteval.target_response.TargetResponse).
 
 ```python title="my_custom_target.py"
 from agenteval.targets import BaseTarget

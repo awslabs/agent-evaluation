@@ -46,10 +46,27 @@ logger = logging.getLogger(__name__)
 
 
 class Plan(BaseModel):
+    """Encapsulates the configurations for a test plan, which includes information
+    about the evaluator, the target, the tests to be executed, and various settings
+    for running the tests.
+
+    Attributes:
+        config: A dictionary containing the test plan configurations.
+    """
+
     config: dict
 
     @classmethod
-    def load(cls, plan_dir: Optional[str]) -> Plan:
+    def load(cls, plan_dir: Optional[str] = None) -> Plan:
+        """Loads the test plan configurations from YAML.
+
+        Args:
+            plan_dir (Optional[str]): The directory containing the test plan.
+                If `None`, the current working directory will be used.
+
+        Returns:
+            Plan: A `Plan` instance containing the loaded test plan configurations.
+        """
         plan_path = os.path.join(plan_dir or os.getcwd(), _PLAN_FILE_NAME)
         plan = cls._load_yaml(plan_path)
         return cls(config=plan)
@@ -60,7 +77,16 @@ class Plan(BaseModel):
             return yaml.safe_load(stream)
 
     @staticmethod
-    def init_plan(plan_dir: Optional[str]) -> str:
+    def init_plan(plan_dir: Optional[str] = None) -> str:
+        """Initializes a new test plan configuration YAML file.
+
+        Args:
+            plan_dir (Optional[str]): The directory where the YAML file will be stored.
+                If `None`, the current working directory will be used.
+
+        Returns:
+            str: The path to the YAML file.
+        """
         plan_path = os.path.join(plan_dir or os.getcwd(), _PLAN_FILE_NAME)
 
         # check if plan exists
@@ -74,6 +100,8 @@ class Plan(BaseModel):
 
         logger.info(f"[green]Test plan created at {plan_path}")
 
+        return plan_path
+
     @staticmethod
     def _resolve_num_threads(num_tests: int, num_threads: Optional[int]) -> int:
         return (
@@ -84,11 +112,22 @@ class Plan(BaseModel):
 
     def run(
         self,
-        verbose: bool,
-        num_threads: Optional[int],
-        work_dir: Optional[str],
-        filter: Optional[str],
+        verbose: bool = False,
+        num_threads: Optional[int] = None,
+        work_dir: Optional[str] = None,
+        filter: Optional[str] = None,
     ):
+        """Run the test plan.
+
+        Args:
+            verbose (bool): Whether to enable verbose logging.
+            num_threads (Optional[int]): Number of threads used to run tests concurrently.
+                If `None`, the thread count will be set to the number of tests (up to a maximum of `45` threads).
+            work_dir (Optional[str]): The directory where the test result and trace will be
+                generated. If `None`, the assets will be saved to the current working directory.
+            filter (Optional[str]): Specifies the test(s) to run, where multiple tests should be seperated using a comma.
+                If `None`, all tests will be run.
+        """
         self._setup_run(filter, work_dir, num_threads)
 
         log_run_start(verbose, self._num_tests, self._num_threads)

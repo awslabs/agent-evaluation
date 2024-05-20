@@ -2,9 +2,9 @@ You can specify hooks that run before and/or after evaluating a test. This is us
 
 To create your hooks, define a Python module containing a subclass of [Hook](reference/hook.md#src.agenteval.hook.Hook). The name of this module must contain the suffix `_hook` (e.g. `my_evaluation_hook`).
 
-- Implement the `pre_evaluate` method for a hook that runs *before* evaluation. In this method, you have access to the [Test](reference/test.md#src.agenteval.test.Test) and [Trace](reference/trace.md#src.agenteval.trace.Trace) via the `test` and `trace` arguments, respectively.
+- Implement the `pre_evaluate` method for a hook that runs *before* evaluation. In this method, you have access to the [Test](reference/test.md#src.agenteval.test.test.Test) and [Trace](reference/trace.md#src.agenteval.trace.Trace) via the `test` and `trace` arguments, respectively.
 
-- Implement the `post_evaluate` method for a hook that runs *after* evaluation,. Similar to the `pre_evaluate` method, you have access to the [Test](reference/test.md#src.agenteval.test.Test) and [Trace](reference/trace.md#src.agenteval.trace.Trace). You also have access to the [TestResult](reference/test_result.md#src.agenteval.test_result.TestResult) via the `test_result` argument. You may override the attributes of the `TestResult` if you plan to use this hook to perform additional testing, such as integration testing.
+- Implement the `post_evaluate` method for a hook that runs *after* evaluation,. Similar to the `pre_evaluate` method, you have access to the [Test](reference/test.md#src.agenteval.test.test.Test) and [Trace](reference/trace.md#src.agenteval.trace.Trace). You also have access to the [TestResult](reference/test_result.md#src.agenteval.test.test_result.TestResult) via the `test_result` argument. You may override the attributes of the `TestResult` if you plan to use this hook to perform additional testing, such as integration testing.
 
 
 ```python title="my_evaluation_hook.py"

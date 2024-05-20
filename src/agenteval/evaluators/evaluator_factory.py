@@ -14,9 +14,28 @@ _EVALUATOR_MAP = {
 
 
 class EvaluatorFactory(BaseModel):
+    """A factory for creating instances of `BaseEvaluator` subclasses.
+
+    Attributes:
+        config: A dictionary containing the configuration parameters
+            needed to create a `BaseEvaluator` instance.
+    """
+
     config: dict
 
     def create(self, test: Test, target: BaseTarget, work_dir: str) -> BaseEvaluator:
+        """Create an instance of the evaluator class specified in the configuration.
+
+        Args:
+            test (Test): The test case.
+            target (BaseTarget): The target agent being evaluated.
+            work_dir (str): The directory where the test result and trace will be
+                generated.
+
+        Returns:
+            BaseEvaluator: An instance of the evaluator class, with the configuration
+                parameters applied.
+        """
         evaluator_cls = self._get_evaluator_class()
         return evaluator_cls(
             test=test,

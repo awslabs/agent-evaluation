@@ -34,7 +34,7 @@ def cli():
     "--plan-dir",
     type=str,
     required=False,
-    help="The destination directory for storing the test plan. If unspecified, then the test plan is saved to the current working directory.",
+    help="The directory to store the test plan. If a directory is not provided, the test plan will be saved to the current working directory.",
     callback=validate_directory,
 )
 def init(plan_dir: Optional[str]):
@@ -49,13 +49,13 @@ def init(plan_dir: Optional[str]):
     "--filter",
     type=str,
     required=False,
-    help="Specifies the test(s) to run. Multiple tests should be seperated using a comma. If unspecified, all tests from the test plan will be run.",
+    help="Specifies the test(s) to run, where multiple tests should be seperated using a comma. If a filter is not provided, all tests will be run.",
 )
 @click.option(
     "--plan-dir",
     type=str,
     required=False,
-    help="The directory where the test plan is stored. If unspecified, then the current working directory is used.",
+    help="The directory where the test plan is stored. If a directory is not provided, the test plan will be read from the current working directory.",
     callback=validate_directory,
 )
 @click.option(
@@ -63,19 +63,19 @@ def init(plan_dir: Optional[str]):
     is_flag=True,
     type=bool,
     default=False,
-    help="Controls the verbosity of the terminal logs.",
+    help="Whether to enable verbose logging. Defaults to False.",
 )
 @click.option(
     "--num-threads",
     type=int,
     required=False,
-    help="Number of threads (and thus tests) to run concurrently. If unspecified, number of threads will be capped at 45.",
+    help="Number of threads used to run tests concurrently. If the number of threads is not provided, the thread count will be set to the number of tests (up to a maximum of 45 threads).",
 )
 @click.option(
     "--work-dir",
     type=str,
     required=False,
-    help="The directory where the test result and trace will be generated. If unspecified, then the current working directory is used.",
+    help="The directory where the test result and trace will be generated. If a directory is not provided, the assets will be saved to the current working directory.",
     callback=validate_directory,
 )
 def run(

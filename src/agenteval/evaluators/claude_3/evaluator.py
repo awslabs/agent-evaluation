@@ -54,10 +54,13 @@ class Results(StrEnum):
 
 
 class Claude3Evaluator(BaseEvaluator):
+    """An evaluator powered by Claude 3."""
+
     def __init__(
         self,
         **kwargs,
     ):
+        """Initialize the evaluator."""
         super().__init__(model_id=model_configs.MODEL_ID, **kwargs)
 
         self._prompt_template_map = {
@@ -201,6 +204,11 @@ class Claude3Evaluator(BaseEvaluator):
         return target_response.response
 
     def evaluate(self) -> TestResult:
+        """Conduct the test.
+
+        Returns:
+            TestResult
+        """
         success = False
         result = Results.MAX_TURNS_REACHED.value
         reasoning = ""

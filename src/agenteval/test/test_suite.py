@@ -12,10 +12,10 @@ from agenteval.test import Test
 
 
 class TestSuite(BaseModel):
-    """A collection of tests to run.
+    """A collection of tests to be executed.
 
     Attributes:
-        tests: list of tests.
+        tests: A list of tests.
     """
 
     tests: list[Test]
@@ -42,8 +42,17 @@ class TestSuite(BaseModel):
         return len(self.tests)
 
     @classmethod
-    def load(cls, config: dict[str, dict], filter: Optional[str]):
-        """Loads a `TestSuite` from a list of test configurations and an optional filter."""
+    def load(cls, config: dict[str, dict], filter: Optional[str]) -> TestSuite:
+        """Loads a `TestSuite` from a list of test configurations and an optional filter.
+
+        Args:
+            config (dict[str, dict]): A dictionary of test configurations, where
+                the keys are the test names and the values are the test cases as dictionaries.
+            filter (Optional[str]): A filter string to apply when loading the tests.
+
+        Returns:
+            TestSuite: A `TestSuite` instance containing the loaded tests.
+        """
         return cls(tests=TestSuite._load_tests(config, filter))
 
     @staticmethod

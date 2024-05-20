@@ -3,6 +3,8 @@
 
 
 class TestFailureError(Exception):
+    """An exception raised when one or more tests have failed."""
+
     # do not collect as a pytest
     __test__ = False
 
