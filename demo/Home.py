@@ -22,7 +22,7 @@ if not os.path.exists(plan_dir):
     os.mkdir(plan_dir)
 if StateKeyEnum.PLAN_DIR not in st.session_state:
     st.session_state[StateKeyEnum.PLAN_DIR] = plan_dir
-plan_path = os.path.join(plan_dir, "agenteval.yml")
+plan_path = os.path.join(plan_dir, "workdir/plan/agenteval.yml")
 if StateKeyEnum.PLAN_PATH not in st.session_state:
     st.session_state[StateKeyEnum.PLAN_PATH] = plan_path
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "static")
