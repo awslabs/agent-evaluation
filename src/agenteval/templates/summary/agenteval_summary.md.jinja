@@ -5,14 +5,15 @@ This document provides a summary of the tests executed by Agent Evaluation.
 > :warning: This tool utilizes generative AI to assess virtual agents and its evaluations may contain errors. **Please thoroughly examine the results below prior to deciding whether to implement an agent.**
 ---
 ## Metrics
-**Pass Rate** = {{ metrics.pass_rate }}
+
+**Pass Rate** = {{ metrics.pass_rate }} %
+
 ---
 ## Tests
 {% for test, result in zip(tests, results) -%}
 - [{% if result.success %}🟢{% else %}🔴{% endif %} {{ test.name }}](#{{ test.name | replace(' ', '-') }})
 {% endfor %}
 
-####
 ---
 
 {% for test, result in zip(tests, results) -%}

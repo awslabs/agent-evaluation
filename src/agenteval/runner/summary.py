@@ -38,4 +38,4 @@ def calculate_pass_rate_metric(tests: list[Test], test_results: list[TestResult]
     for test, result in zip(tests, test_results):
         if result.success:
             pass_rate += 1
-    return pass_rate / len(tests)
+    return (pass_rate / len(tests)) * 100
