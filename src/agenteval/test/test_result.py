@@ -13,7 +13,7 @@ class TestResult(BaseModel, arbitrary_types_allowed=True):
         test_name: Name of the test.
         result: Description of the test result.
         reasoning: The rationale for the test result.
-        success: `True` if the test passed, otherwise `False`.
+        passed: `True` if the test passed, otherwise `False`.
         conversation: Captures the interaction between a user and an agent.
     """
 
@@ -23,5 +23,5 @@ class TestResult(BaseModel, arbitrary_types_allowed=True):
     test_name: str
     result: str
     reasoning: str
-    success: bool
+    passed: bool
     conversation: Conversation

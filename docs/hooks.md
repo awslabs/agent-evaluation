@@ -81,7 +81,7 @@ In this example, we will test an agent that can make dinner reservations. In add
 
         # override the test result based on query result 
         if not row:
-          test_result.success = False
+          test_result.passed = False
           test_result.result = "Integration test failed"
           test_result.reasoning = "Record was not inserted into the database"
     ```

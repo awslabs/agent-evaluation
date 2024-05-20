@@ -209,7 +209,7 @@ class Claude3Evaluator(BaseEvaluator):
         Returns:
             TestResult
         """
-        success = False
+        passed = False
         result = Results.MAX_TURNS_REACHED.value
         reasoning = ""
 
@@ -239,13 +239,13 @@ class Claude3Evaluator(BaseEvaluator):
                     result = Results.NOT_ALL_EXPECTED_RESULTS_OBSERVED.value
                 else:
                     result = Results.ALL_EXPECTED_RESULTS_OBSERVED.value
-                    success = True
+                    passed = True
 
                 break
 
         return TestResult(
             test_name=self.test.name,
-            success=success,
+            passed=passed,
             result=result,
             reasoning=reasoning,
             conversation=self.conversation,
