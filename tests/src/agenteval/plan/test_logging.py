@@ -21,10 +21,10 @@ def test_log_run_start(caplog):
 def test_log_run_end(caplog, mocker):
     results = {
         "test_1": mocker.MagicMock(
-            spec=["success", "test_name"], test_name="test_1", success=True
+            spec=["success", "test_name"], test_name="test_1", passed=True
         ),
         "test_2": mocker.MagicMock(
-            spec=["success", "test_name"], test_name="test_2", success=True
+            spec=["success", "test_name"], test_name="test_2", passed=True
         ),
     }
 
@@ -67,10 +67,10 @@ def test_log_run_end(caplog, mocker):
 def test_log_run_end_with_failed_test(caplog, mocker):
     results = {
         "test_1": mocker.MagicMock(
-            spec=["success", "test_name"], test_name="test_1", success=True
+            spec=["success", "test_name"], test_name="test_1", passed=True
         ),
         "test_2": mocker.MagicMock(
-            spec=["success", "test_name"], test_name="test_2", success=False
+            spec=["success", "test_name"], test_name="test_2", passed=False
         ),
     }
 
