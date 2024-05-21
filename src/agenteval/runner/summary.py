@@ -11,8 +11,7 @@ from agenteval.test_result import TestResult
 logger = logging.getLogger(__name__)
 
 _TEMPLATE_ROOT = "summary"
-_TEMPLATE_FILE_NAME = "agenteval_summary." \
-                      "md.jinja"
+_TEMPLATE_FILE_NAME = "agenteval_summary." "md.jinja"
 
 
 def create_markdown_summary(
@@ -24,7 +23,9 @@ def create_markdown_summary(
 
     metrics = {"pass_rate": calculate_pass_rate_metric(tests, test_results)}
 
-    rendered = template.render(tests=tests, results=test_results, zip=zip, metrics=metrics)
+    rendered = template.render(
+        tests=tests, results=test_results, zip=zip, metrics=metrics
+    )
 
     with open(summary_path, "w+") as f:
         f.write(rendered)
