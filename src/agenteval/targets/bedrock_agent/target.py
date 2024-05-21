@@ -3,8 +3,7 @@
 
 import uuid
 
-from agenteval import TargetResponse
-from agenteval.targets import Boto3Target
+from agenteval.targets import Boto3Target, TargetResponse
 
 _SERVICE_NAME = "bedrock-agent-runtime"
 

@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from agenteval import TargetResponse
+from agenteval.targets import TargetResponse
 
 
 class BaseTarget(ABC):

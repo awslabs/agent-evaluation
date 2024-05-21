@@ -6,8 +6,7 @@ from typing import Optional
 
 from jsonpath_ng import parse
 
-from agenteval import TargetResponse
-from agenteval.targets import Boto3Target
+from agenteval.targets import Boto3Target, TargetResponse
 
 _SERVICE_NAME = "sagemaker-runtime"
 _CONTENT_TYPE = "application/json"
