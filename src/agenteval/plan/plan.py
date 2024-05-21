@@ -152,7 +152,11 @@ class Plan(BaseModel):
         )
 
         create_markdown_summary(
-            self._work_dir, self._test_suite.tests, list(self._results.values())
+            self._work_dir,
+            self._pass_count,
+            self._num_tests,
+            self._test_suite.tests,
+            list(self._results.values()),
         )
 
         if fail_count:

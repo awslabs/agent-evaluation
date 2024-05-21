@@ -10,7 +10,7 @@ def test_create_markdown_summary(mocker):
     )
     mock_write_summary = mocker.patch.object(summary, "_write_summary")
 
-    summary.create_markdown_summary("test-work-dir", [], [])
+    summary.create_markdown_summary("test-work-dir", 10, 10, [], [])
 
     mock_get_template.assert_called_once_with(
         os.path.join(summary._TEMPLATE_ROOT, summary._TEMPLATE_FILE_NAME)
