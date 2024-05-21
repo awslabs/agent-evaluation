@@ -46,7 +46,7 @@ def calculate_pass_rate_metric(
 ) -> float:
     pass_rate = 0
     for test, result in zip(tests, test_results):
-        if result.success:
+        if result.passed:
             pass_rate += 1
     return (pass_rate / len(tests)) * 100
 

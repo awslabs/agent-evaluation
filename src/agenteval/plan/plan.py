@@ -197,7 +197,7 @@ class Plan(BaseModel):
         result = evaluator.run()
 
         with self._lock:
-            if result.success is True:
+            if result.passed is True:
                 self._pass_count += 1
             self._results[test.name] = result
             self._evaluator_input_token_counts.append(evaluator.input_token_count)

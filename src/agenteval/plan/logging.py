@@ -31,7 +31,7 @@ def log_run_end(
 
     if verbose:
         for _, result in results.items():
-            if result.success:
+            if result.passed:
                 logger.info(f"[bold green]{result.test_name}...PASSED")
             else:
                 logger.error(f"[bold red]{result.test_name}...FAILED")
