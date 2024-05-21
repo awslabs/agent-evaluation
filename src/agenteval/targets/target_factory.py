@@ -14,7 +14,7 @@ _TARGET_MAP = {
     "bedrock-agent": BedrockAgentTarget,
     "q-business": QBusinessTarget,
     "sagemaker-endpoint": SageMakerEndpointTarget,
-    "bedrock-knowledgebase": BedrockKnowledgeBaseTarget,
+    "bedrock-knowledge-base": BedrockKnowledgeBaseTarget,
 }
 
 
