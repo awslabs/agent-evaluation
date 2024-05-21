@@ -34,7 +34,9 @@ def create_markdown_summary(
         logger.info(f"Summary available at {summary_path}")
 
 
-def calculate_pass_rate_metric(tests: list[Test], test_results: list[TestResult]):
+def calculate_pass_rate_metric(
+    tests: list[Test], test_results: list[TestResult]
+) -> float:
     pass_rate = 0
     for test, result in zip(tests, test_results):
         if result.success:
