@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Added pass rate metric to summary ([#60](https://github.com/awslabs/agent-evaluation/pull/60))
+
+### Changed
+- Renamed `TestResult.success` to `TestResult.passed` ([#62](https://github.com/awslabs/agent-evaluation/pull/62))
+- Moved `agenteval.TargetResponse` to `agenteval.targets.TargetResponse`. Documentation for creating custom targets also updated to reflect this change ([#62](https://github.com/awslabs/agent-evaluation/pull/62))
+- Renamed the target config `type` from `bedrock-knowledgebase` to `bedrock-knowledge-base` ([#62](https://github.com/awslabs/agent-evaluation/pull/62))
+
 ## [0.2.0] - 2024-05-13
 
 ### Changed

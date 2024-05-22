@@ -1,9 +1,10 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 from typing import Optional
 
 from agenteval.targets import BaseTarget
 from agenteval.utils import create_boto3_client
-
-_DEFAULT_MAX_RETRY = 10
 
 
 class Boto3Target(BaseTarget):
@@ -19,17 +20,17 @@ class Boto3Target(BaseTarget):
         aws_profile: Optional[str] = None,
         aws_region: Optional[str] = None,
         endpoint_url: Optional[str] = None,
-        max_retry: int = _DEFAULT_MAX_RETRY,
+        max_retry: int = 10,
     ):
         """
         Initialize the AWS target.
 
         Args:
             boto3_service_name (str): The `boto3` service name (e.g `"bedrock-agent-runtime"`).
-            aws_profile (str, optional): The AWS profile name.
-            aws_region (str, optional): The AWS region.
-            endpoint_url (str, optional): The endpoint URL for the AWS service.
-            max_retry (int, optional): The maximum number of retry attempts.
+            aws_profile (Optional[str]): The AWS profile name.
+            aws_region (Optional[str]): The AWS region.
+            endpoint_url (Optional[str]): The endpoint URL for the AWS service.
+            max_retry (int): The maximum number of retry attempts.
         """
 
         self.boto3_client = create_boto3_client(

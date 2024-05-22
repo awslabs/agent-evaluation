@@ -1,3 +1,6 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 from pydantic import BaseModel
 
 from agenteval.targets import BaseTarget
@@ -11,14 +14,27 @@ _TARGET_MAP = {
     "bedrock-agent": BedrockAgentTarget,
     "q-business": QBusinessTarget,
     "sagemaker-endpoint": SageMakerEndpointTarget,
-    "bedrock-knowledgebase": BedrockKnowledgeBaseTarget,
+    "bedrock-knowledge-base": BedrockKnowledgeBaseTarget,
 }
 
 
 class TargetFactory(BaseModel):
+    """A factory for creating instances of `BaseTarget` subclasses.
+
+    Attributes:
+        config: A dictionary containing the configuration parameters
+            needed to create a `BaseTarget` instance.
+    """
+
     config: dict
 
     def create(self) -> BaseTarget:
+        """Create an instance of the target class specified in the configuration.
+
+        Returns:
+            BaseTarget: An instance of the target class, with the configuration
+                parameters applied.
+        """
         target_cls = self._get_target_class()
 
         return target_cls(**{k: v for k, v in self.config.items() if k != "type"})

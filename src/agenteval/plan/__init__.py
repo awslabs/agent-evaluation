@@ -1,6 +1,6 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from .runner import Runner
+from .plan import Plan
 
-__all__ = ["Runner"]
+__all__ = ["Plan"]

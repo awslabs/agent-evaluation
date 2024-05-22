@@ -11,7 +11,9 @@ _TRACE_DIR = "agenteval_traces"
 
 
 class Trace:
-    """Captures steps during evaluation.
+    """A context manager which captures steps taken during evaluation.
+
+    Once the context manager exits, the trace is dumped to a JSON file.
 
     Attributes:
         test_name (str): Name of the test.
@@ -27,7 +29,8 @@ class Trace:
         Initialize the trace handler.
 
         Args:
-            test_name (str): Name of the trace
+            test_name (str): Name of the test.
+            work_dir (str): Directory to store the trace.
         """
         self.test_name = test_name
         self.trace_dir = os.path.join(work_dir, _TRACE_DIR)
@@ -44,8 +47,6 @@ class Trace:
         self._dump_trace()
 
     def _dump_trace(self):
-        """Dump the trace to a JSON file."""
-
         os.makedirs(self.trace_dir, exist_ok=True)
 
         with open(os.path.join(self.trace_dir, f"{self.test_name}.json"), "w") as f:
@@ -63,7 +64,7 @@ class Trace:
         """Add a step to the trace.
 
         Args:
-            step_name (str, optional): The name of the step. Defaults to
+            step_name (Optional[str]): The name of the step. Defaults to
                 the name of the caller function
         """
         step_name = step_name or inspect.stack()[1].function

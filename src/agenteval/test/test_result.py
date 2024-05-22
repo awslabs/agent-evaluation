@@ -7,21 +7,21 @@ from agenteval.conversation import Conversation
 
 
 class TestResult(BaseModel, arbitrary_types_allowed=True):
-    """The result of a test.
+    """The test result.
 
     Attributes:
         test_name: Name of the test.
         result: Description of the test result.
         reasoning: The rationale for the test result.
-        success: `True` if the test passed, otherwise `False`.
+        passed: `True` if the test passed, otherwise `False`.
         conversation: Captures the interaction between a user and an agent.
     """
 
-    # do not collect as a test
+    # do not collect as a pytest
     __test__ = False
 
     test_name: str
     result: str
     reasoning: str
-    success: bool
+    passed: bool
     conversation: Conversation

@@ -1,23 +1,27 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import logging
 import os
+from enum import Enum
 from typing import Optional
 
 import click
 
 from agenteval.plan import Plan
-from agenteval.runner import Runner
-
-logger = logging.getLogger(__name__)
+from agenteval.plan.exceptions import TestFailureError
 
 
-def validate_directory(directory):
-    if not os.path.isdir(directory):
-        raise NotADirectoryError(f"{directory} is not a directory")
-    if not os.access(directory, os.R_OK) or not os.access(directory, os.W_OK):
-        raise PermissionError(f"No read/write permissions for {directory}")
+class ExitCode(Enum):
+    TESTS_FAILED = 1
+    PLAN_ALREADY_EXISTS = 2
+
+
+def validate_directory(ctx, param, value):
+    if value:
+        if not os.path.isdir(value):
+            raise click.BadParameter(f"{value} is not a directory")
+        if not os.access(value, os.R_OK) or not os.access(value, os.W_OK):
+            raise click.BadParameter(f"No read/write permissions for {value}")
 
 
 @click.group()
@@ -30,18 +34,14 @@ def cli():
     "--plan-dir",
     type=str,
     required=False,
-    help="The destination directory for storing the test plan. If unspecified, then the test plan is saved to the current working directory.",
+    help="The directory to store the test plan. If a directory is not provided, the test plan will be saved to the current working directory.",
+    callback=validate_directory,
 )
 def init(plan_dir: Optional[str]):
-    if plan_dir:
-        validate_directory(plan_dir)
     try:
-        path = Plan.init_plan(plan_dir)
-        logger.info(f"[green]Test plan created at {path}")
-
-    except FileExistsError as e:
-        logger.error(f"[red]{e}")
-        exit(1)
+        Plan.init_plan(plan_dir)
+    except FileExistsError:
+        exit(ExitCode.PLAN_ALREADY_EXISTS.value)
 
 
 @cli.command(help="Run test plan.")
@@ -49,32 +49,34 @@ def init(plan_dir: Optional[str]):
     "--filter",
     type=str,
     required=False,
-    help="Specifies the test(s) to run. Multiple tests should be seperated using a comma. If unspecified, all tests from the test plan will be run.",
+    help="Specifies the test(s) to run, where multiple tests should be seperated using a comma. If a filter is not provided, all tests will be run.",
 )
 @click.option(
     "--plan-dir",
     type=str,
     required=False,
-    help="The directory where the test plan is stored. If unspecified, then the current working directory is used.",
+    help="The directory where the test plan is stored. If a directory is not provided, the test plan will be read from the current working directory.",
+    callback=validate_directory,
 )
 @click.option(
     "--verbose",
     is_flag=True,
     type=bool,
     default=False,
-    help="Controls the verbosity of the terminal logs.",
+    help="Whether to enable verbose logging. Defaults to False.",
 )
 @click.option(
     "--num-threads",
     type=int,
     required=False,
-    help="Number of threads (and thus tests) to run concurrently. If unspecified, number of threads will be capped at 45.",
+    help="Number of threads used to run tests concurrently. If the number of threads is not provided, the thread count will be set to the number of tests (up to a maximum of 45 threads).",
 )
 @click.option(
     "--work-dir",
     type=str,
     required=False,
-    help="The directory where the test result and trace will be generated. If unspecified, then the current working directory is used.",
+    help="The directory where the test result and trace will be generated. If a directory is not provided, the assets will be saved to the current working directory.",
+    callback=validate_directory,
 )
 def run(
     filter: Optional[str],
@@ -84,26 +86,10 @@ def run(
     work_dir: Optional[str],
 ):
     try:
-        plan = Plan.load(plan_dir, filter)
-        if work_dir:
-            validate_directory(work_dir)
-        runner = Runner(
-            plan,
-            verbose,
-            num_threads,
-            work_dir,
+        plan = Plan.load(plan_dir)
+        plan.run(
+            verbose=verbose, num_threads=num_threads, work_dir=work_dir, filter=filter
         )
-        num_failed = runner.run()
-        _num_failed_exit(num_failed)
 
-    except Exception as e:
-        _exception_exit(e)
-
-
-def _num_failed_exit(num_failed):
-    exit(1 if num_failed else 0)
-
-
-def _exception_exit(e):
-    logger.exception(f"Error running test: {e}")
-    exit(1)
+    except TestFailureError:
+        exit(ExitCode.TESTS_FAILED.value)

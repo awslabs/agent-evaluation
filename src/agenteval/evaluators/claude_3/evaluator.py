@@ -10,7 +10,7 @@ from typing import Tuple
 from agenteval import jinja_env
 from agenteval.evaluators import BaseEvaluator
 from agenteval.evaluators.claude_3 import model_configs
-from agenteval.test_result import TestResult
+from agenteval.test import TestResult
 
 logger = logging.getLogger(__name__)
 
@@ -54,10 +54,13 @@ class Results(StrEnum):
 
 
 class Claude3Evaluator(BaseEvaluator):
+    """An evaluator powered by Claude 3."""
+
     def __init__(
         self,
         **kwargs,
     ):
+        """Initialize the evaluator."""
         super().__init__(model_id=model_configs.MODEL_ID, **kwargs)
 
         self._prompt_template_map = {
@@ -201,7 +204,12 @@ class Claude3Evaluator(BaseEvaluator):
         return target_response.response
 
     def evaluate(self) -> TestResult:
-        success = False
+        """Conduct the test.
+
+        Returns:
+            TestResult
+        """
+        passed = False
         result = Results.MAX_TURNS_REACHED.value
         reasoning = ""
 
@@ -231,13 +239,13 @@ class Claude3Evaluator(BaseEvaluator):
                     result = Results.NOT_ALL_EXPECTED_RESULTS_OBSERVED.value
                 else:
                     result = Results.ALL_EXPECTED_RESULTS_OBSERVED.value
-                    success = True
+                    passed = True
 
                 break
 
         return TestResult(
             test_name=self.test.name,
-            success=success,
+            passed=passed,
             result=result,
             reasoning=reasoning,
             conversation=self.conversation,

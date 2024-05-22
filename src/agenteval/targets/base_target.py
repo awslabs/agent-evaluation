@@ -5,23 +5,20 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from agenteval import TargetResponse
+from agenteval.targets import TargetResponse
 
 
 class BaseTarget(ABC):
-    """The `BaseTarget` abstract base class defines the common interface for target
-    classes.
-    """
+    """Defines the common interface for target classes."""
 
     @abstractmethod
     def invoke(self, prompt: str) -> TargetResponse:
-        """Invoke the target with a prompt and return a response as a string.
+        """Invoke the target with a prompt.
 
         Args:
-            prompt: The prompt string to pass to the target.
+            prompt (str): The prompt as a string.
 
         Returns:
-            A TargetResponse object containing the target's response string and
-            any trace data (if applicable).
+            TargetResponse
         """
         pass

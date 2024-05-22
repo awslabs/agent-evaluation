@@ -8,12 +8,10 @@ from typing import Optional
 from agenteval.conversation import Conversation
 from agenteval.hook import Hook
 from agenteval.targets import BaseTarget
-from agenteval.test import Test
-from agenteval.test_result import TestResult
+from agenteval.test import Test, TestResult
 from agenteval.trace import Trace
 from agenteval.utils import create_boto3_client, import_class
 
-_DEFAULT_MAX_RETRY = 10
 _BOTO3_SERVICE_NAME = "bedrock-runtime"
 
 
@@ -44,20 +42,21 @@ class BaseEvaluator(ABC):
         aws_profile: Optional[str] = None,
         aws_region: Optional[str] = None,
         endpoint_url: Optional[str] = None,
-        max_retry: int = _DEFAULT_MAX_RETRY,
+        max_retry: int = 10,
     ):
-        """Initialize the evaluator instance for a given `Test` and `Target`.
+        """Initialize the evaluator.
 
         Args:
             test (Test): The test case.
             target (BaseTarget): The target agent being evaluated.
-            work_dir (str): The work directory.
+            work_dir (str): The directory where the test result and trace will be
+                generated.
             model_id (str): The ID of the Bedrock model used to run evaluation.
-            provisioned_throughput_arn (str, optional): The ARN of the provisioned throughput.
-            aws_profile (str, optional): The AWS profile name.
-            aws_region (str, optional): The AWS region.
-            endpoint_url (str, optional): The endpoint URL for the AWS service.
-            max_retry (int, optional): The maximum number of retry attempts.
+            provisioned_throughput_arn (Optional[str]): The ARN of the provisioned throughput.
+            aws_profile (Optional[str]): The AWS profile name.
+            aws_region (Optional[str]): The AWS region.
+            endpoint_url (Optional[str]): The endpoint URL for the AWS service.
+            max_retry (int): The maximum number of retry attempts.
         """
         self.test = test
         self.target = target
@@ -77,10 +76,10 @@ class BaseEvaluator(ABC):
 
     @abstractmethod
     def evaluate(self) -> TestResult:
-        """Conduct a test.
+        """Conduct the test.
 
         Returns:
-            TestResult: The result of the test.
+            TestResult
         """
         pass
 
@@ -125,6 +124,9 @@ class BaseEvaluator(ABC):
         """
         Run the evaluator within a trace context manager and run hooks
         if provided.
+
+        Returns:
+            TestResult
         """
 
         hook_cls = self._get_hook_cls(self.test.hook)
