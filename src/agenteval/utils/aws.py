@@ -21,10 +21,10 @@ def create_boto3_client(
 
     Args:
         boto3_service_name (str): The `boto3` service name (e.g `"bedrock-runtime"`).
-        aws_profile (str, optional): The AWS profile name.
-        aws_region (str, optional): The AWS region.
-        endpoint_url (str, optional): The endpoint URL for the AWS service.
-        max_retry (int, optional): The maximum number of retry attempts.
+        aws_profile (Optional[str]): The AWS profile name.
+        aws_region (Optional[str]): The AWS region.
+        endpoint_url (Optional[str]): The endpoint URL for the AWS service.
+        max_retry (int): The maximum number of retry attempts.
 
     Returns:
         BaseClient

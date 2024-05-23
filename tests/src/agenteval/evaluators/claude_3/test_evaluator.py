@@ -94,7 +94,7 @@ class TestClaude3:
             ["test_element_name", "thinking"],
         )
 
-    def test_run_single_turn_success(self, mocker, evaluator_fixture):
+    def test_run_single_turn_pass(self, mocker, evaluator_fixture):
         mocker.patch.object(evaluator_fixture, "_invoke_target")
 
         mock_generate_test_status = mocker.patch.object(
@@ -114,9 +114,9 @@ class TestClaude3:
 
         result = evaluator_fixture.evaluate()
 
-        assert result.success is True
+        assert result.passed is True
 
-    def test_run_single_turn_initial_prompt_success(self, mocker, evaluator_fixture):
+    def test_run_single_turn_initial_prompt_pass(self, mocker, evaluator_fixture):
         evaluator_fixture.test.initial_prompt = None
 
         mock_generate_initial_prompt = mocker.patch.object(
@@ -143,10 +143,10 @@ class TestClaude3:
 
         result = evaluator_fixture.evaluate()
 
-        assert result.success is True
+        assert result.passed is True
         assert mock_generate_initial_prompt.call_count == 1
 
-    def test_run_multi_turn_success(self, mocker, evaluator_fixture):
+    def test_run_multi_turn_pass(self, mocker, evaluator_fixture):
         mocker.patch.object(evaluator_fixture, "_invoke_target")
 
         mock_generate_user_response = mocker.patch.object(
@@ -172,7 +172,7 @@ class TestClaude3:
 
         result = evaluator_fixture.evaluate()
 
-        assert result.success is True
+        assert result.passed is True
         assert mock_generate_test_status.call_count == 2
         assert mock_generate_user_response.call_count == 1
 
@@ -194,5 +194,5 @@ class TestClaude3:
 
         result = evaluator_fixture.evaluate()
 
-        assert result.success is False
+        assert result.passed is False
         assert mock_generate_user_response.call_count == 1

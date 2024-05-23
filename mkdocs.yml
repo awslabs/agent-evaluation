@@ -52,13 +52,12 @@ nav:
     - Hooks: hooks.md
   - CLI: cli.md
   - Reference:
-    - conversation: reference/conversation.md
-    - evaluator: reference/evaluator.md
-    - hook: reference/hook.md
-    - target: reference/target.md
-    - test: reference/test.md
-    - test_result: reference/test_result.md
-    - trace: reference/trace.md
+    - BaseTarget: reference/base_target.md
+    - Hook: reference/hook.md
+    - TargetResponse: reference/target_response.md
+    - Test: reference/test.md
+    - TestResult: reference/test_result.md
+    - Trace: reference/trace.md
 repo_url: https://github.com/awslabs/agent-evaluation
 repo_name: awslabs/agent-evaluation
 markdown_extensions:

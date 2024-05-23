@@ -1,10 +1,11 @@
 # Custom Targets
 
-If you want to test an agent that is not natively supported, you can bring your own Target by defining a Python module containing a subclass of [BaseTarget](../reference/target.md#src.agenteval.targets.target.BaseTarget). The name of this module must contain the suffix `_target` (e.g. `my_custom_target`), and the subclass should implement the `invoke` method to invoke your agent.
+If you want to test an agent that is not natively supported, you can bring your own Target by defining a Python module containing a subclass of [BaseTarget](../reference/base_target.md#src.agenteval.targets.base_target.BaseTarget). The name of this module must contain the suffix `_target` (e.g. `my_custom_target`).
+
+The subclass should implement the `invoke` method to invoke your agent and return a [TargetResponse](../reference/target_response.md#src.agenteval.targets.target_response.TargetResponse).
 
 ```python title="my_custom_target.py"
-from agenteval.targets import BaseTarget
-from agenteval import TargetResponse
+from agenteval.targets import BaseTarget, TargetResponse
 from my_agent import MyAgent
 
 class MyCustomTarget(BaseTarget):
@@ -47,8 +48,7 @@ We will implement a custom Target that invokes an agent exposed as a REST API.
 
     import requests
 
-    from agenteval.targets import BaseTarget
-    from agenteval import TargetResponse
+    from agenteval.targets import BaseTarget, TargetResponse
 
 
     class MyAPITarget(BaseTarget):
@@ -96,8 +96,7 @@ We will create a simple [LangChain](https://python.langchain.com/docs/modules/ag
     from langchain import hub
     from langchain.agents import AgentExecutor, create_xml_agent
 
-    from agenteval.targets import BaseTarget
-    from agenteval import TargetResponse
+    from agenteval.targets import BaseTarget, TargetResponse
 
     llm = Bedrock(model_id="anthropic.claude-v2:1")
 

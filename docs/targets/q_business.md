@@ -1,4 +1,4 @@
-# Amazon Q for Business
+# Amazon Q Business
 
 Amazon Q Business is a generative AI–powered assistant that can answer questions, provide summaries, generate content, and securely complete tasks based on data and information in your enterprise systems. For more information, visit the AWS documentation [here](https://docs.aws.amazon.com/amazonq/latest/business-use-dg/what-is.html).
 
