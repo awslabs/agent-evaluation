@@ -23,14 +23,12 @@ class EvaluatorFactory(BaseModel):
 
     config: dict
 
-    def create(self, test: Test, target: BaseTarget, work_dir: str) -> BaseEvaluator:
+    def create(self, test: Test, target: BaseTarget) -> BaseEvaluator:
         """Create an instance of the evaluator class specified in the configuration.
 
         Args:
             test (Test): The test case.
             target (BaseTarget): The target agent being evaluated.
-            work_dir (str): The directory where the test result and trace will be
-                generated.
 
         Returns:
             BaseEvaluator: An instance of the evaluator class, with the configuration
@@ -40,7 +38,6 @@ class EvaluatorFactory(BaseModel):
         return evaluator_cls(
             test=test,
             target=target,
-            work_dir=work_dir,
             **{k: v for k, v in self.config.items() if k != "model"}
         )
 

@@ -1,10 +1,10 @@
 You can specify hooks that run before and/or after evaluating a test. This is useful for performing integration testing, as well as any setup or cleanup tasks required.
 
-To create your hooks, define a Python module containing a subclass of [Hook](reference/hook.md#src.agenteval.hook.Hook). The name of this module must contain the suffix `_hook` (e.g. `my_evaluation_hook`).
+To create your hooks, define a Python module containing a subclass of [Hook](reference/hook.md#src.agenteval.hook.Hook). Within this subclass, you can:
 
-- Implement the `pre_evaluate` method for a hook that runs *before* evaluation. In this method, you have access to the [Test](reference/test.md#src.agenteval.test.test.Test) and [Trace](reference/trace.md#src.agenteval.trace.Trace) via the `test` and `trace` arguments, respectively.
+- Implement a `pre_evaluate` method for a hook that runs *before* evaluation. In this method, you have access to the [Test](reference/test.md#src.agenteval.test.test.Test) via the `test` argument.
 
-- Implement the `post_evaluate` method for a hook that runs *after* evaluation,. Similar to the `pre_evaluate` method, you have access to the [Test](reference/test.md#src.agenteval.test.test.Test) and [Trace](reference/trace.md#src.agenteval.trace.Trace). You also have access to the [TestResult](reference/test_result.md#src.agenteval.test.test_result.TestResult) via the `test_result` argument. You may override the attributes of the `TestResult` if you plan to use this hook to perform additional testing, such as integration testing.
+- Implement a `post_evaluate` method for a hook that runs *after* evaluation. Like the `pre_evaluate` method, you have access to the [Test](reference/test.md#src.agenteval.test.test.Test) argument. You may override the attributes of the [TestResult](reference/test_result.md#src.agenteval.test.test_result.TestResult) if you plan to use this hook to perform additional testing, such as integration testing.
 
 
 ```python title="my_evaluation_hook.py"
@@ -13,10 +13,10 @@ from agenteval import Hook
 
 class MyEvaluationHook(Hook):
 
-    def pre_evaluate(test, trace):
+    def pre_evaluate(test):
     # implement logic here
 
-    def post_evaluate(test, test_result, trace):
+    def post_evaluate(test):
     # implement logic here
 ```
 
@@ -60,7 +60,7 @@ In this example, we will test an agent that can make dinner reservations. In add
 
     class TestRecordInsertHook(Hook):
 
-      def post_evaluate(test, test_result, trace):
+      def post_evaluate(test):
 
         # get database secret from AWS Secrets Manager
         secret = get_db_secret()
@@ -81,9 +81,9 @@ In this example, we will test an agent that can make dinner reservations. In add
 
         # override the test result based on query result 
         if not row:
-          test_result.passed = False
-          test_result.result = "Integration test failed"
-          test_result.reasoning = "Record was not inserted into the database"
+          test.test_result.passed = False
+          test.test_result.result = "Integration test failed"
+          test.test_result.reasoning = "Record was not inserted into the database"
     ```
 
 Create a test that references the hook.
@@ -95,7 +95,8 @@ Create a test that references the hook.
       make_reservation:
         steps:
         - Ask agent to make a reservation under the name Bob for 7 PM.
-        expected_results:
-        - The agent confirms that a reservation has been made.
+        expected:
+          conversation:
+          - The agent confirms that a reservation has been made.
         hook: test_record_insert_hook.TestRecordInsert
     ```

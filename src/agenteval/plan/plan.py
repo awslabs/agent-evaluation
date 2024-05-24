@@ -8,7 +8,7 @@ import logging
 import os
 import sys
 import threading
-import time
+from datetime import datetime, timezone
 from typing import Optional
 
 import yaml
@@ -19,9 +19,12 @@ from agenteval import defaults
 from agenteval.evaluators import EvaluatorFactory
 from agenteval.plan.exceptions import TestFailureError
 from agenteval.plan.logging import log_run_end, log_run_start
+from agenteval.run import Run
+from agenteval.store import Store
 from agenteval.summary import create_markdown_summary
 from agenteval.targets import TargetFactory
 from agenteval.test import TestSuite
+from agenteval.utils import calculate_pass_rate
 
 _PLAN_FILE_NAME = "agenteval.yml"
 
@@ -35,7 +38,9 @@ _INIT_PLAN = {
     "tests": {
         "retrieve_missing_documents": {
             "steps": ["Ask agent for a list of missing documents for claim-006."],
-            "expected_results": ["The agent returns a list of missing documents."],
+            "expected": {
+                "conversation": ["The agent returns a list of missing documents."]
+            },
         }
     },
 }
@@ -114,67 +119,79 @@ class Plan(BaseModel):
         self,
         verbose: bool = False,
         num_threads: Optional[int] = None,
-        work_dir: Optional[str] = None,
         filter: Optional[str] = None,
+        summary_dir: Optional[str] = None,
+        backend_store_url: Optional[str] = None,
     ):
         """Run the test plan.
 
         Args:
             verbose (bool): Whether to enable verbose logging.
             num_threads (Optional[int]): Number of threads used to run tests concurrently.
-                If `None`, the thread count will be set to the number of tests (up to a maximum of `45` threads).
-            work_dir (Optional[str]): The directory where the test result and trace will be
-                generated. If `None`, the assets will be saved to the current working directory.
             filter (Optional[str]): Specifies the test(s) to run, where multiple tests should be seperated using a comma.
-                If `None`, all tests will be run.
+            summary_dir (Optional[str]): The directory to save the test summary to.
+            backend_store_url (Optional[str]): The database URL of the backend store.
         """
-        self._setup_run(filter, work_dir, num_threads)
+        self._setup_run(filter, num_threads, summary_dir, backend_store_url)
 
         log_run_start(verbose, self._num_tests, self._num_threads)
 
-        start = time.time()
+        self._run_start_time = datetime.now(timezone.utc)
 
         with Progress(transient=True) as self._progress:
             self._tracker = self._progress.add_task("running...", total=self._num_tests)
             self._run_concurrent()
 
-        fail_count = self._num_tests - self._pass_count
+        self._run_end_time = datetime.now(timezone.utc)
+
+        self._pass_rate = calculate_pass_rate(self._pass_count, self._num_tests)
+
+        run_id = self._save_run()
 
         log_run_end(
             verbose,
-            self._results,
+            self._test_suite.tests,
             self._num_tests,
             self._pass_count,
-            fail_count,
-            round(time.time() - start, 2),
-            sum(self._evaluator_input_token_counts),
-            sum(self._evaluator_output_token_counts),
+            self._run_start_time,
+            self._run_end_time,
+            self._evaluator_input_token_count,
+            self._evaluator_output_token_count,
         )
 
         create_markdown_summary(
-            self._work_dir,
-            self._pass_count,
+            self._summary_dir,
+            run_id,
+            self._pass_rate,
             self._num_tests,
+            self._run_start_time,
+            self._run_end_time,
+            self._evaluator_input_token_count,
+            self._evaluator_output_token_count,
             self._test_suite.tests,
-            list(self._results.values()),
         )
 
-        if fail_count:
+        if self._num_tests != self._pass_count:
             raise TestFailureError
 
     def _setup_run(
-        self, filter: Optional[str], work_dir: Optional[str], num_threads: Optional[int]
+        self,
+        filter: Optional[str],
+        num_threads: Optional[int],
+        summary_dir: Optional[str],
+        backend_store_url: Optional[str],
     ):
         self._evaluator_factory = EvaluatorFactory(config=self.config["evaluator"])
         self._target_factory = TargetFactory(config=self.config["target"])
         self._test_suite = TestSuite.load(self.config["tests"], filter)
         self._lock = threading.Lock()
         self._num_tests = self._test_suite.num_tests
-        self._work_dir = work_dir or os.getcwd()
         self._num_threads = self._resolve_num_threads(self._num_tests, num_threads)
-        self._results = {test.name: None for test in self._test_suite}
-        self._evaluator_input_token_counts = []
-        self._evaluator_output_token_counts = []
+        self._summary_dir = summary_dir or os.getcwd()
+        self._store = Store(backend_store_url)
+
+        self._evaluator_input_token_count = 0
+        self._evaluator_output_token_count = 0
         self._pass_count = 0
 
     def _run_concurrent(self):
@@ -195,15 +212,28 @@ class Plan(BaseModel):
         evaluator = self._evaluator_factory.create(
             test=test,
             target=target,
-            work_dir=self._work_dir,
         )
 
-        result = evaluator.run()
+        evaluator.run()
 
         with self._lock:
-            if result.passed is True:
+            if test.test_result.passed is True:
                 self._pass_count += 1
-            self._results[test.name] = result
-            self._evaluator_input_token_counts.append(evaluator.input_token_count)
-            self._evaluator_output_token_counts.append(evaluator.output_token_count)
+            self._evaluator_input_token_count += (
+                test.test_result.evaluator_input_token_count
+            )
+            self._evaluator_output_token_count += (
+                test.test_result.evaluator_output_token_count
+            )
             self._progress.update(self._tracker, advance=1)
+
+    def _save_run(self) -> int:
+        logger.info("Saving run...")
+        run_id = self._store.save_run(
+            Run(
+                start_time=self._run_start_time,
+                end_time=self._run_end_time,
+                tests=self._test_suite.tests,
+            )
+        )
+        return run_id

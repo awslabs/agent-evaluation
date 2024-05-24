@@ -2,39 +2,44 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
 
 def log_run_start(verbose: bool, num_tests: int, num_threads: int):
-    logger.info(f"Starting {num_tests} test(s)")
+    logger.info(f"Starting run with {num_tests} test(s)...")
     if verbose:
         logger.info(f"Number of threads: {num_threads}")
 
 
 def log_run_end(
     verbose: bool,
-    results: dict,
+    tests: list,
     num_tests: int,
     pass_count: int,
-    fail_count: int,
-    elapsed_time: float,
+    run_start_time: datetime,
+    run_end_time: datetime,
     evaluator_input_token_count: int,
     evaluator_output_token_count: int,
 ):
+    fail_count = num_tests - pass_count
+
     if fail_count:
         logger.error(f"[red]{pass_count} passed, {fail_count} failed.")
     else:
         logger.info(f"[green]{num_tests} passed.")
 
-    logger.info(f"Completed in {elapsed_time} seconds.")
+    logger.info(
+        f"Completed in {round((run_end_time - run_start_time).total_seconds(), 2)} seconds."
+    )
 
     if verbose:
-        for _, result in results.items():
-            if result.passed:
-                logger.info(f"[bold green]{result.test_name}...PASSED")
+        for t in tests:
+            if t.test_result.passed:
+                logger.info(f"[bold green]{t.name}...PASSED")
             else:
-                logger.error(f"[bold red]{result.test_name}...FAILED")
+                logger.error(f"[bold red]{t.name}...FAILED")
         logger.info(
             f"Input tokens processed by evaluator: {evaluator_input_token_count}"
         )

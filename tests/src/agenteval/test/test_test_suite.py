@@ -4,16 +4,16 @@ from agenteval.test import test_suite
 test_config = {
     "test_1": {
         "steps": ["step 1, step 2, step 3"],
-        "expected_results": ["result 1", "result 2"],
+        "expected": {"conversation": ["result 1", "result 2"]},
     },
     "test_2": {
         "steps": ["step 1"],
-        "expected_results": ["result 1"],
+        "expected": {"conversation": ["result 1"]},
         "max_turns": 5,
     },
     "test_3": {
         "steps": ["step 1"],
-        "expected_results": ["result 1"],
+        "expected": {"conversation": ["result 1"]},
     },
 }
 

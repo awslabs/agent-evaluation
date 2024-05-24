@@ -19,8 +19,9 @@ tests:
   retrieve_missing_documents:
     steps:
     - Ask agent for a list of missing documents for claim-006.
-    expected_results:
-    - The agent returns a list of missing documents.
+    expected:
+      conversation:
+      - The agent returns a list of missing documents.
 ```
 
 If you are testing an Amazon Bedrock agent, update the following `target` configurations:
@@ -35,7 +36,7 @@ If you are testing an Amazon Bedrock agent, update the following `target` config
 Update `tests` with your test cases. Each test must have the following:
 
 - `steps`: A list of steps you want to perform in your test.
-- `expected_results`: A list of expected results for your test.
+- `expected.conversation`: A list of results you expect to see in the conversation.
 
 Once you have updated the test plan, you can run your tests:
 
@@ -61,8 +62,9 @@ tests:
   get_open_claims:
     steps:
     - Ask the agent which claims are open.
-    expected_results:
-    - The agent returns a list of open claims.
+    expected:
+      conversation:
+      - The agent returns a list of open claims.
 ```
 
 If your test case is complex, consider breaking it down into multiple, smaller `tests`.
@@ -77,9 +79,10 @@ tests:
     steps:
     - Ask the agent which claims are open.
     - Ask the agent for details on claim-006.
-    expected_results:
-    - The agent returns a list of open claims.
-    - The agent returns the details on claim-006.
+    expected:
+      conversation:
+      - The agent returns a list of open claims.
+      - The agent returns the details on claim-006.
 ```
 
 The maximum number of turns allowed for a conversation is configured using the `max_turns` parameter for the test (defaults to `2` when not specified).
@@ -95,8 +98,9 @@ tests:
     steps:
     - Ask the agent which claims are open.
       When the agent asks for the claim type, respond with "Auto".
-    expected_results:
-    - The agent returns claim-001 and claim-002
+    expected:
+      conversation:
+      - The agent returns claim-001 and claim-002
 ```
 
 ### Specify the first user message
@@ -109,6 +113,7 @@ tests:
     steps:
     - Ask agent which claims still have missing documents.
     initial_prompt: Can you let me know which claims still have missing documents?
-    expected_results:
-    - The agent returns claim-003 and claim-004
+    expected:
+      conversation:
+      - The agent returns claim-003 and claim-004
 ```

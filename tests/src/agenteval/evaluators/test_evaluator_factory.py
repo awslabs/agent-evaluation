@@ -1,6 +1,5 @@
 from src.agenteval.evaluators import evaluator_factory
 import pytest
-import os
 
 
 @pytest.fixture
@@ -23,10 +22,9 @@ class TestEvaluatorFactory:
 
         test = mocker.MagicMock()
         target = mocker.MagicMock()
-        work_dir = os.getcwd()
 
-        target_factory_fixture.create(test, target, work_dir)
+        target_factory_fixture.create(test, target)
 
         mock_evaluator_cls.assert_called_once_with(
-            test=test, target=target, work_dir=work_dir, aws_region="us-west-2"
+            test=test, target=target, aws_region="us-west-2"
         )

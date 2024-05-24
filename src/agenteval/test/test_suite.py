@@ -8,7 +8,7 @@ from typing import Optional
 from pydantic import BaseModel, computed_field, model_validator
 
 from agenteval import defaults
-from agenteval.test import Test
+from agenteval.test import Expected, Test
 
 
 class TestSuite(BaseModel):
@@ -69,7 +69,9 @@ class TestSuite(BaseModel):
                 Test(
                     name=name,
                     steps=config[name]["steps"],
-                    expected_results=config[name]["expected_results"],
+                    expected=Expected(
+                        conversation=config[name]["expected"]["conversation"]
+                    ),
                     initial_prompt=config[name].get("initial_prompt"),
                     max_turns=config[name].get("max_turns", defaults.MAX_TURNS),
                     hook=config[name].get("hook"),

@@ -11,8 +11,9 @@ tests:
   retrieve_missing_documents:
     steps:
     - Ask agent for a list of missing documents for claim-006.
-    expected_results:
-    - The agent returns a list of missing documents.
+    expected:
+      conversation:
+      - The agent returns a list of missing documents.
     initial_prompt: Give me a list of missing documents for claim-006.
     max_turns: 2
     hook: path.to.MyHook
@@ -36,31 +37,37 @@ A map of test cases, where the test name serves as the key.
 
 ---
 
-`steps` _(list of strings)_
+`tests.<name>.steps` _(list of strings)_
 
 The steps to perform for the test.
 
 ---
 
-`expected_results` _(list of strings)_
+`tests.<name>.expected` _(map)_
 
 The expected results for the test.
 
 ---
 
-`initial_prompt` _(string; optional)_
+`tests.<name>.expected.conversation` _(list of strings)_
+
+ A list of results expected to be observed in the conversation.
+
+---
+
+`tests.<name>.initial_prompt` _(string; optional)_
 
 The first message that is sent to the agent, which starts the conversation. If unspecified, the message will be generated based on the `steps` provided.
 
 ---
 
-`max_turns` _(integer; optional)_
+`tests.<name>.max_turns` _(integer; optional)_
 
 The maximum number of user-agent exchanges before the test fails. The default is `2`.
 
 ---
 
-`hook` _(string; optional)_
+`tests.<name>.hook` _(string; optional)_
 
 The module path to an evaluation hook. Refer to [Hooks](hooks.md) for more details.
 

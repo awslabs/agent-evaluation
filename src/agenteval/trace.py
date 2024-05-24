@@ -2,72 +2,41 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import inspect
-import json
-import os
 from datetime import datetime, timezone
 from typing import Optional
 
-_TRACE_DIR = "agenteval_traces"
-
 
 class Trace:
-    """A context manager which captures steps taken during evaluation.
-
-    Once the context manager exits, the trace is dumped to a JSON file.
+    """Captures the events during evaluation for a test.
 
     Attributes:
-        test_name (str): Name of the test.
-        trace_dir (str): Directory to store the trace.
-        start_time (datetime): Start time of the trace.
-        end_time (datetime): End time of the trace.
-        steps (list): List of steps in the trace.
-
+        events (list[dict]): A list of events recorded for the test.
     """
 
-    def __init__(self, test_name: str, work_dir: str):
+    def __init__(self):
         """
-        Initialize the trace handler.
+        Initialize the trace for a test.
+        """
+        self.events = []
+
+    def add_event(
+        self,
+        data: dict,
+        name: Optional[str] = None,
+        timestamp: datetime = None,
+    ):
+        """Add an event to the trace.
 
         Args:
-            test_name (str): Name of the test.
-            work_dir (str): Directory to store the trace.
+            data (dict): The data to be recorded.
+            name (Optional[str]): The name of the event. Defaults to
+                the name of the caller function.
+            timestamp (datetime.datetime): The timestamp of the event.
+                Defaults to the current time.
         """
-        self.test_name = test_name
-        self.trace_dir = os.path.join(work_dir, _TRACE_DIR)
-        self.start_time = None
-        self.end_time = None
-        self.steps = []
-
-    def __enter__(self):
-        self.start_time = datetime.now(timezone.utc)
-        return self
-
-    def __exit__(self, *exc):
-        self.end_time = datetime.now(timezone.utc)
-        self._dump_trace()
-
-    def _dump_trace(self):
-        os.makedirs(self.trace_dir, exist_ok=True)
-
-        with open(os.path.join(self.trace_dir, f"{self.test_name}.json"), "w") as f:
-            json.dump(self._get_trace(), f, default=str)
-
-    def _get_trace(self) -> str:
-        return {
-            "test_name": self.test_name,
-            "start_time": self.start_time,
-            "end_time": self.end_time,
-            "steps": self.steps,
+        event = {
+            "name": name or inspect.stack()[1].function,
+            "timestamp": timestamp or datetime.now(timezone.utc),
+            "data": data,
         }
-
-    def add_step(self, step_name: Optional[str] = None, **kwargs):
-        """Add a step to the trace.
-
-        Args:
-            step_name (Optional[str]): The name of the step. Defaults to
-                the name of the caller function
-        """
-        step_name = step_name or inspect.stack()[1].function
-        step = {"timestamp": datetime.now(timezone.utc), "step_name": step_name}
-        step.update(kwargs)
-        self.steps.append(step)
+        self.events.append(event)

@@ -50,6 +50,7 @@ nav:
       - targets/sagemaker_endpoints.md
       - targets/custom_targets.md
     - Hooks: hooks.md
+  - Backend Store: backend_store.md
   - CLI: cli.md
   - CI/CD: cicd/index.md
   - Reference:

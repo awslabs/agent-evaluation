@@ -10,7 +10,8 @@ class Conversation:
     """Captures the interaction between a user and an agent.
 
     Attributes:
-        messages (list): A list of tuples of the form (role, message).
+        messages (list): A list of messages exchanged between the user and agent.
+            The list contains tuples in the form (role, message).
         turns (int): The number of turns in the conversation.
     """
 
