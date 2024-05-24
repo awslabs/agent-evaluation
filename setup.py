@@ -12,9 +12,7 @@ URL = "https://awslabs.github.io/agent-evaluation/"
 PACKAGE_DIR = "src"
 REQUIRES_PYTHON = ">=3.9"
 PACKAGE_DATA = {
-    "": [
-        "templates/**/*",
-    ],
+    "": ["templates/**/*", "store/migrations/**/*"],
 }
 
 

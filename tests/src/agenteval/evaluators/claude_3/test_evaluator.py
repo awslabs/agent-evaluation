@@ -4,15 +4,15 @@ import pytest
 
 from src.agenteval.evaluators.claude_3 import evaluator
 from src.agenteval.utils import aws
-from src.agenteval.test import Test
+from src.agenteval.test import test
 
 
 @pytest.fixture
 def test_fixture():
-    return Test(
+    return test.Test(
         name="my_test",
         steps=["step 1", "step 2"],
-        expected_results=["result 1"],
+        expected=test.Expected(conversation=["result 1"]),
         initial_prompt="test prompt",
         max_turns=2,
     )
@@ -34,7 +34,6 @@ def evaluator_fixture(mocker, test_fixture, target_fixture):
         endpoint_url=None,
         test=test_fixture,
         target=target_fixture,
-        work_dir="test_dir",
     )
 
     return fixture
@@ -112,9 +111,9 @@ class TestClaude3:
             "",
         )
 
-        result = evaluator_fixture.evaluate()
+        evaluator_fixture.evaluate()
 
-        assert result.passed is True
+        assert evaluator_fixture.test.test_result.passed is True
 
     def test_run_single_turn_initial_prompt_pass(self, mocker, evaluator_fixture):
         evaluator_fixture.test.initial_prompt = None
@@ -141,9 +140,9 @@ class TestClaude3:
             "",
         )
 
-        result = evaluator_fixture.evaluate()
+        evaluator_fixture.evaluate()
 
-        assert result.passed is True
+        assert evaluator_fixture.test.test_result.passed is True
         assert mock_generate_initial_prompt.call_count == 1
 
     def test_run_multi_turn_pass(self, mocker, evaluator_fixture):
@@ -170,9 +169,9 @@ class TestClaude3:
             "",
         )
 
-        result = evaluator_fixture.evaluate()
+        evaluator_fixture.evaluate()
 
-        assert result.passed is True
+        assert evaluator_fixture.test.test_result.passed is True
         assert mock_generate_test_status.call_count == 2
         assert mock_generate_user_response.call_count == 1
 
@@ -192,7 +191,7 @@ class TestClaude3:
         )
         mock_generate_user_response.return_value = "test user response"
 
-        result = evaluator_fixture.evaluate()
+        evaluator_fixture.evaluate()
 
-        assert result.passed is False
+        assert evaluator_fixture.test.test_result.passed is False
         assert mock_generate_user_response.call_count == 1

@@ -14,19 +14,24 @@ config = {
     "tests": {
         "test_1": {
             "steps": ["step 1, step 2, step 3"],
-            "expected_results": ["result 1", "result 2"],
+            "expected": {"conversation": ["result 1", "result 2"]},
         },
         "test_2": {
             "steps": ["step 1"],
-            "expected_results": ["result 1"],
+            "expected": {"conversation": ["result 1"]},
             "max_turns": 5,
         },
         "test_3": {
             "steps": ["step 1"],
-            "expected_results": ["result 1"],
+            "expected": {"conversation": ["result 1"]},
         },
     },
 }
+
+
+@pytest.fixture
+def backend_store_url_fixture(tmpdir):
+    return f"sqlite:///{tmpdir}/test.db"
 
 
 @pytest.fixture
@@ -79,7 +84,7 @@ class TestPlan:
         )
         assert threads == expected
 
-    def test_run(self, mocker, plan_fixture):
+    def test_run(self, mocker, plan_fixture, backend_store_url_fixture):
         spy_setup_run = mocker.spy(plan_fixture, "_setup_run")
 
         mock_log_run_start = mocker.patch.object(plan, "log_run_start")
@@ -89,34 +94,37 @@ class TestPlan:
             plan_fixture, "_pass_count", plan_fixture._num_tests
         )
 
+        mocker.patch.object(plan_fixture, "_save_run")
         mock_log_run_end = mocker.patch.object(plan, "log_run_end")
         mock_create_markdown_summary = mocker.patch.object(
             plan, "create_markdown_summary"
         )
 
-        plan_fixture.run(False, None, None, None)
+        plan_fixture.run(False, None, None, None, backend_store_url_fixture)
 
-        spy_setup_run.assert_called_once_with(None, None, None)
+        spy_setup_run.assert_called_once_with(
+            None, None, None, backend_store_url_fixture
+        )
         mock_log_run_start.assert_called_once()
         mock_run_concurrent.assert_called_once()
         mock_log_run_end.assert_called_once()
         mock_create_markdown_summary.assert_called_once()
 
-    def test_run_failed_test(self, mocker, plan_fixture):
+    def test_run_failed_test(self, mocker, plan_fixture, backend_store_url_fixture):
         mocker.patch.object(plan, "log_run_start")
 
         mock_run_concurrent = mocker.patch.object(plan_fixture, "_run_concurrent")
         mock_run_concurrent.side_effect = lambda: setattr(
             plan_fixture, "_pass_count", plan_fixture._num_tests - 1
         )
-
+        mocker.patch.object(plan_fixture, "_save_run")
         mocker.patch.object(plan, "log_run_end")
         mocker.patch.object(plan, "create_markdown_summary")
 
         with pytest.raises(plan.TestFailureError):
-            plan_fixture.run(False, None, None, None)
+            plan_fixture.run(False, None, None, None, backend_store_url_fixture)
 
-    def test_run_concurrent(self, mocker, plan_fixture):
+    def test_run_concurrent(self, mocker, plan_fixture, backend_store_url_fixture):
         mock_thread_pool_executor = mocker.patch.object(
             plan.concurrent.futures, "ThreadPoolExecutor"
         )
@@ -126,7 +134,8 @@ class TestPlan:
         )
         mock_as_completed = mocker.patch.object(plan.concurrent.futures, "as_completed")
 
-        plan_fixture._setup_run(None, None, None)
+        plan_fixture._setup_run(None, None, None, backend_store_url_fixture)
+
         plan_fixture._run_concurrent()
 
         assert mock_submit.call_count == plan_fixture._num_tests

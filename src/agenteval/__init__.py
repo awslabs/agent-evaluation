@@ -24,11 +24,11 @@ def configure_logger():
 
     # configure logging using rich
     formatter = logging.Formatter("%(message)s", datefmt="[%X]")
-    handler = RichHandler(markup=True, show_level=True, rich_tracebacks=True)
+    handler = RichHandler(markup=True, show_level=True)
     handler.setFormatter(formatter)
 
     logger = logging.getLogger(__name__)
-
+    logger.propagate = False
     logger.setLevel(os.environ.get(_LOG_LEVEL_ENV, logging.INFO))
     logger.addHandler(handler)
 

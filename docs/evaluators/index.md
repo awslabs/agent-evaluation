@@ -59,7 +59,8 @@ tests:
     steps:
     - Ask agent for a list of missing documents for claim-006.
     expected_results:
-    - The agent returns a list of missing documents.
+      conversation:
+      - The agent returns a list of missing documents.
 ```
 
 We find that on average, the evaluator processes ~583 input tokens and generates ~290 output tokens. 

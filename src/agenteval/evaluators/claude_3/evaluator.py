@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import re
+from datetime import datetime, timezone
 from typing import Tuple
 
 from agenteval import jinja_env
@@ -124,12 +125,16 @@ class Claude3Evaluator(BaseEvaluator):
             output_xml_element="initial_prompt",
         )
 
-        self.trace.add_step(
-            system_prompt=system_prompt,
-            prompt=prompt,
-            initial_prompt=initial_prompt,
-            reasoning=reasoning,
+        self.trace.add_event(
+            name="generate_initial_prompt",
+            data={
+                "initial_prompt": initial_prompt,
+                "system_prompt": system_prompt,
+                "prompt": prompt,
+                "reasoning": reasoning,
+            },
         )
+
         return initial_prompt
 
     def _generate_test_status(self) -> str:
@@ -144,11 +149,14 @@ class Claude3Evaluator(BaseEvaluator):
             prompt=prompt,
             output_xml_element="category",
         )
-        self.trace.add_step(
-            system_prompt=system_prompt,
-            prompt=prompt,
-            test_status=test_status,
-            reasoning=reasoning,
+        self.trace.add_event(
+            name="generate_test_status",
+            data={
+                "test_status": test_status,
+                "system_prompt": system_prompt,
+                "prompt": prompt,
+                "reasoning": reasoning,
+            },
         )
         return test_status
 
@@ -157,7 +165,7 @@ class Claude3Evaluator(BaseEvaluator):
             "system"
         ].render()
         prompt = self._prompt_template_map["generate_evaluation"]["prompt"].render(
-            expected_results=self.test.expected_results,
+            expected_results=self.test.expected.conversation,
             conversation=self.conversation,
         )
 
@@ -166,11 +174,14 @@ class Claude3Evaluator(BaseEvaluator):
             prompt=prompt,
             output_xml_element="category",
         )
-        self.trace.add_step(
-            system_prompt=system_prompt,
-            prompt=prompt,
-            evaluation=evaluation,
-            reasoning=reasoning,
+        self.trace.add_event(
+            name="generate_evaluation",
+            data={
+                "evaluation": evaluation,
+                "system_prompt": system_prompt,
+                "prompt": prompt,
+                "reasoning": reasoning,
+            },
         )
 
         return evaluation, reasoning
@@ -189,30 +200,35 @@ class Claude3Evaluator(BaseEvaluator):
             output_xml_element="user_response",
         )
 
-        self.trace.add_step(
-            system_prompt=system_prompt,
-            prompt=prompt,
-            user_response=user_response,
-            reasoning=reasoning,
+        self.trace.add_event(
+            name="generate_user_response",
+            data={
+                "user_response": user_response,
+                "system_prompt": system_prompt,
+                "prompt": prompt,
+                "reasoning": reasoning,
+            },
         )
         return user_response
 
     def _invoke_target(self, user_input) -> str:
         target_response = self.target.invoke(user_input)
-        self.trace.add_step(data=target_response.data)
+        self.trace.add_event(
+            name="invoke_target",
+            data={
+                "prompt": user_input,
+                "target_response": target_response.model_dump(),
+            },
+        )
 
         return target_response.response
 
-    def evaluate(self) -> TestResult:
-        """Conduct the test.
-
-        Returns:
-            TestResult
-        """
+    def evaluate(self):
+        """Conduct the test."""
         passed = False
         result = Results.MAX_TURNS_REACHED.value
         reasoning = ""
-
+        start_time = datetime.now(timezone.utc)
         while self.conversation.turns < self.test.max_turns:
             if self.conversation.turns == 0:
                 # start conversation
@@ -243,10 +259,17 @@ class Claude3Evaluator(BaseEvaluator):
 
                 break
 
-        return TestResult(
-            test_name=self.test.name,
+        # update the test with timestamps and test result
+
+        self.test.start_time = start_time
+        self.test.end_time = datetime.now(timezone.utc)
+
+        self.test.test_result = TestResult(
             passed=passed,
             result=result,
             reasoning=reasoning,
-            conversation=self.conversation,
+            messages=self.conversation.messages,
+            events=self.trace.events,
+            evaluator_input_token_count=self.input_token_count,
+            evaluator_output_token_count=self.output_token_count,
         )
