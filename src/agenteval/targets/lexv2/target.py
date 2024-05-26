@@ -1,21 +1,40 @@
 import uuid
 
-from agenteval import TargetResponse
-from agenteval.targets import Boto3Target
+from agenteval.targets import Boto3Target, TargetResponse
 
 _SERVICE_NAME = "lexv2-runtime"
 
 
 class LexV2Target(Boto3Target):
-    def __init__(self, **kwargs):
-        super().__init__(boto3_service_name=_SERVICE_NAME)
+    def __init__(self, bot_id: str, bot_alias_id: str, locale_id: str, **kwargs):
+        super().__init__(boto3_service_name=_SERVICE_NAME, **kwargs)
+        self._bot_id = bot_id
+        self._bot_alias_id = bot_alias_id
+        self._locale_id = locale_id
+        self._session_id = str(uuid.uuid4())
 
-    def _get_response(self, request_id: str, **kwargs) -> TargetResponse:
-        response = self.client.get_session(botId=self.bot_id, botAliasId=self.bot_alias_id, userId=request_id)
-        return TargetResponse(response=response, request_id=request_id)
+    def recognize_text(self, prompt: str) -> TargetResponse:
+        """Invoke the target with a prompt.
 
-    def _get_request_id(self) -> str:
-        return str(uuid.uuid4())
+        Args:
+            prompt(str): The prompt to send to the target.
 
-    def invoke(self, prompt: str) -> TargetResponse:
-        pass
+        Returns:
+            TargetResponse: The response from the target.
+        """
+        args = {
+            "botId": self._bot_id,
+            "botAliasId": self._bot_alias_id,
+            "localeId": self._locale_id,
+            "sessionId": self._session_id,
+            "text": prompt,
+        }
+
+        response = self.boto3_client.recognize_text(**args)
+
+        completion = response["messages"].join("\n")
+        interpretation_data = []
+
+        return TargetResponse(
+            response=completion, data={"lexv2_interpretation_data": interpretation_data}
+        )
