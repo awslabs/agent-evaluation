@@ -1,3 +1,6 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 import uuid
 
 from agenteval.targets import Boto3Target, TargetResponse
@@ -13,7 +16,7 @@ class LexV2Target(Boto3Target):
         self._locale_id = locale_id
         self._session_id = str(uuid.uuid4())
 
-    def recognize_text(self, prompt: str) -> TargetResponse:
+    def invoke(self, prompt: str) -> TargetResponse:
         """Invoke the target with a prompt.
 
         Args:
