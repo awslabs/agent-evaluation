@@ -6,6 +6,17 @@ documentation, we greatly value feedback and contributions from our community.
 Please read through this document before submitting any issues or pull requests to ensure we have all the necessary
 information to effectively respond to your bug report or contribution.
 
+## Table of Contents
+- [Reporting Bugs/Feature Requests](#report-bugsfeature-requests)
+- [Contributing via Pull Requests](#contributing-via-pull-requests)
+    - [Best Practices](#best-practices)
+    - [Getting Started](#getting-started)
+        - [Linting/Formatting](#lintingformatting)
+        - [Testing](#testing)
+- [Finding Contributions to Work On](#finding-contributions-to-work-on)
+- [Code of Conduct](#code-of-conduct)
+- [Security Issue Notifications](#security-issue-notifications)
+- [Licensing](#licensing)
 
 ## Reporting Bugs/Feature Requests
 
@@ -23,25 +34,52 @@ reported the issue. Please try to include as much information as you can. Detail
 ## Contributing via Pull Requests
 Contributions via pull requests are much appreciated. Before sending us a pull request, please ensure that:
 
-1. You are working against the latest source on the *main* branch.
+1. You are working against the latest source on the `main` branch.
 2. You check existing open, and recently merged, pull requests to make sure someone else hasn't addressed the problem already.
 3. You open an issue to discuss any significant work - we would hate for your time to be wasted.
 
-To send us a pull request, please:
 
+### Best practices
 1. Fork the repository.
-2. Modify the source; please focus on the specific change you are contributing. If you also reformat all the code, it will be hard for us to focus on your change.
-3. Ensure local tests pass.
-4. Commit to your fork using clear commit messages.
-5. Send us a pull request, answering any default questions in the pull request interface.
+2. Commit to your fork using clear commit messages that follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
+3. Ensure that linting, formatting and tests are are passing *prior* to raising the pull request.
+4. If you are introducing new functionality, please commit the appropriate unit tests.
+5. Answer any default questions in the pull request interface.
 6. Pay attention to any automated CI failures reported in the pull request, and stay involved in the conversation.
+7. Update `CHANGELOG.md` with any noteable changes you make. Be sure to add these changes under `Unreleased`.
 
-GitHub provides additional document on [forking a repository](https://help.github.com/articles/fork-a-repo/) and
-[creating a pull request](https://help.github.com/articles/creating-a-pull-request/).
+### Getting Started
 
+We recommend installing the package locally in editable mode for ease of development. To install the package in editable mode along with the development depedencies, run the following:
 
-## Finding contributions to work on
-Looking at the existing issues is a great way to find something to contribute on. As our projects, by default, use the default GitHub issue labels (enhancement/bug/duplicate/help wanted/invalid/question/wontfix), looking at any 'help wanted' issues is a great place to start.
+```bash
+pip install -e ".[dev]"
+```
+
+#### Linting/Formatting
+
+The tools below are used for linting and formatting the codebase.
+
+- [Flake8](https://flake8.pycqa.org/en/latest/)
+- [Black](https://black.readthedocs.io/en/stable/)
+- [isort](https://pycqa.github.io/isort/)
+
+To check for linting and formatting issues, you can run the following:
+
+```bash
+flake8 src/ &&  black --check src/ && isort src/ --check --diff
+```
+
+#### Testing
+
+This project uses [pytest](https://docs.pytest.org/en/8.2.x/) for unit testing, which you can invoke using the following:
+
+```bash
+python -m pytest .
+```
+
+## Finding Contributions to Work On
+Looking at the existing issues is a great way to find something to contribute on. As our projects, by default, use the default GitHub issue labels, looking for any issues labeled `good first issue` or `help wanted` is a great place to start.
 
 
 ## Code of Conduct
@@ -50,7 +88,7 @@ For more information see the [Code of Conduct FAQ](https://aws.github.io/code-of
 opensource-codeofconduct@amazon.com with any additional questions or comments.
 
 
-## Security issue notifications
+## Security Issue Notifications
 If you discover a potential security issue in this project we ask that you notify AWS/Amazon Security via our [vulnerability reporting page](http://aws.amazon.com/security/vulnerability-reporting/). Please do **not** create a public github issue.
 
 
