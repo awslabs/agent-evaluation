@@ -179,7 +179,7 @@ class Plan(BaseModel):
 
     def _run_concurrent(self):
         with concurrent.futures.ThreadPoolExecutor(
-            max_workers=self._num_tests
+            max_workers=self._num_threads
         ) as executor:
             futures = [
                 executor.submit(self._run_test, test) for test in self._test_suite
