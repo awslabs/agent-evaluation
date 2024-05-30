@@ -34,9 +34,11 @@ class LexV2Target(Boto3Target):
         }
 
         response = self.boto3_client.recognize_text(**args)
-
-        completion = response["messages"].join("\n")
-        interpretation_data = []
+        if response["sessionState"]["dialogAction"]["type"] == "Close":
+            completion = "Completed"
+        else:
+            completion = response["messages"][0]["content"]
+        interpretation_data = [response]
 
         return TargetResponse(
             response=completion, data={"lexv2_interpretation_data": interpretation_data}

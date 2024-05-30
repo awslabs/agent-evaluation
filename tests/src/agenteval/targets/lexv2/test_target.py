@@ -7,8 +7,6 @@ import pytest
 from src.agenteval.targets.lexv2 import target
 from src.agenteval.utils import aws
 
-from io import BytesIO
-
 
 @pytest.fixture
 def lexv2_fixture(mocker):
@@ -19,7 +17,7 @@ def lexv2_fixture(mocker):
         bot_alias_id="test-alias-id",
         locale_id="test-locale-id",
         aws_profile="test-profile",
-        aws_region="us-west-2"
+        aws_region="us-west-2",
     )
 
     return fixture
@@ -33,3 +31,29 @@ class TestLexV2Target:
         except ValueError:
             assert False
 
+    def test_invoke_closed(self, mocker, lexv2_fixture):
+        mock_recognize_text = mocker.patch.object(
+            lexv2_fixture.boto3_client, "recognize_text"
+        )
+        mock_recognize_text.return_value = {
+            "sessionState": {"dialogAction": {"type": "Close"}}
+        }
+
+        response = lexv2_fixture.invoke("test prompt")
+
+        assert mock_recognize_text.call_count == 1
+        assert response.response == "Completed"
+
+    def test_invoke_opened(self, mocker, lexv2_fixture):
+        mock_recognize_text = mocker.patch.object(
+            lexv2_fixture.boto3_client, "recognize_text"
+        )
+        mock_recognize_text.return_value = {
+            "sessionState": {"dialogAction": {"type": "None"}},
+            "messages": [{"content": "test message"}],
+        }
+
+        response = lexv2_fixture.invoke("test prompt")
+
+        assert mock_recognize_text.call_count == 1
+        assert response.response == "test message"
