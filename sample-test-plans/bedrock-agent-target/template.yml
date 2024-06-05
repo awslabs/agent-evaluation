@@ -1,0 +1,18 @@
+evaluator:
+  model: claude-3
+target:
+  bedrock_agent_alias_id: BEDROCK_AGENT_ALIAS_ID
+  bedrock_agent_id: BEDROCK_AGENT_ID
+  type: bedrock-agent
+tests:
+  CustomerPreferenceTest:
+    expected_results:
+    - The agent returns the answers related the to customer.
+    steps:
+    - Provide a brief overview of customer C-abc123.
+    - What communication method does customer C-abc123 prefer?
+  CustomerInteractionsTest:
+    expected_results:
+    - The agent returns the last 3 recent interactions with the customer.
+    steps:
+    - List the last 3 recent interactions for customer C-abc123.
