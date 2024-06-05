@@ -1,4 +1,4 @@
-name: Update Agents for Bedrock
+name: CI/CD example
 
 on:
   push:
