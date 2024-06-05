@@ -44,6 +44,7 @@ jobs:
       if: always()
       id: test-summary
       run: |
-        cat agenteval_summary.md >> $GITHUB_STEP_SUMMARY
+        if [ -f agenteval_summary.md ]; then
+          cat agenteval_summary.md >> $GITHUB_STEP_SUMMARY
 
         
