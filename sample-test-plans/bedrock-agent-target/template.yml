@@ -5,12 +5,11 @@ target:
   bedrock_agent_id: BEDROCK_AGENT_ID
   type: bedrock-agent
 tests:
-  CustomerPreferenceTest:
+  CustomerOverviewTest:
     expected_results:
-    - The agent returns the answers related the to customer.
+    - The agent returns information about Acme Inc.
     steps:
     - Provide a brief overview of customer C-abc123.
-    - What communication method does customer C-abc123 prefer?
   CustomerInteractionsTest:
     expected_results:
     - The agent returns the last 3 recent interactions with the customer.
