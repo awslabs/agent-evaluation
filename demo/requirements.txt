@@ -74,7 +74,7 @@ streamlit-vertical-slider==2.5.5
 tenacity==8.3.0
 toml==0.10.2
 toolz==0.12.1
-tornado==6.4
+tornado==6.4.1
 typing_extensions==4.11.0
 tzdata==2024.1
 urllib3==2.2.1
