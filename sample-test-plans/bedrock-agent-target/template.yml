@@ -6,7 +6,8 @@ target:
   type: bedrock-agent
 tests:
   CustomerInteractionsTest:
-    expected_results:
-    - The agent returns the last 3 recent interactions with the customer.
+    expected:
+      conversation:
+      - The agent returns the last 3 recent interactions with the customer.
     steps:
     - List the last 3 recent interactions for customer C-abc123.
