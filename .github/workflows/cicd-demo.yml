@@ -1,0 +1,50 @@
+name: CI/CD example
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  AWS_REGION: us-east-1                   # set this to your preferred AWS region, e.g. us-west-1
+  
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Install agent-evaluation
+      run: |
+        pip install agent-evaluation
+        agenteval --help
+
+    - name: Test Bedrock Agent
+      id: test-bedrock-agent
+      env:
+        BEDROCK_AGENT_ALIAS_ID: ${{ vars.BEDROCK_AGENT_ALIAS_ID }}
+        BEDROCK_AGENT_ID: ${{ vars.BEDROCK_AGENT_ID }}
+      run: |
+        sed -e "s/BEDROCK_AGENT_ALIAS_ID/$BEDROCK_AGENT_ALIAS_ID/g" -e "s/BEDROCK_AGENT_ID/$BEDROCK_AGENT_ID/g" sample-test-plans/bedrock-agent-target/template.yml > agenteval.yml
+        agenteval run
+
+    - name: Test Summary
+      if: always()
+      id: test-summary
+      run: |
+        if [ -f agenteval_summary.md ]; then
+          cat agenteval_summary.md >> $GITHUB_STEP_SUMMARY
+        fi
+        

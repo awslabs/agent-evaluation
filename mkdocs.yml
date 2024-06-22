@@ -51,6 +51,7 @@ nav:
       - targets/custom_targets.md
     - Hooks: hooks.md
   - CLI: cli.md
+  - CI/CD: cicd/index.md
   - Reference:
     - BaseTarget: reference/base_target.md
     - Hook: reference/hook.md
