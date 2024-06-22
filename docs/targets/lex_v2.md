@@ -6,7 +6,7 @@ Amazon Lex V2 is an AWS service for building conversational interfaces for appli
 
 The principal must have the following permissions:
 
-- [RecognizeText](https://docs.aws.amazon.com/lexv2/latest/APIReference/API_runtime_RecognizeText.htmlhttps://docs.aws.amazon.com/lexv2/latest/APIReference/API_runtime_RecognizeText.html)
+- [RecognizeText](https://docs.aws.amazon.com/lexv2/latest/APIReference/API_runtime_RecognizeText.html)
 
 ## Configurations
 
