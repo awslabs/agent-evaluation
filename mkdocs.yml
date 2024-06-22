@@ -46,6 +46,7 @@ nav:
       - targets/index.md
       - targets/bedrock_agents.md
       - targets/bedrock_knowledge_bases.md
+      - targets/lex_v2.md
       - targets/q_business.md
       - targets/sagemaker_endpoints.md
       - targets/custom_targets.md
