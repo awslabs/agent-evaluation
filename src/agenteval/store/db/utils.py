@@ -13,7 +13,7 @@ from alembic.script import ScriptDirectory
 from sqlalchemy.engine import Engine
 
 from agenteval.store.db.models import Run
-from agenteval.store.exceptions import SchemaOutdatedError, SchemaAlreadyUpToDateError
+from agenteval.store.exceptions import SchemaAlreadyUpToDateError, SchemaOutdatedError
 
 logger = logging.getLogger(__name__)
 

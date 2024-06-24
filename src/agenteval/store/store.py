@@ -10,7 +10,6 @@ from sqlalchemy.orm import Session
 
 import agenteval.environment_variables as env
 from agenteval.run import Run
-from agenteval.store.return_types import ListRuns, ListTests, DescribeRun, DescribeTest
 from agenteval.store.db import models
 from agenteval.store.db.utils import (
     create_engine,
@@ -20,6 +19,7 @@ from agenteval.store.db.utils import (
 )
 from agenteval.store.defaults import SQLITE_BACKEND_STORE_URL
 from agenteval.store.exceptions import NoRecordFoundError
+from agenteval.store.return_types import DescribeRun, DescribeTest, ListRuns, ListTests
 from agenteval.utils import calculate_pass_rate
 
 
