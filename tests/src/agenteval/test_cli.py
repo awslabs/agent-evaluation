@@ -30,7 +30,7 @@ def test_run(mocker):
     result = runner.invoke(cli.cli, ["run"])
 
     mock_run.assert_called_once_with(
-        verbose=False, num_threads=None, work_dir=None, filter=None
+        verbose=False, num_threads=None, filter=None, summary_dir=None, backend_store_url=None
     )
     assert result.exit_code == 0
 

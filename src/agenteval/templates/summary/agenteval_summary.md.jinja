@@ -2,46 +2,47 @@
 ---
 This document provides a summary of the tests executed by Agent Evaluation.
 
-> :warning: This tool utilizes generative AI to assess virtual agents and its evaluations may contain errors. **Please thoroughly examine the results below prior to deciding whether to implement an agent.**
+> ⚠️ This tool utilizes generative AI to assess virtual agents and its evaluations may contain errors. **Please thoroughly examine the results below prior to deciding whether to implement an agent.**
 ---
-## Metrics
 
-**Pass Rate** = {{ metrics.pass_rate }} %
+| Run ID       | Start Time           | End Time           | Number of Tests | Pass Rate      | Evaluator Input Token Count       | Evaluator Output Token Count       |
+| ------------ | -------------------- | ------------------ | --------------- | -------------- | --------------------------------- | ---------------------------------- |
+| {{ run_id }} | {{ run_start_time }} | {{ run_end_time }} | {{ num_tests }} | {{ pass_rate}} | {{ evaluator_input_token_count }} | {{ evaluator_output_token_count }} |
 
 ---
 ## Tests
-{% for test, result in zip(tests, results) -%}
-- [{% if result.success %}🟢{% else %}🔴{% endif %} {{ test.name }}](#{{ test.name | replace(' ', '-') }})
+{% for test in tests -%}
+- [{% if test.test_result.passed %}🟢{% else %}🔴{% endif %} {{ test.name }}](#{{ test.name | replace(' ', '-') }})
 {% endfor %}
 
 ---
 
-{% for test, result in zip(tests, results) -%}
-## <a id={{ test.name | replace(' ', '-') }}></a>{% if result.success %}🟢{% else %}🔴{% endif %} {{ test.name }}
+{% for test in tests -%}
+## <a id={{ test.name | replace(' ', '-') }}></a>{% if test.test_result.passed %}🟢{% else %}🔴{% endif %} {{ test.name }}
 
 **Steps**
 {% for step in test.steps -%}
 {{ loop.index }}. {{ step }}
 {% endfor %}
 
-**Expected results**
-{% for result in test.expected_results -%}
+**Expected**
+{% for result in test.expected.conversation -%}
 {{ loop.index }}. {{ result }}
 {% endfor %}
 
 **Conversation**
 ```
-{% for sender, message in result.conversation -%}
+{% for sender, message in test.test_result.messages -%}
 [{{ sender }}] {{ message }}
 {% endfor -%}
 ```
 
 **Result**
-{{ result.result }}
+{{ test.test_result.result }}
 
 **Reasoning**
 ```
-{{ result.reasoning }}
+{{ test.test_result.reasoning }}
 ```
 
 ---

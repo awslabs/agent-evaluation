@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-def calculate_pass_rate_metric(pass_count: int, num_tests: int) -> float:
+def calculate_pass_rate(pass_count: int, num_tests: int) -> float:
     """Calculate the pass rate metric.
 
     Args:

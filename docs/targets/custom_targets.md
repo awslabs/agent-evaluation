@@ -1,6 +1,6 @@
 # Custom Targets
 
-If you want to test an agent that is not natively supported, you can bring your own Target by defining a Python module containing a subclass of [BaseTarget](../reference/base_target.md#src.agenteval.targets.base_target.BaseTarget). The name of this module must contain the suffix `_target` (e.g. `my_custom_target`).
+If you want to test an agent that is not natively supported, you can bring your own Target by defining a Python module containing a subclass of [BaseTarget](../reference/base_target.md#src.agenteval.targets.base_target.BaseTarget).
 
 The subclass should implement the `invoke` method to invoke your agent and return a [TargetResponse](../reference/target_response.md#src.agenteval.targets.target_response.TargetResponse).
 
@@ -79,8 +79,9 @@ Create a test plan that references `MyAPITarget`.
       get_backlog_tickets:
         steps:
         - Ask agent how many tickets are left in the backlog
-        expected_results:
-        - Agent responds with 15 tickets
+        expected:
+          conversation:
+          - Agent responds with 15 tickets
     ```
 
 
@@ -136,6 +137,7 @@ Create a test plan that references `MyLangChainTarget`.
       calculate_text_length:
         steps:
         - "Ask agent to calculate the length of this text: Hello world!"
-        expected_results:
-        - The agent responds that the length is 12.
+        expected:
+          conversation:
+          - The agent responds that the length is 12.
     ```
