@@ -15,6 +15,10 @@ target:
   type: bedrock-agent
   bedrock_agent_id: my-agent-id
   bedrock_agent_alias_id: my-alias-id
+  bedrock_session_attributes:
+    first_name: user-name
+  bedrock_prompt_session_attributes:
+    time: current-time
 ```
 
 `bedrock_agent_id` *(string)*
