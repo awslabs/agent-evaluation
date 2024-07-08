@@ -12,12 +12,12 @@ class BedrockAgentTarget(Boto3Target):
     """A target encapsulating an Amazon Bedrock agent."""
 
     def __init__(
-            self,
-            bedrock_agent_id: str,
-            bedrock_agent_alias_id: str,
-            bedrock_session_attributes: dict,
-            bedrock_prompt_session_attributes: dict,
-            **kwargs
+        self,
+        bedrock_agent_id: str,
+        bedrock_agent_alias_id: str,
+        bedrock_session_attributes: dict,
+        bedrock_prompt_session_attributes: dict,
+        **kwargs
     ):
         """Initialize the target.
 
