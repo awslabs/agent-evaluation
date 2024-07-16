@@ -11,17 +11,29 @@ _SERVICE_NAME = "bedrock-agent-runtime"
 class BedrockAgentTarget(Boto3Target):
     """A target encapsulating an Amazon Bedrock agent."""
 
-    def __init__(self, bedrock_agent_id: str, bedrock_agent_alias_id: str, **kwargs):
+    def __init__(
+        self,
+        bedrock_agent_id: str,
+        bedrock_agent_alias_id: str,
+        bedrock_session_attributes: dict,
+        bedrock_prompt_session_attributes: dict,
+        **kwargs
+    ):
         """Initialize the target.
 
         Args:
             bedrock_agent_id (str): The unique identifier of the Bedrock agent.
             bedrock_agent_alias_id (str): The alias of the Bedrock agent.
-
+            bedrock_session_attributes (dict): The dictionary of attributes that persist over a session between a user and agent
+            bedrock_prompt_session_attributes (dict): The dictionary of attributes that persist over a single turn (one InvokeAgent call)
         """
         super().__init__(boto3_service_name=_SERVICE_NAME, **kwargs)
         self._bedrock_agent_id = bedrock_agent_id
         self._bedrock_agent_alias_id = bedrock_agent_alias_id
+        self._bedrock_session_state = {
+            "sessionAttributes": bedrock_session_attributes,
+            "promptSessionAttributes": bedrock_prompt_session_attributes,
+        }
         self._session_id: str = str(uuid.uuid4())
 
     def invoke(self, prompt: str) -> TargetResponse:
@@ -36,6 +48,7 @@ class BedrockAgentTarget(Boto3Target):
         args = {
             "agentId": self._bedrock_agent_id,
             "agentAliasId": self._bedrock_agent_alias_id,
+            "sessionState": self._bedrock_session_state,
             "sessionId": self._session_id,
             "inputText": prompt,
             "enableTrace": True,

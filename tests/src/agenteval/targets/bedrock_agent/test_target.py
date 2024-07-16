@@ -15,6 +15,8 @@ def bedrock_agent_fixture(mocker):
         bedrock_agent_alias_id="test-alias-id",
         aws_profile="test-profile",
         aws_region="us-west-2",
+        bedrock_session_attributes={"first_name": "user_name"},
+        bedrock_prompt_session_attributes={"timezone": "0"},
     )
 
     return fixture
@@ -48,4 +50,5 @@ class TestBedrockAgentTarget:
         response = bedrock_agent_fixture.invoke("test prompt")
 
         assert response.response == "test completion"
-        assert response.data == {"bedrock_agent_trace": [{"preProcessingTrace": None}]}
+        assert response.data == {
+            "bedrock_agent_trace": [{"preProcessingTrace": None}]}
