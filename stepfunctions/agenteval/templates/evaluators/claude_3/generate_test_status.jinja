@@ -1,0 +1,13 @@
+Here are the steps and conversation:
+
+<steps>
+{% for step in steps -%}
+{{ loop.index }}. {{ step }}
+{% endfor -%}
+<steps>
+
+<conversation>
+{% for sender, message in conversation -%}
+{{ sender }}: {{ message }}
+{% endfor -%}
+</conversation>

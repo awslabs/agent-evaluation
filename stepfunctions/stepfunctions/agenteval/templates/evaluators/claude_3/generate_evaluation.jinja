@@ -1,0 +1,13 @@
+Here are the expected results and conversation:
+
+<expected_results>
+{% for result in expected_results -%}
+{{ loop.index }}. {{ result }}
+{% endfor -%}
+</expected_results>
+
+<conversation>
+{% for sender, message in conversation -%}
+{{ sender }}: {{ message }}
+{% endfor -%}
+</conversation>

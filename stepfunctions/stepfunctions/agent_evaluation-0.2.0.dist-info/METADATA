@@ -1,0 +1,74 @@
+Metadata-Version: 2.1
+Name: agent-evaluation
+Version: 0.2.0
+Summary: A generative AI-powered framework for testing virtual agents.
+Home-page: https://awslabs.github.io/agent-evaluation/
+Author: Amazon Web Services
+Author-email: agent-evaluation-oss-core-team@amazon.com
+License: Apache 2.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Utilities
+Classifier: Topic :: Software Development :: Testing
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: NOTICE
+Requires-Dist: pyyaml ~=6.0
+Requires-Dist: boto3 <2.0,>=1.34.20
+Requires-Dist: click ~=8.0
+Requires-Dist: pydantic <3.0,>=2.1.0
+Requires-Dist: rich <14.0,>=13.7.0
+Requires-Dist: jinja2 <4.0,>=3.1.3
+Requires-Dist: jsonpath-ng <2.0,>=1.6.1
+Provides-Extra: dev
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: isort ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: pytest-mock ; extra == 'dev'
+Requires-Dist: mkdocs ; extra == 'dev'
+Requires-Dist: mkdocs-material ; extra == 'dev'
+Requires-Dist: mkdocstrings[python] ; extra == 'dev'
+Requires-Dist: mkdocs-click ; extra == 'dev'
+Requires-Dist: bandit ; extra == 'dev'
+Requires-Dist: pip-audit ; extra == 'dev'
+
+![PyPI - Version](https://img.shields.io/pypi/v/agent-evaluation)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/agent-evaluation)
+![GitHub License](https://img.shields.io/github/license/awslabs/agent-evaluation)
+[![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Built with Material for MkDocs](https://img.shields.io/badge/Material_for_MkDocs-526CFE?style=for-the-badge&logo=MaterialForMkDocs&logoColor=white)](https://squidfunk.github.io/mkdocs-material/)
+
+# Agent Evaluation
+
+Agent Evaluation is a generative AI-powered framework for testing virtual agents.
+
+Internally, Agent Evaluation implements an LLM agent (evaluator) that will orchestrate conversations with your own agent (target) and evaluate the responses during the conversation.
+
+## ✨ Key features
+
+- Built-in support for popular AWS services including [Amazon Bedrock](https://aws.amazon.com/bedrock/), [Amazon Q Business](https://aws.amazon.com/q/business/), and [Amazon SageMaker](https://aws.amazon.com/sagemaker/). You can also [bring your own agent](https://awslabs.github.io/agent-evaluation/targets/custom_targets/) to test using Agent Evaluation.
+- Orchestrate concurrent, multi-turn conversations with your agent while evaluating its responses.
+- Define [hooks](https://awslabs.github.io/agent-evaluation/hooks/) to perform additional tasks such as integration testing.
+- Can be incorporated into CI/CD pipelines to expedite the time to delivery while maintaining the stability of agents in production environments.
+
+## 📚 Documentation
+
+To get started, please visit the full documentation [here](https://awslabs.github.io/agent-evaluation/). To contribute, please refer to [CONTRIBUTING.md](./CONTRIBUTING.md)
+
+## 👏 Contributors
+
+Shout out to these awesome contributors:
+
+<a href="https://github.com/awslabs/agent-evaluation/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=awslabs/agent-evaluation" />
+</a>

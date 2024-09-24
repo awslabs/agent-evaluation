@@ -1,0 +1,158 @@
+{   "agent_id" : "ABCDEFGHIJ", 
+    "agent_name": "agent_name",   
+    "prompts": [
+        {
+            "id":"1",
+            "prompt": "You are a customer-facing energy advisor with twenty years of experience at the UK's leading energy providers. Your role is to:\n1) Create a profile of the user by asking a few clarifying questions\n2) Generate a personalised recommendation to the user to solve their problem\n\nYou are empathetic and compassionate. You approach each question with care. You understand that rising energy prices can be a source of strain.\n\nYou are pragmatic. Do not make information up, if you do not know the answer - please be honest.\nBe friendly. Keep a conversational tone. Ask the customer questions one at a time.\nOnly ask a maximum of five questions before giving your personalised recommendation."
+        },
+
+        {
+            "id":"2",
+            "prompt": "You are a seasoned energy consultant with two decades of experience working for top UK energy companies. Your task is to:\n1)Build a customer profile through a brief series of targeted questions\n2)Offer a tailored solution to address the customer's energy-related concerns\nApproach each interaction with empathy and understanding, recognising the potential stress caused by increasing energy costs. Maintain a practical mindset and prioritise accuracy over speculation. Engage in a friendly, conversatinal manner, posing questions one at a time. Limit your inquiry to no more than five questions before presenting your customised recommendation"
+        },
+        {
+            "id":"3",
+            "prompt": "You're an expert energy consultant who has spent two decades with the UK's top energy providers. Your mission is to:\n1)Craft a user profile using a few well-chosen questions\n2)Deliver a custom-tailored recommendation to address the user's energy concerns\n\nApproach each interaction with genuine care and understanding, recognizing the potential anxiety surrounding energy costs. Be practical in your approach, and honest about any limitations in your knowledge. Maintain a friendly, conversational tone throughout, asking questions one at a time. Limit yourself to a maximum of five questions before presenting your personalized recommendation"
+        }
+    ],
+    "customer_profiles":[
+        {
+            "id": 1,
+            "profile": "Single Professional",
+            "household_size": 1,
+            "demography": "30-year-old urban professional",
+            "appliances": [
+                "Laptop", "smartphone", "LED TV", "microwave", 
+                "energy-efficient washer and dryer", "smart thermostat", 
+                "electric car charger"
+            ],
+            "energy_usage": "Moderate, primarily in the evening and weekends",
+            "tarrif": "standard variable",
+            "payment_type": "on demand"
+        },
+        {
+            "id": 2,
+            "profile": "Young Couple",
+            "household_size": 2,
+            "demography": "25-35 years old, urban",
+            "appliances": [
+                "Two laptops", "two smartphones", "LED TV", "dishwasher", 
+                "energy-efficient refrigerator", "smart home devices", 
+                "washer and dryer"
+            ],
+            "energy_usage": "Moderate, spread throughout the day",
+            "tarrif": "dual fuel",
+            "payment_type": "direct debit"
+        },
+        {
+            "id": 3,
+            "profile": "Family with Young Children",
+            "household_size": 4,
+            "demography": "35-45 years old parents with two children under 10, suburban",
+            "appliances": [
+                "Multiple TVs", "gaming console", "desktop computer", "laptops", 
+                "smartphones", "refrigerator", "dishwasher", "washer", "dryer", 
+                "electric oven", "microwave", "air conditioning"
+            ],
+            "energy_usage": "High, spread throughout the day, peaks in the evening",
+            "tarrif": "pre-payment",
+            "payment_type":"pay bill in full within 14 days"
+        },
+        {
+            "id": 4,
+            "profile": "Single Senior Citizen",
+            "household_size": 1,
+            "demography": "70-year-old retired individual, rural",
+            "appliances": [
+                "TV", "radio", "landline phone", "microwave", "refrigerator", 
+                "washer", "dryer", "medical equipment (e.g., oxygen concentrator)"
+            ],
+            "energy_usage": "Low to moderate, primarily during the day",
+            "tarrif":"standard variable",
+            "payment_type":"pay bill in full by Direct Debit"
+        },
+        {
+            "id": 5,
+            "profile": "Roommates Sharing Apartment",
+            "household_size": 3,
+            "demography": "20-30 years old, urban",
+            "appliances": [
+                "Three laptops", "three smartphones", "shared TV", 
+                "shared kitchen appliances (microwave, refrigerator, oven)", 
+                "washer and dryer"
+            ],
+            "energy_usage": "Moderate to high, varies throughout the day",
+            "tarrif": "dual fuel",
+            "payment_type":"on demand"
+        },
+        {
+            "id": 6,
+            "profile": "Large Family",
+            "household_size": 6,
+            "demography": "40-50 years old parents with four children, suburban",
+            "appliances": [
+                "Multiple TVs", "gaming consoles", "multiple laptops and smartphones", 
+                "refrigerator", "two dishwashers", "washer and dryer", "microwave", 
+                "electric oven", "central air conditioning"
+            ],
+            "energy_usage": "Very high, continuous throughout the day",
+            "tarrif":"pre-payment",
+            "payment_type":"direct debit"
+        },
+        {
+            "id": 7,
+            "profile": "Eco-Conscious Couple",
+            "household_size": 2,
+            "demography": "30-40 years old, urban",
+            "appliances": [
+                "Energy-efficient appliances", "solar panels", "electric car charger", 
+                "LED lighting", "smart home devices", "minimalistic approach to electronic devices"
+            ],
+            "energy_usage": "Low to moderate, optimized for energy savings",
+            "tarrif": "standard variable",
+            "payment_type":"pay bill in full within 14 days"
+        },
+        {
+            "id": 8,
+            "profile": "Student Living Alone",
+            "household_size": 1,
+            "demography": "20-year-old college student, urban",
+            "appliances": [
+                "Laptop", "smartphone", "small TV", "microwave", "mini-fridge", 
+                "electric kettle", "shared washer and dryer in building"
+            ],
+            "energy_usage": "Low, primarily in the evening and weekends",
+            "tarrif": "dual fuel",
+            "payment_type":"pay bill in full by Direct Debit"
+        },
+        {
+            "id": 9,
+            "profile": "Retired Couple",
+            "household_size": 2,
+            "demography": "65-75 years old, rural",
+            "appliances": [
+                "TV", "desktop computer", "smartphones", "refrigerator", 
+                "microwave", "washer and dryer", "space heaters", 
+                "medical equipment (e.g., CPAP machine)"
+            ],
+            "energy_usage": "Moderate, primarily during the day",
+            "tarrif": "pre-payment",
+            "payment_type":"on demand"
+        },
+        {
+            "id": 10,
+            "profile": "Home-Based Business Owner",
+            "household_size": 1,
+            "demography": "45-year-old entrepreneur, suburban",
+            "appliances": [
+                "Desktop computer", "laptop", "multiple smartphones", "printer", 
+                "fax machine", "energy-efficient refrigerator", "microwave", 
+                "washer and dryer"
+            ],
+            "energy_usage": "High, continuous throughout the day",
+            "tarrif": "standard variable",
+            "payment_type":"direct debit"
+        }
+
+    ]
+}
