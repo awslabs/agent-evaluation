@@ -13,16 +13,16 @@ def handler(event, context):
     agent_alias_id = event["agent_alias_id"]
     
     bedrock_agent = boto3.client('bedrock-agent')
-    
+    logger.info("Deleting Agent Alias")
     try:
         response = bedrock_agent.delete_agent_alias(
         agentAliasId=agent_alias_id,
         agentId=agent_id
         )
-        logger.info(f"Delete response: {response}")
+        logger.info(f"Delete alias response: {response}")
 
     except Exception as e:
-        logger.error(f"Error preparing agent : {e}")
+        logger.error(f"Error deleting agent alias : {e}")
     
     return {
         'statusCode': 200,

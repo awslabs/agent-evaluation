@@ -12,6 +12,7 @@ def handler(event, context):
     agent_alias = str(uuid.uuid4())
     agent_id = event["update_output"]["agentid"]
     
+    logger.info("Creating Agent Alias")
     try:
         alias_resp = bedrock_agent.create_agent_alias(
         agentAliasName=agent_alias,

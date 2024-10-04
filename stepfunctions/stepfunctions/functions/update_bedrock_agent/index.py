@@ -2,7 +2,7 @@ import json
 import boto3
 import uuid
 import os
-from aws_lambda_powertools import Logger, Tracer
+from aws_lambda_powertools import Logger
 
 logger = Logger()
 
@@ -33,7 +33,8 @@ def handler(event, context):
         logger.info(f"Update agent response: {update_resp}")
     except Exception as e:
         logger.error(f"Error updating agent: {e}")
-        
+    
+    logger.info("Preparing Agent")    
     try:
         prep_resp = bedrock_agent.prepare_agent(agentId=agent_id)
         logger.info(f"Prepaing Agent response: {prep_resp}")

@@ -12,15 +12,15 @@ def handler(event, context):
 
     agent_id = event["agent_id"]
     
+    logger.info("Getting agent status")
     try:
-
         response = bedrock_agent.get_agent(
         agentId=agent_id
         )
-        logger.info(f"Getting agent response: {response}")
+        agent_status = response["agent"]["agentStatus"]
+        logger.info(f"Agent status: {agent_status}")
     except Exception as e:
-        logger.error(f"Error getting agent: {e}")
-    
+        logger.error(f"Error getting agent status: {e}")
      
     agent_status = response["agent"]["agentStatus"]
     

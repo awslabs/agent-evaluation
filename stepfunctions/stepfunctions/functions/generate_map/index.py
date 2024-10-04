@@ -4,7 +4,7 @@ import os
 
 s3_client = boto3.client('s3')
 
-from aws_lambda_powertools import Logger, Tracer
+from aws_lambda_powertools import Logger
 
 logger = Logger()
 
@@ -13,6 +13,7 @@ def handler(event, context):
     bucket = event["detail"]["bucket"]["name"]
     key = event["detail"]["object"]["key"]
     
+    logger.info("Fetching scenarios")
     try: 
         scenario_json = s3_client.get_object(Bucket=bucket, Key=key)
         text = json.loads(scenario_json["Body"].read())
