@@ -170,3 +170,4 @@ cython_debug/
 
 local-test
 local-test/*
+.DS_Store
