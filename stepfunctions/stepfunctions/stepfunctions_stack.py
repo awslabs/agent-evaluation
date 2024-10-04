@@ -29,6 +29,18 @@ class StepfunctionsStack(Stack):
             "EvaluationBucket",
             event_bridge_enabled=True
             )
+        
+        powertools_layer = Layer(
+            self,
+            "PowertoolsLayer",
+            architecture=architecture,
+            runtime=runtime,
+            path=os.path.join(
+                pathlib.Path(__file__).parent.resolve().parent,
+                "layers",
+                "aws-lambda-powertools"
+            )
+        )
 
         agenteval_layer = Layer(
             self,
@@ -55,7 +67,8 @@ class StepfunctionsStack(Stack):
                     "functions",
                     "generate_map",
                 )
-            )
+            ),
+            layers=[powertools_layer.layer_version]
         )
 
         generate_map_step = tasks.LambdaInvoke(
@@ -80,7 +93,8 @@ class StepfunctionsStack(Stack):
                     "functions",
                     "check_agent_status_1",
                 )
-            )
+            ),
+            layers=[powertools_layer.layer_version]
         )
             
         get_status_step_1 = tasks.LambdaInvoke(
@@ -117,7 +131,8 @@ class StepfunctionsStack(Stack):
                     "functions",
                     "update_bedrock_agent",
                 )
-            )
+            ),
+            layers=[powertools_layer.layer_version]
         )
         
         
@@ -147,8 +162,6 @@ class StepfunctionsStack(Stack):
             "Wait1",
             time=sfn.WaitTime.duration(Duration.seconds(30))
             )
-            
-        # first_choice_def = first_choice.when(condition1, wait_step.next(get_status_step_1).next(first_choice)).otherwise(update_agent_step).afterwards()
         
         
         create_alias_function = _lambda.Function(
@@ -164,7 +177,8 @@ class StepfunctionsStack(Stack):
                     "functions",
                     "create_alias",
                 )
-            )
+            ),
+            layers=[powertools_layer.layer_version]
         )
 
         create_alias_step = tasks.LambdaInvoke(
@@ -189,7 +203,8 @@ class StepfunctionsStack(Stack):
                     "functions",
                     "check_agent_status_2",
                 )
-            )
+            ),
+            layers=[powertools_layer.layer_version]
         )
             
         get_status_step_2 = tasks.LambdaInvoke(
@@ -292,7 +307,8 @@ class StepfunctionsStack(Stack):
                     "functions",
                     "delete_alias",
                 )
-            )
+            ),
+            layers=[powertools_layer.layer_version]
         )
         
         delete_alias_function.add_to_role_policy(
@@ -422,11 +438,3 @@ class StepfunctionsStack(Stack):
                 resources=["*"],
             )  
         )
-
-        # The code that defines your stack goes here
-
-        # example resource
-        # queue = sqs.Queue(
-        #     self, "StepfunctionsQueue",
-        #     visibility_timeout=Duration.seconds(300),
-        # )

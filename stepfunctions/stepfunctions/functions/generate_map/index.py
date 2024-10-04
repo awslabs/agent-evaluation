@@ -4,29 +4,27 @@ import os
 
 s3_client = boto3.client('s3')
 
-# from aws_lambda_powertools import Logger, Tracer
+from aws_lambda_powertools import Logger, Tracer
 
-# AWS_REGION = os.environ["AWS_REGION"]
-# AUTOMATION_STATE_MACHINE_ARN = os.environ["AUTOMATION_STATE_MACHINE_ARN"]
-
-
-
-# tracer = Tracer()
-# logger = Logger()
+logger = Logger()
 
 def handler(event, context):
 
     bucket = event["detail"]["bucket"]["name"]
     key = event["detail"]["object"]["key"]
-
-    scenario_json = s3_client.get_object(Bucket=bucket, Key=key)
-    text = json.loads(scenario_json["Body"].read())
     
-    print(text)
+    try: 
+        scenario_json = s3_client.get_object(Bucket=bucket, Key=key)
+        text = json.loads(scenario_json["Body"].read())
+        logger.info(text)
+    except Exception as e:
+        logger.error(f"Error getting object: {e}")
+        
+
     prompts = text['prompts']
     profiles = text['customer_profiles']
 
-    
+
     # Generate scenarios
     scenarios = []
     

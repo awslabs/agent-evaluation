@@ -37,21 +37,14 @@ def handler(event, context):
     
     yaml_data = {
         'evaluator': {
-            'model': 'claude-3'
+            'model': 'claude-3',
+            'region': 'us-east-1'
         },
         'target': {
             'type': 'bedrock-agent',
             'bedrock_agent_id': agent_id,
             'bedrock_agent_alias_id': agent_alias_id
         },
-        # 'user_profile':{
-        #     'demographic': scenario['demography'],
-        #     'household_size': scenario['household_size'],
-        #     'appliances': scenario['appliances'],
-        #     'energy_usage': scenario['energy_usage'],
-        #     'tariff': scenario['tarrif'],
-        #     'payment_type': scenario['payment_type']
-        # },
         'tests': {
             'provide recommendation to customer in need': {
                 'profile': user_profile,
@@ -134,7 +127,6 @@ def handler(event, context):
         s3_key = f"results/{agent_alias_name}/{uid}/results.md"      
         s3_client.put_object(Bucket=bucket_name, Key=s3_key, Body=result)
 
-        # print('reached_here 2')
     
     except Exception as e:
         status = "error"
@@ -147,17 +139,3 @@ def handler(event, context):
         'test_passed_rate':test_passed_rate
     }
         
-    # finally:
-    #     shutil.copy(local_yaml_path, test_result_dir)
-        
-    #     insert_result(created_at, finished_at, yaml_data["target"]["type"], status, test_passed_rate)
-    # # For this example, we'll just return it
-    
-    # #plan is made 
-    
-    
-    
-    # return {
-    #     'statusCode': 200,
-    #     'body': 'success'
-    # }

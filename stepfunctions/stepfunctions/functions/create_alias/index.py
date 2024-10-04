@@ -1,7 +1,9 @@
 import json
 import boto3
 import uuid
+from aws_lambda_powertools import Logger
 
+logger = Logger()
 
 def handler(event, context):
     
@@ -10,12 +12,15 @@ def handler(event, context):
     agent_alias = str(uuid.uuid4())
     agent_id = event["update_output"]["agentid"]
     
-    alias_resp = bedrock_agent.create_agent_alias(
-    agentAliasName=agent_alias,
-    agentId=agent_id
-    )
+    try:
+        alias_resp = bedrock_agent.create_agent_alias(
+        agentAliasName=agent_alias,
+        agentId=agent_id
+        )
+        logger.info(f"Create Alias Response: {alias_resp}")
     
-    print(alias_resp)
+    except Exception as e:
+        logger.error(f"Error creating alias: {e}")
 
 
     agent_id = alias_resp["agentAlias"]["agentId"]
