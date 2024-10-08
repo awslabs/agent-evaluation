@@ -54,5 +54,5 @@ The demo provides a user-friendly interface where you can:
 - Run your test plan
 - View past test run results
 
-![ui demo](./agenteval_demo_ui.gif)
+![ui demo](./demo.gif)
 
