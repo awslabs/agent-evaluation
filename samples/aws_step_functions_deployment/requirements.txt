@@ -1,0 +1,3 @@
+pathlib
+constructs>=10.0.0,<11.0.0
+aws-cdk-lib==2.155.0

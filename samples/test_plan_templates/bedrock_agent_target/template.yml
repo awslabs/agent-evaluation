@@ -1,0 +1,12 @@
+evaluator:
+  model: claude-3
+target:
+  bedrock_agent_alias_id: BEDROCK_AGENT_ALIAS_ID
+  bedrock_agent_id: BEDROCK_AGENT_ID
+  type: bedrock-agent
+tests:
+  CustomerInteractionsTest:
+    expected_results:
+    - The agent returns the last 3 recent interactions with the customer.
+    steps:
+    - List the last 3 recent interactions for customer C-abc123.
