@@ -1,5 +1,0 @@
-# result serving directory (static website)
-static/
-
-# demo working directory for local db and file
-workdir/
