@@ -32,10 +32,6 @@ class BedrockAgentTarget(Boto3Target):
         self._bedrock_agent_alias_id = bedrock_agent_alias_id
         self.bedrock_session_attributes = bedrock_session_attributes
         self.bedrock_prompt_session_attributes = bedrock_prompt_session_attributes
-        # self._bedrock_session_state = {
-        #     "sessionAttributes": bedrock_session_attributes,
-        #     "promptSessionAttributes": bedrock_prompt_session_attributes,
-        # }
         self._session_id: str = str(uuid.uuid4())
 
     def invoke(self, prompt: str) -> TargetResponse:
@@ -50,7 +46,6 @@ class BedrockAgentTarget(Boto3Target):
         args = {
             "agentId": self._bedrock_agent_id,
             "agentAliasId": self._bedrock_agent_alias_id,
-            # "sessionState": self._bedrock_session_state,
             "sessionId": self._session_id,
             "inputText": prompt,
             "enableTrace": True,
