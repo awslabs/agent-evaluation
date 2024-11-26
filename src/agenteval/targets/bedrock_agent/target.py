@@ -30,8 +30,13 @@ class BedrockAgentTarget(Boto3Target):
         super().__init__(boto3_service_name=_SERVICE_NAME, **kwargs)
         self._bedrock_agent_id = bedrock_agent_id
         self._bedrock_agent_alias_id = bedrock_agent_alias_id
-        self.bedrock_session_attributes = bedrock_session_attributes
-        self.bedrock_prompt_session_attributes = bedrock_prompt_session_attributes
+        self._session_state = {}
+        if bedrock_session_attributes or bedrock_prompt_session_attributes:
+            self._session_state["sessionState"] = {}
+            if bedrock_session_attributes:
+                self._session_state["sessionState"]["sessionAttributes"] = bedrock_session_attributes
+            if bedrock_prompt_session_attributes:
+                self._session_state["sessionState"]["promptSessionAttributes"] = bedrock_prompt_session_attributes
         self._session_id: str = str(uuid.uuid4())
 
     def invoke(self, prompt: str) -> TargetResponse:
@@ -47,14 +52,10 @@ class BedrockAgentTarget(Boto3Target):
             "agentId": self._bedrock_agent_id,
             "agentAliasId": self._bedrock_agent_alias_id,
             "sessionId": self._session_id,
+            "sessionState": self._session_state,
             "inputText": prompt,
             "enableTrace": True,
         }
-        if self.bedrock_session_attributes:
-            args["sessionState"]["sessionAttributes"] = self.bedrock_session_attributes
-        if self.bedrock_prompt_session_attributes:
-            args["sessionState"]["promptSessionAttributes"] = self.bedrock_prompt_session_attributes
-
 
         response = self.boto3_client.invoke_agent(**args)
 
