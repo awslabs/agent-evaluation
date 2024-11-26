@@ -31,12 +31,10 @@ class BedrockAgentTarget(Boto3Target):
         self._bedrock_agent_id = bedrock_agent_id
         self._bedrock_agent_alias_id = bedrock_agent_alias_id
         self._session_state = {}
-        if bedrock_session_attributes or bedrock_prompt_session_attributes:
-            self._session_state["sessionState"] = {}
-            if bedrock_session_attributes:
-                self._session_state["sessionState"]["sessionAttributes"] = bedrock_session_attributes
-            if bedrock_prompt_session_attributes:
-                self._session_state["sessionState"]["promptSessionAttributes"] = bedrock_prompt_session_attributes
+        if bedrock_session_attributes:
+            self._session_state["sessionAttributes"] = bedrock_session_attributes
+        if bedrock_prompt_session_attributes:
+            self._session_state["promptSessionAttributes"] = bedrock_prompt_session_attributes
         self._session_id: str = str(uuid.uuid4())
 
     def invoke(self, prompt: str) -> TargetResponse:
