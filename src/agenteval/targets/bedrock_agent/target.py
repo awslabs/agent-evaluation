@@ -3,6 +3,7 @@
 
 import uuid
 from typing import Optional
+
 from agenteval.targets import Boto3Target, TargetResponse
 
 _SERVICE_NAME = "bedrock-agent-runtime"
@@ -12,12 +13,12 @@ class BedrockAgentTarget(Boto3Target):
     """A target encapsulating an Amazon Bedrock agent."""
 
     def __init__(
-            self,
-            bedrock_agent_id: str,
-            bedrock_agent_alias_id: str,
-            bedrock_session_attributes: Optional[dict] = {},
-            bedrock_prompt_session_attributes: Optional[dict] = {},
-            **kwargs
+        self,
+        bedrock_agent_id: str,
+        bedrock_agent_alias_id: str,
+        bedrock_session_attributes: Optional[dict] = {},
+        bedrock_prompt_session_attributes: Optional[dict] = {},
+        **kwargs
     ):
         """Initialize the target.
 
@@ -34,7 +35,9 @@ class BedrockAgentTarget(Boto3Target):
         if bedrock_session_attributes:
             self._session_state["sessionAttributes"] = bedrock_session_attributes
         if bedrock_prompt_session_attributes:
-            self._session_state["promptSessionAttributes"] = bedrock_prompt_session_attributes
+            self._session_state["promptSessionAttributes"] = (
+                bedrock_prompt_session_attributes
+            )
         self._session_id: str = str(uuid.uuid4())
 
     def invoke(self, prompt: str) -> TargetResponse:
