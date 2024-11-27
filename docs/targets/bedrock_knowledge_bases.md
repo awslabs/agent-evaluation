@@ -12,7 +12,7 @@ The principal must have the following permissions:
 
 ```yaml title="agenteval.yml"
 target:
-  type: bedrock-knowledge-base
+  type: bedrock-knowledgebase
   model_id: my-model-id
   knowledge_base_id: my-kb-id
 ```
