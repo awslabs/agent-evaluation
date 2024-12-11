@@ -5,10 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.3.0]
 
 ### Added
 - Added pass rate metric to summary ([#60](https://github.com/awslabs/agent-evaluation/pull/60))
+- Added support of session attributes for bedrock agent target([#77] (https://github.com/awslabs/agent-evaluation/pull/77))
+- Added Target for Prompt Flows ([#96](https://github.com/awslabs/agent-evaluation/pull/96))
+
+
+### Fixed
+- Bedrock agent required arguments documented as optional ([#92](https://github.com/awslabs/agent-evaluation/pull/92))
+- Fix test result attribute in summary template ([#90](https://github.com/awslabs/agent-evaluation/pull/90))
 
 ### Changed
 - Renamed `TestResult.success` to `TestResult.passed` ([#62](https://github.com/awslabs/agent-evaluation/pull/62))

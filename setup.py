@@ -4,7 +4,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 DIST_NAME = "agent-evaluation"
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 DESCRIPTION = "A generative AI-powered framework for testing virtual agents."
 AUTHOR = "Amazon Web Services"
 EMAIL = "agent-evaluation-oss-core-team@amazon.com"
