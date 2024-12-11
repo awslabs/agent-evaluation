@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 from agenteval.targets import BaseTarget
 from agenteval.targets.bedrock_agent import BedrockAgentTarget
+from agenteval.targets.bedrock_flow import BedrockFlowTarget
 from agenteval.targets.bedrock_knowledge_base import BedrockKnowledgeBaseTarget
 from agenteval.targets.lexv2 import LexV2Target
 from agenteval.targets.q_business import QBusinessTarget
@@ -13,6 +14,7 @@ from agenteval.utils import import_class
 
 _TARGET_MAP = {
     "bedrock-agent": BedrockAgentTarget,
+    "bedrock-flow": BedrockFlowTarget,
     "q-business": QBusinessTarget,
     "sagemaker-endpoint": SageMakerEndpointTarget,
     "bedrock-knowledge-base": BedrockKnowledgeBaseTarget,
