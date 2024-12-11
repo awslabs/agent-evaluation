@@ -46,6 +46,7 @@ Configures the Boto3 client with the maximum number of retry attempts allowed. T
 ## Built-in targets
 
 - [Agents for Amazon Bedrock](bedrock_agents.md)
+- [Amazon Bedrock Flows](bedrock_flows.md)
 - [Knowledge bases for Amazon Bedrock](bedrock_knowledge_bases.md)
 - [Amazon Q for Business](q_business.md)
 - [Amazon SageMaker endpoints](sagemaker_endpoints.md)
