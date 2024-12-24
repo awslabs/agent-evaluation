@@ -20,7 +20,7 @@ gitdb==4.0.11
 GitPython==3.1.43
 htbuilder==0.6.2
 idna==3.10
-Jinja2==3.1.4
+Jinja2==3.1.5
 jmespath==1.0.1
 jsonpath-ng==1.6.1
 jsonschema==4.23.0
