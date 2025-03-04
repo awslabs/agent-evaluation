@@ -2,7 +2,8 @@ import io
 
 import pytest
 
-from src.agenteval.evaluators.claude_3 import evaluator
+from agenteval.evaluators.model_config.preconfigured_model_configs import DEFAULT_CLAUDE_3_MODEL_CONFIG
+from src.agenteval.evaluators.canonical import evaluator
 from src.agenteval.utils import aws
 from src.agenteval.test import Test
 
@@ -28,10 +29,11 @@ def evaluator_fixture(mocker, test_fixture, target_fixture):
     mock_session = mocker.patch.object(aws.boto3, "Session")
     mocker.patch.object(mock_session.return_value, "client")
 
-    fixture = evaluator.Claude3Evaluator(
+    fixture = evaluator.CanonicalEvaluator(
         aws_profile="test-profile",
         aws_region="us-west-2",
         endpoint_url=None,
+        model_config=DEFAULT_CLAUDE_3_MODEL_CONFIG,
         test=test_fixture,
         target=target_fixture,
         work_dir="test_dir",
@@ -40,7 +42,7 @@ def evaluator_fixture(mocker, test_fixture, target_fixture):
     return fixture
 
 
-class TestClaude3:
+class TestCanonical:
     @pytest.mark.parametrize(
         "xml_data,element_names,expected",
         [
@@ -78,7 +80,7 @@ class TestClaude3:
         )
         mock_extract_content_from_xml.return_value = "test output", "test reasoning"
 
-        request_body = evaluator.model_configs.REQUEST_BODY
+        request_body = evaluator_fixture.model_config.request_body
         request_body["system"] = "test system prompt"
         request_body["messages"][0]["content"][0]["text"] = "test prompt"
 

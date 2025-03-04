@@ -1,6 +1,6 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-from .evaluator import Claude3Evaluator
+from .evaluator import CanonicalEvaluator
 
-__all__ = ["Claude3Evaluator"]
+__all__ = ["CanonicalEvaluator"]

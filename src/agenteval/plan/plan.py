@@ -23,10 +23,10 @@ from agenteval.summary import create_markdown_summary
 from agenteval.targets import TargetFactory
 from agenteval.test import TestSuite
 
-_PLAN_FILE_NAME = "agenteval.yml"
+_DEFAULT_PLAN_FILE_NAME = "agenteval.yml"
 
-_INIT_PLAN = {
-    "evaluator": {"model": "claude-3"},
+_DEFAULT__PLAN = {
+    "evaluator": {"model": "claude-3", "eval_method": "canonical"},
     "target": {
         "type": "bedrock-agent",
         "bedrock_agent_id": None,
@@ -57,17 +57,21 @@ class Plan(BaseModel):
     config: dict
 
     @classmethod
-    def load(cls, plan_dir: Optional[str] = None) -> Plan:
+    def load(
+        cls,
+        plan_dir: Optional[str] = None,
+        plan_file_name: Optional[str] = _DEFAULT_PLAN_FILE_NAME,
+    ) -> Plan:
         """Loads the test plan configurations from YAML.
 
         Args:
             plan_dir (Optional[str]): The directory containing the test plan.
                 If `None`, the current working directory will be used.
-
+                plan_file_name (Optional[str]): The name of the file that contains the plan YAML spec
         Returns:
             Plan: A `Plan` instance containing the loaded test plan configurations.
         """
-        plan_path = os.path.join(plan_dir or os.getcwd(), _PLAN_FILE_NAME)
+        plan_path = os.path.join(plan_dir or os.getcwd(), plan_file_name)
         plan = cls._load_yaml(plan_path)
         return cls(config=plan)
 
@@ -77,17 +81,20 @@ class Plan(BaseModel):
             return yaml.safe_load(stream)
 
     @staticmethod
-    def init_plan(plan_dir: Optional[str] = None) -> str:
+    def init_plan(
+        plan_dir: Optional[str] = None,
+        plan_file_name: Optional[str] = _DEFAULT_PLAN_FILE_NAME,
+    ) -> str:
         """Initializes a new test plan configuration YAML file.
 
         Args:
             plan_dir (Optional[str]): The directory where the YAML file will be stored.
                 If `None`, the current working directory will be used.
-
+            plan_file_name (Optional[str]): The name of the file that contains the plan YAML spec
         Returns:
             str: The path to the YAML file.
         """
-        plan_path = os.path.join(plan_dir or os.getcwd(), _PLAN_FILE_NAME)
+        plan_path = os.path.join(plan_dir or os.getcwd(), plan_file_name)
 
         # check if plan exists
         if os.path.exists(plan_path):
@@ -96,7 +103,7 @@ class Plan(BaseModel):
             raise FileExistsError
 
         with open(plan_path, "w") as stream:
-            yaml.safe_dump(_INIT_PLAN, stream, sort_keys=False)
+            yaml.safe_dump(_DEFAULT__PLAN, stream, sort_keys=False)
 
         logger.info(f"[green]Test plan created at {plan_path}")
 

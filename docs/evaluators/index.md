@@ -95,6 +95,19 @@ evaluator:
 Name of the model used to run evaluation. This must be one of:
 
 - `claude-3` (Claude 3 Sonnet)
+- `claude-3_5` (Claude 3.5 Sonnet)
+- `claude-3_7-us` (Claude 3.7 Sonnet)
+- `claude-haiku-3_5-us` (Claude 3.5 Haiku)
+- `llama-3_3-us` (Llama 3.3 70B)
+
+The models suffixed with `-us` are using default USA cross region inference profile. Bedrock cross region [documentation link](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html).
+---
+
+`custom-config` _(dict; optional)_
+
+A valid combination with keys `model_id` and `request_body` specifying which foundation model with what configuration to invoke
+Bedrock. See Bedrock [documentation](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_InvokeModel.html#API_runtime_InvokeModel_RequestSyntax) or the default configurations in `src/agenteval/evaluators/model_config/preconfigured_model_configs.py`.
+Currently, only Meta and Anthropic models are supported.
 
 ---
 

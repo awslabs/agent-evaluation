@@ -1,7 +1,6 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-import json
 import logging
 import os
 import re
@@ -9,13 +8,16 @@ from typing import Tuple
 
 from agenteval import jinja_env
 from agenteval.evaluators import BaseEvaluator
-from agenteval.evaluators.claude_3 import model_configs
+from agenteval.evaluators.bedrock_request.bedrock_request_handler import (
+    BedrockRequestHandler,
+)
 from agenteval.test import TestResult
 
 logger = logging.getLogger(__name__)
 
-_PROMPT_TEMPLATE_ROOT = "evaluators/claude_3"
+_PROMPT_TEMPLATE_ROOT = "evaluators/canonical"
 _SYSTEM_PROMPT_DIR = "system"
+_RUNTIME_PROMPT_DIR = "runtime"
 _PROMPT_TEMPLATE_NAMES = [
     "generate_initial_prompt",
     "generate_user_response",
@@ -53,15 +55,15 @@ class Results(StrEnum):
     )
 
 
-class Claude3Evaluator(BaseEvaluator):
-    """An evaluator powered by Claude 3."""
+class CanonicalEvaluator(BaseEvaluator):
+    """An evaluator based on the canoncial templates. Compatible with the model providers supported in BedrockModelConfig"""
 
     def __init__(
         self,
         **kwargs,
     ):
         """Initialize the evaluator."""
-        super().__init__(model_id=model_configs.MODEL_ID, **kwargs)
+        super().__init__(**kwargs)
 
         self._prompt_template_map = {
             name: {
@@ -71,7 +73,9 @@ class Claude3Evaluator(BaseEvaluator):
                     )
                 ),
                 "prompt": jinja_env.get_template(
-                    os.path.join(_PROMPT_TEMPLATE_ROOT, f"{name}.jinja")
+                    os.path.join(
+                        _PROMPT_TEMPLATE_ROOT, _RUNTIME_PROMPT_DIR, f"{name}.jinja"
+                    )
                 ),
             }
             for name in _PROMPT_TEMPLATE_NAMES
@@ -92,13 +96,18 @@ class Claude3Evaluator(BaseEvaluator):
         prompt: str,
         output_xml_element: str,
     ) -> str:
-        request_body = model_configs.REQUEST_BODY
-        request_body["system"] = system_prompt
-        request_body["messages"][0]["content"][0]["text"] = prompt
+        request_body = BedrockRequestHandler.build_request_body(
+            request_body=self.model_config.request_body,
+            model_config=self.model_config,
+            system_prompt=system_prompt,
+            prompt=prompt,
+        )
 
         response = self.invoke_model(request_body=request_body)
-        response_body = response.get("body").read()
-        completion = json.loads(response_body)["content"][0]["text"]
+
+        completion = BedrockRequestHandler.parse_completion_from_response(
+            response=response, model_config=self.model_config
+        )
 
         logger.debug(
             f"[{self.test.name}]\n[PROMPT]\n{prompt}\n[COMPLETION]\n{completion}"
