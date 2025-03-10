@@ -5,13 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- Added support to use any Anthropic or Meta Foundation Model and request configuration with the evaluator
+- Added a default Claude 3.5 Sonnet, Claude 3.7 Sonnet, Claude Haiku 3.5, and Meta Llama3.3 configuration
+- Added `src/agenteval/evaluators/model_config/` to define above default configurations as well as the interface in the code
+- Added `src/agenteval/evaluators/bedrock_request/bedrock_request_handler.py` to handle differences in Bedrock request/response shapes across providers
+- Added `samples/test_plan_templates/bedrock_agent_target/vary_eval_llm_example/` folder with samples of new model selection functionality
+- Added support to optionally specify the file name for the test plan YAML, defaulting to `agenteval.yml` in `Plan.load`
+- Added documentation to page about evaluators reflecting changes
+
+### Changed
+- Renamed `src/agenteval/evaluators/claude3` -> `src/agenteval/evaluators/canonical`
+- Renamed `src/agenteval/templates/evaluators/claude3` -> `src/agenteval/templates/evaluators/canonical`
+
 ## [0.3.0]
 
 ### Added
 - Added pass rate metric to summary ([#60](https://github.com/awslabs/agent-evaluation/pull/60))
 - Added support of session attributes for bedrock agent target([#77] (https://github.com/awslabs/agent-evaluation/pull/77))
 - Added Target for Prompt Flows ([#96](https://github.com/awslabs/agent-evaluation/pull/96))
-
 
 ### Fixed
 - Bedrock agent required arguments documented as optional ([#92](https://github.com/awslabs/agent-evaluation/pull/92))

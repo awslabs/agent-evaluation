@@ -42,14 +42,14 @@ class TestPlan:
         test_plan = plan.Plan.load(plan_dir=None)
 
         mock_load_yaml.assert_called_once_with(
-            os.path.join(os.getcwd(), plan._PLAN_FILE_NAME)
+            os.path.join(os.getcwd(), plan._DEFAULT_PLAN_FILE_NAME)
         )
 
         assert test_plan.config == {}
 
     def test_init_plan(self, tmp_path):
         plan.Plan.init_plan(tmp_path)
-        assert os.path.exists(os.path.join(tmp_path, plan._PLAN_FILE_NAME))
+        assert os.path.exists(os.path.join(tmp_path, plan._DEFAULT_PLAN_FILE_NAME))
 
     def test_init_plan_exists(self, tmp_path):
         plan.Plan.init_plan(tmp_path)

@@ -2,7 +2,7 @@ import yaml
 from click.testing import CliRunner
 
 from src.agenteval import cli
-from src.agenteval.plan.plan import _PLAN_FILE_NAME
+from src.agenteval.plan.plan import _DEFAULT_PLAN_FILE_NAME
 from src.agenteval.plan.exceptions import TestFailureError
 
 runner = CliRunner()
@@ -16,7 +16,7 @@ def test_init():
 
 def test_init_file_exists():
     with runner.isolated_filesystem():
-        with open(_PLAN_FILE_NAME, "w") as stream:
+        with open(_DEFAULT_PLAN_FILE_NAME, "w") as stream:
             yaml.safe_dump({}, stream)
         result = runner.invoke(cli.cli, ["init"])
         assert result.exit_code == cli.ExitCode.PLAN_ALREADY_EXISTS.value

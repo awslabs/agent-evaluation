@@ -1,0 +1,17 @@
+evaluator:
+  model: claude-3_7-us
+target:
+  type: bedrock-agent
+  bedrock_agent_id: <BEDROCK_AGENT_ALIAS_ID>
+  bedrock_agent_alias_id: <BEDROCK_AGENT_ALIAS_ID>
+tests:
+  claude_3_7_positive_returns_fruit:
+    steps:
+    - tell the agent I love living a happy healthy life
+    expected_results:
+    - The agent returns a fruit
+  claude_3_7_random_returns_fruit_or_vegtable:
+    steps:
+    - tell the agent asdfasdfasdfasdfasdfasdfasdf
+    expected_results:
+    - The agent returns a fruit or a vegtable
