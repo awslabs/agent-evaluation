@@ -18,6 +18,7 @@ class BedrockAgentTarget(Boto3Target):
         bedrock_agent_alias_id: str,
         bedrock_session_attributes: Optional[dict] = {},
         bedrock_prompt_session_attributes: Optional[dict] = {},
+        knowledge_base_configurations: Optional[dict] = {},
         **kwargs
     ):
         """Initialize the target.
@@ -32,6 +33,8 @@ class BedrockAgentTarget(Boto3Target):
         self._bedrock_agent_id = bedrock_agent_id
         self._bedrock_agent_alias_id = bedrock_agent_alias_id
         self._session_state = {}
+        if knowledge_base_configurations:
+            self._session_state["knowledgeBaseConfigurations"] = knowledge_base_configurations
         if bedrock_session_attributes:
             self._session_state["sessionAttributes"] = bedrock_session_attributes
         if bedrock_prompt_session_attributes:

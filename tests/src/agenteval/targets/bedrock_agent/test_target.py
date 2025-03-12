@@ -17,6 +17,7 @@ def bedrock_agent_fixture(mocker):
         aws_region="us-west-2",
         bedrock_session_attributes={"first_name": "user_name"},
         bedrock_prompt_session_attributes={"timezone": "0"},
+        knowledge_base_configurations={}
     )
 
     return fixture
