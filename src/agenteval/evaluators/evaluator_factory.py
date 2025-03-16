@@ -17,7 +17,7 @@ from agenteval.targets import BaseTarget
 from agenteval.test import Test
 
 _EVALUATOR_METHOD_MAP = {
-    "canoncial": CanonicalEvaluator,
+    "canonical": CanonicalEvaluator,
 }
 
 _DEFAULT_MODEL_CONFIG_MAP = {
