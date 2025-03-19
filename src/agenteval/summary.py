@@ -7,6 +7,8 @@ from agenteval import jinja_env
 from agenteval.metrics import calculate_pass_rate_metric
 from agenteval.test import Test, TestResult
 
+from pathlib import Path
+
 _TEMPLATE_ROOT = "summary"
 _TEMPLATE_FILE_NAME = "agenteval_summary.md.jinja"
 
@@ -36,8 +38,9 @@ def create_markdown_summary(
     Returns:
         None
     """
-    template = jinja_env.get_template(os.path.join(_TEMPLATE_ROOT, _TEMPLATE_FILE_NAME))
-    summary_path = os.path.join(work_dir, os.path.splitext(_TEMPLATE_FILE_NAME)[0])
+    template_path = Path(_TEMPLATE_ROOT) / _TEMPLATE_FILE_NAME
+    template = jinja_env.get_template(Path.as_posix(template_path))
+    summary_path = Path(Path(work_dir) / Path(_TEMPLATE_FILE_NAME).stem).absolute() 
 
     metrics = {"pass_rate": calculate_pass_rate_metric(pass_count, num_tests)}
 
@@ -49,5 +52,5 @@ def create_markdown_summary(
 
 
 def _write_summary(path: str, summary: str):
-    with open(path, "w+") as f:
+    with open(path, "w+", encoding='utf-8') as f:
         f.write(summary)
