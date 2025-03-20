@@ -13,9 +13,11 @@ from agenteval.evaluators.bedrock_request.bedrock_request_handler import (
 )
 from agenteval.test import TestResult
 
+from pathlib import Path
+
 logger = logging.getLogger(__name__)
 
-_PROMPT_TEMPLATE_ROOT = "evaluators/canonical"
+_PROMPT_TEMPLATE_ROOT = Path("evaluators/canonical")
 _SYSTEM_PROMPT_DIR = "system"
 _RUNTIME_PROMPT_DIR = "runtime"
 _PROMPT_TEMPLATE_NAMES = [
@@ -65,18 +67,13 @@ class CanonicalEvaluator(BaseEvaluator):
         """Initialize the evaluator."""
         super().__init__(**kwargs)
 
+        system_path = _PROMPT_TEMPLATE_ROOT / _SYSTEM_PROMPT_DIR
+        prompt_path = _PROMPT_TEMPLATE_ROOT / _RUNTIME_PROMPT_DIR
+
         self._prompt_template_map = {
             name: {
-                "system": jinja_env.get_template(
-                    os.path.join(
-                        _PROMPT_TEMPLATE_ROOT, _SYSTEM_PROMPT_DIR, f"{name}.jinja"
-                    )
-                ),
-                "prompt": jinja_env.get_template(
-                    os.path.join(
-                        _PROMPT_TEMPLATE_ROOT, _RUNTIME_PROMPT_DIR, f"{name}.jinja"
-                    )
-                ),
+                "system": jinja_env.get_template(Path.as_posix(system_path / f"{name}.jinja")),
+                "prompt": jinja_env.get_template(Path.as_posix(prompt_path / f"{name}.jinja")),
             }
             for name in _PROMPT_TEMPLATE_NAMES
         }
