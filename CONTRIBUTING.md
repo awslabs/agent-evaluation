@@ -78,6 +78,16 @@ This project uses [pytest](https://docs.pytest.org/en/8.2.x/) for unit testing, 
 python -m pytest .
 ```
 
+#### Testing against CLI path
+
+If relevant to the change, confirm that the [CLI path](https://awslabs.github.io/agent-evaluation/cli/) functions as expected.
+
+This can be achieved by:
+
+1. Creating and activate a `venv`
+2. Locally install `agent-evaluation` against your local changes via `pip install -e .`
+3. Run `agenteval` CLI against your local changes.
+
 ## Finding Contributions to Work On
 Looking at the existing issues is a great way to find something to contribute on. As our projects, by default, use the default GitHub issue labels, looking for any issues labeled `good first issue` or `help wanted` is a great place to start.
 
