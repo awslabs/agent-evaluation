@@ -1,7 +1,7 @@
 import os
 from distutils.core import setup
 
-from setuptools import find_packages
+from setuptools import find_namespace_packages
 
 DIST_NAME = "agent-evaluation"
 VERSION = "0.4.1"
@@ -26,7 +26,7 @@ def read(fname):
 setup(
     name=DIST_NAME,
     version=VERSION,
-    packages=find_packages(where=PACKAGE_DIR),
+    packages=find_namespace_packages(where=PACKAGE_DIR),
     package_dir={"": PACKAGE_DIR},
     package_data=PACKAGE_DATA,
     description=DESCRIPTION,
