@@ -10,7 +10,7 @@ AUTHOR = "Amazon Web Services"
 EMAIL = "agent-evaluation-oss-core-team@amazon.com"
 URL = "https://awslabs.github.io/agent-evaluation/"
 PACKAGE_DIR = "src"
-REQUIRES_PYTHON = ">=3.9"
+REQUIRES_PYTHON = ">=3.10"
 PACKAGE_DATA = {
     "": [
         "templates/**/*",
@@ -47,9 +47,9 @@ setup(
         "Topic :: Software Development :: Testing",
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
     ],
 )
