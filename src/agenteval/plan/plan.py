@@ -109,8 +109,13 @@ class Plan(BaseModel):
 
         return plan_path
 
-    @staticmethod
-    def _resolve_num_threads(num_tests: int, num_threads: Optional[int]) -> int:
+    def _resolve_num_threads(self, num_tests: int, num_threads: Optional[int]) -> int:
+        # Check if target requires sequential execution
+        target_type = self.config.get("target", {}).get("type")
+        if target_type == "weni":
+            logger.info("Weni target detected - forcing single-threaded execution for WebSocket stability")
+            return 1
+
         return (
             min(num_tests, defaults.MAX_NUM_THREADS)
             if num_threads is None

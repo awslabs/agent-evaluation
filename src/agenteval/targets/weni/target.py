@@ -79,6 +79,7 @@ class WeniTarget(BaseTarget):
             TargetResponse
         """
         try:
+            print(f"Invoking contact URN: {self.contact_urn} with prompt: {prompt}")
             logger.debug(f"Invoking Weni agent with prompt: {prompt}")
             
             # Send the prompt via POST request
@@ -175,10 +176,28 @@ class WeniTarget(BaseTarget):
                     if message.get("type") == "preview":
                         content = message.get("content", {})
                         if content.get("type") == "broadcast" and "message" in content:
-                            final_response = content["message"]
-                            logger.debug(f"Received preview broadcast message: {final_response[:100]}...")
-                            ws.close()
+                            message_content = content["message"]
+
+                            # Handle both string and array formats
+                            if isinstance(message_content, str):
+                                # Simple string format
+                                final_response = message_content
+                            elif isinstance(message_content, list) and len(message_content) > 0:
+                                # Array format - concatenate all text messages
+                                text_parts = []
+                                for msg in message_content:
+                                    if isinstance(msg, dict) and "msg" in msg:
+                                        msg_obj = msg["msg"]
+                                        if isinstance(msg_obj, dict) and "text" in msg_obj:
+                                            text_parts.append(msg_obj["text"])
+
+                                if text_parts:
+                                    final_response = "\n".join(text_parts)
                             
+                            if final_response:
+                                logger.debug(f"Received preview broadcast message: {final_response[:100]}...")
+                                ws.close()
+
             except json.JSONDecodeError:
                 logger.warning(f"Failed to decode WebSocket message: {message[:100]}...")
             except Exception as e:
