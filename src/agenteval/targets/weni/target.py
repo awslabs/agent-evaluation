@@ -24,8 +24,8 @@ class WeniTarget(BaseTarget):
         self,
         weni_project_uuid: Optional[str] = None,
         weni_bearer_token: Optional[str] = None,
-        language: str = "pt-BR",
-        timeout: int = 30,
+        language: str = "en-US",
+        timeout: int = 120,
         **kwargs
     ):
         """Initialize the target.
@@ -167,24 +167,17 @@ class WeniTarget(BaseTarget):
             nonlocal final_response
             try:
                 data = json.loads(message)
+                logger.debug(f"Received WebSocket message: {json.dumps(data, indent=2)[:200]}...")
                 
-                # Check if this is the trace_update with finalResponse
-                if data.get("type") == "trace_update":
-                    trace = data.get("trace", {})
-                    trace_data = trace.get("trace", {})
-                    
-                    # Navigate through the nested structure to find the orchestration trace
-                    if "trace" in trace_data:
-                        orch_trace = trace_data["trace"].get("orchestrationTrace", {})
-                        observation = orch_trace.get("observation", {})
-                        
-                        # Check if this is the FINISH event with the final response
-                        if observation.get("type") == "FINISH":
-                            final_resp = observation.get("finalResponse", {})
-                            if final_resp and "text" in final_resp:
-                                final_response = final_resp["text"]
-                                logger.debug(f"Received final response: {final_response[:100]}...")
-                                ws.close()
+                # Check for preview message format
+                if data.get("type") == "preview":
+                    message = data.get("message", {})
+                    if message.get("type") == "preview":
+                        content = message.get("content", {})
+                        if content.get("type") == "broadcast" and "message" in content:
+                            final_response = content["message"]
+                            logger.debug(f"Received preview broadcast message: {final_response[:100]}...")
+                            ws.close()
                             
             except json.JSONDecodeError:
                 logger.warning(f"Failed to decode WebSocket message: {message[:100]}...")
@@ -204,6 +197,14 @@ class WeniTarget(BaseTarget):
         def on_open(ws):
             """Handle WebSocket connection open."""
             logger.debug("WebSocket connection established")
+
+        def on_ping(ws, message):
+            """Handle WebSocket ping."""
+            logger.debug("Received WebSocket ping")
+
+        def on_pong(ws, message):
+            """Handle WebSocket pong."""
+            logger.debug("Received WebSocket pong")
 
         # Configure WebSocket headers
         headers = {
@@ -225,6 +226,8 @@ class WeniTarget(BaseTarget):
             on_message=on_message,
             on_error=on_error,
             on_close=on_close,
+            on_ping=on_ping,
+            on_pong=on_pong,
             header=headers
         )
         
