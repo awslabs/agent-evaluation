@@ -51,5 +51,6 @@ Configures the Boto3 client with the maximum number of retry attempts allowed. T
 - [Amazon Q for Business](q_business.md)
 - [Amazon SageMaker endpoints](sagemaker_endpoints.md)
 - [Amazon Lex-v2](lex_v2.md)
+- [Weni Agents](weni.md)
 
 ---

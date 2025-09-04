@@ -48,6 +48,7 @@ nav:
       - targets/bedrock_knowledge_bases.md
       - targets/q_business.md
       - targets/sagemaker_endpoints.md
+      - targets/weni.md
       - targets/custom_targets.md
     - Hooks: hooks.md
   - CLI: cli.md
