@@ -10,6 +10,7 @@ from agenteval.targets.bedrock_knowledge_base import BedrockKnowledgeBaseTarget
 from agenteval.targets.lexv2 import LexV2Target
 from agenteval.targets.q_business import QBusinessTarget
 from agenteval.targets.sagemaker_endpoint import SageMakerEndpointTarget
+from agenteval.targets.weni import WeniTarget
 from agenteval.utils import import_class
 
 _TARGET_MAP = {
@@ -19,6 +20,7 @@ _TARGET_MAP = {
     "sagemaker-endpoint": SageMakerEndpointTarget,
     "bedrock-knowledge-base": BedrockKnowledgeBaseTarget,
     "lex-v2": LexV2Target,
+    "weni": WeniTarget,
 }
 
 
