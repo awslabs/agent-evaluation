@@ -25,7 +25,7 @@ class WeniTarget(BaseTarget):
         weni_project_uuid: Optional[str] = None,
         weni_bearer_token: Optional[str] = None,
         language: str = "en-US",
-        timeout: int = 120,
+        timeout: int = 240,
         **kwargs
     ):
         """Initialize the target.
