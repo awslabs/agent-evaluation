@@ -1,6 +1,12 @@
 # Evaluators
 
 An evaluator is a LLM agent that evaluates a [Target](../targets/index.md) on a test. Evaluators utilize foundation models directly on [Amazon Bedrock](https://aws.amazon.com/bedrock/). They do not make use of the [Agents for Amazon Bedrock](https://aws.amazon.com/bedrock/agents/) functionality.
+
+## Evaluation workflow
+
+The diagram below depicts the workflow that is conducted during evaluation.
+
+![](./evaluator-flow.png)
  
 ---
 
