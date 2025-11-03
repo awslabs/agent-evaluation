@@ -6,7 +6,7 @@ This directory provides a Web UI for evaluating and interacting with AI agents u
 
 Before running the demo, ensure that you have the following dependencies installed:
 
-- Python (version 3.9 or later)
+- Python (version 3.10 or later)
 - pip (Python package installer)
 
 ## Deployment
