@@ -1,4 +1,4 @@
-Agent Evaluation requires `python>=3.9`. Please make sure you have an acceptable version of Python before proceeding.
+Agent Evaluation requires `python>=3.10`. Please make sure you have an acceptable version of Python before proceeding.
 
 To install:
 
