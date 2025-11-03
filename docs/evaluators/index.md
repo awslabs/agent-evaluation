@@ -2,34 +2,6 @@
 
 An evaluator is a LLM agent that evaluates a [Target](../targets/index.md) on a test. Evaluators utilize foundation models directly on [Amazon Bedrock](https://aws.amazon.com/bedrock/). They do not make use of the [Agents for Amazon Bedrock](https://aws.amazon.com/bedrock/agents/) functionality.
  
-## Evaluation workflow
-
-The diagram below depicts the workflow that is conducted during evaluation.
-
-``` mermaid
-graph TD
-  classDef nodeText font-size:10pt;
-  A((Start)) --> B{Initial<br>prompt?}
-  B -->|yes| C(Invoke agent)
-  B -->|no| D(Generate initial prompt)
-  D --> C
-  C --> E(Get test status)
-  E --> F{All steps<br>attempted?}  
-  F --> |yes| G(Evaluate conversation)
-  F --> |no| H{Max turns<br>reached?}
-  H --> |yes| I(Fail)
-  H --> |no| J(Generate user response)
-  J --> C
-  G --> K{All expected<br>results<br>observed?}
-  K --> |yes| L(Pass)
-  K --> |no| I(Fail)
-  I --> M((End))
-  L --> M
-  class A,B,C,D,E,F,G,H,I,J,K,L,M nodeText;
-  style I stroke:#f00
-  style L stroke:#0f0
-```
-
 ---
 
 ## Evaluator costs
