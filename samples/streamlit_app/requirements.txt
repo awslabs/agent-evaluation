@@ -4,8 +4,8 @@ annotated-types==0.7.0
 attrs==24.2.0
 beautifulsoup4==4.12.3
 blinker==1.8.2
-boto3==1.35.35
-botocore==1.35.35
+boto3==1.40.64
+botocore==1.40.64
 cachetools==5.5.0
 certifi==2024.8.30
 charset-normalizer==3.3.2
@@ -79,5 +79,5 @@ toml==0.10.2
 tornado==6.4.2
 typing_extensions==4.12.2
 tzdata==2024.2
-urllib3==2.2.3
+urllib3==2.5.0
 validators==0.34.0
