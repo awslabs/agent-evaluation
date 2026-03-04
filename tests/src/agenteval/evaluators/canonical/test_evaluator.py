@@ -47,7 +47,7 @@ class TestCanonical:
         "xml_data,element_names,expected",
         [
             ("<response>test response</response>", ["response"], ("test response",)),
-            ("<response>test response</response>", ["test1", "test2"], (None, None)),
+            ("<response>test response</response>", ["test1", "test2"], ("", "")),
             (
                 "<response>test response</response>\n<thinking>test reasoning</thinking>",
                 ["response", "thinking"],
@@ -57,6 +57,12 @@ class TestCanonical:
                 "<response>test response</response><thinking>test reasoning</thinking>",
                 ["response", "thinking"],
                 ("test response", "test reasoning"),
+            ),
+            # Test case for the bug fix: missing thinking tags should return empty string, not None
+            (
+                "<response>test response</response>",
+                ["response", "thinking"],
+                ("test response", ""),
             ),
         ],
     )

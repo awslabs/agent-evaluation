@@ -87,7 +87,7 @@ class CanonicalEvaluator(BaseEvaluator):
         for e in element_names:
             pattern = rf"<{e}>(.*?)</{e}>"
             match = re.search(pattern, xml_data, re.DOTALL)
-            content.append(match.group(1).strip() if match else None)
+            content.append(match.group(1).strip() if match else "")
         return tuple(content)
 
     def _generate(
