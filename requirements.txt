@@ -1,4 +1,5 @@
 pyyaml~=6.0
+ag2[openai]>=0.11.4,<1.0
 boto3>=1.34.20,<2.0
 click~=8.0
 pydantic>=2.1.0,<3.0
